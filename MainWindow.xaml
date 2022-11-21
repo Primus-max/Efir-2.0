@@ -43,7 +43,7 @@
                                 Kind="CalendarMultiselectOutline" />
                             <TextBlock
                                 HorizontalAlignment="Center"
-                                Text="Конструктор" />
+                                Text="Эфир" />
                         </StackPanel>
                     </TabItem.Header>
                     <StackPanel
@@ -51,7 +51,7 @@
                         <TextBlock
                             Margin="0,0,0,8"
                             Text="Сделай макет программы телепередач на неделю" />
-
+                        <Button Content="Создать Эфир" Click="GenerateEfir_Click"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem
@@ -135,9 +135,15 @@
                                 <Button Style="{StaticResource MaterialDesignRaisedButton}"
                                         Content="{materialDesign:PackIcon FolderSearchOutline}"
                                         Click="OpenLectionDialog_Click"/>
-
-                                <TextBlock Text="Всего: "/>
-                                <TextBlock x:Name="CountOfFilmTextBlock" />
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="15 0 0 0">
+                                    <TextBlock Text="Всего: "/>
+                                    <TextBlock x:Name="CountOfLectionTextBlock"
+                                               Margin="5 0 5 0" Text="0"/>
+                                    <TextBlock Text="лекций"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel
@@ -161,6 +167,16 @@
                                 <Button  Style="{StaticResource MaterialDesignRaisedButton}"
                                         Content="{materialDesign:PackIcon FolderSearchOutline}"
                                         Click="OpenFilmsDialog_Click"/>
+
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="15 0 0 0">
+                                    <TextBlock Text="Всего: "/>
+                                    <TextBlock x:Name="CountOfFilmTextBlock"
+                                               Margin="5 0 5 0" Text="0"/>
+                                    <TextBlock Text="фильмов"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel
@@ -187,8 +203,15 @@
                                     Style="{StaticResource MaterialDesignRaisedButton}"
                                     Content="{materialDesign:PackIcon FolderSearchOutline}"
                                     Click="OpenSeriesDialog_Click"/>
-                                <!--<Button Content="Выбрать папку"
-                                Click="OpenSiriesDialog_Click"/>-->
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="15 0 0 0">
+                                    <TextBlock Text="Всего: "/>
+                                    <TextBlock x:Name="CountOfSeriesTextBlock"
+                                               Margin="5 0 5 0" Text="0"/>
+                                    <TextBlock Text="сериалов"/>
+                                </StackPanel>
                             </StackPanel>
 
                             <StackPanel
@@ -214,6 +237,15 @@
                                 <Button Style="{StaticResource MaterialDesignRaisedButton}"
                                         Content="{materialDesign:PackIcon FolderSearchOutline}"
                                         Click="OpenDocumentalDialog_Click"/>
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="15 0 0 0">
+                                    <TextBlock Text="Всего: "/>
+                                    <TextBlock x:Name="CountOfDocumentalTextBlock"
+                                               Margin="5 0 5 0" Text="0"/>
+                                    <TextBlock Text="документалок"/>
+                                </StackPanel>
                             </StackPanel>
 
                         </StackPanel>

@@ -40,6 +40,9 @@ namespace Efir
         private string pathToSeries = "";
         private string pathToLection = "";
         private string pathToDocumental = "";
+
+
+
         #endregion
 
         string CountFilm = "";
@@ -54,24 +57,24 @@ namespace Efir
 
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
-        // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа 
+        // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
         /*public void GetDutayion()
         {
-            string path = @"Z:\cd1.avi";
-            int frameWidth = 0;
-            int frameHeight = 0;
-            byte[] fileDataByte = new byte[8];
-            using (FileStream stream = new FileStream(path, FileMode.Open))
-            {
-                stream.Seek(64, SeekOrigin.Begin);
-                stream.Read(fileDataByte, 4, 12);
-                frameWidth = BitConverter.ToInt32(fileDataByte, 4);
-                frameHeight = BitConverter.ToInt32(fileDataByte, 8);
+        string path = @"Z:\cd1.avi";
+        int frameWidth = 0;
+        int frameHeight = 0;
+        byte[] fileDataByte = new byte[8];
+        using (FileStream stream = new FileStream(path, FileMode.Open))
+        {
+        stream.Seek(64, SeekOrigin.Begin);
+        stream.Read(fileDataByte, 4, 12);
+        frameWidth = BitConverter.ToInt32(fileDataByte, 4);
+        frameHeight = BitConverter.ToInt32(fileDataByte, 8);
 
-                // var media = new MediaInfoWrapper(stream);
+        // var media = new MediaInfoWrapper(stream);
 
 
-            }
+        }
 
         }*/
         #endregion
@@ -119,6 +122,7 @@ namespace Efir
                 {
                     FilePathToSeriesTextBox.Text = commonOpenFileDialog.FileName;
                     pathToSeries = FilePathToSeriesTextBox.Text;
+                    AddSreiestDB(pathToSeries);
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
@@ -184,52 +188,131 @@ namespace Efir
 
         #region добавление и сохранение контента в базу
 
+        // добавление фильма
         public void AddFilmAtDB(string pathToContent)
         {
             DirectoryInfo directory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
 
-            IEnumerable<FileInfo> allFileList = directory.GetFiles("*.*", SearchOption.AllDirectories);
-            IEnumerable<FileSystemInfo> filteredFileList =
-                from file in allFileList
-                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                select file;
 
 
-            foreach (FileInfo item in filteredFileList)
+            //CountOfFilmTextBlock.Text = Convert.ToString(dic.Length);
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            if (directory.Exists)
             {
-                film.Name = item.Name;
-                film.Path = item.FullName;
-                film.LastRun = DateTime.Now;
-                film.Duration = DurationContent(pathToContent, film.Name);
-                film.NumOfRun++;
-                film.NumOfSeries = 1;
+                IEnumerable<FileInfo> allFileList = directory.GetFiles("*.*", SearchOption.AllDirectories);
+                IEnumerable<FileSystemInfo> filteredFileList =
+                    from file in allFileList
+                    where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                    file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                    select file;
 
-                var testfdgasdf = film;
+                // собираю класс Film
+                foreach (FileInfo item in filteredFileList)
+                {
+                    if (filteredFileList != null)
+                    {
+                        film.Name = item.Name;
+                        film.Path = item.FullName;
+                        film.Duration = DurationContent(pathToContent, film.Name);
+                        film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
 
-                Films.Add(film);
-                film = new Film();
+                        Films.Add(film);
+                        // film = new Film();
+                    }
+
+                }
+                DirectoryInfo[] dirs = directory.GetDirectories();
+                foreach (DirectoryInfo dir in dirs)
+                {
+                    var swertsert = dir.FullName;
+                }
             }
 
-            var test = Films;
+            // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
+
             CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
         }
 
+        // добавление сериала
+        public void AddSreiestDB(string pathToContent)
+        {
+            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+            Series series = new Series();
+            List<Series> Series = new List<Series>();
 
+
+            //CountOfFilmTextBlock.Text = Convert.ToString(dic.Length);
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            if (firstDirectory.Exists && firstDirectory.GetDirectories().Length > 0)
+            {
+                DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                //DirectoryInfo secondDirectory;
+
+
+                for (int i = 0; i < listDirectories.Length; i++)
+                {
+                    string directroryName = listDirectories[i].FullName;
+                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                    IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                    IEnumerable<FileSystemInfo> filteredFileList =
+                        from file in allFileList
+                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                        select file;
+
+                    foreach (FileInfo item in filteredFileList)
+                    {
+                        if (filteredFileList != null)
+                        {
+                            series.Name = listDirectories[i].Name;
+                            series.Path = item.FullName;
+                            series.DurationOfSeries = DurationContent(pathToContent, item.ToString());
+
+                            series.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
+
+                            Series.Add(series);
+                            // film = new Film();
+                        }
+                    }
+                }
+                // directory.FullName;
+
+                /* IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                 IEnumerable<FileSystemInfo> filteredFileList =
+                     from file in allFileList
+                     where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                     file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                     select file;
+ */
+
+                // собираю класс Film
+
+            }
+
+            // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
+
+            CountOfSeriesTextBlock.Text = Convert.ToString(Series.Count);
+        }
+
+
+        // получаю длительность файла
+        //TODO отрефакторить: сократить время работ
+        //TODO отрефакторить: сделать проверки на нулевые значения ловля ошибок
         public TimeSpan DurationContent(string pathToContent, string contentName)
         {
             MediaInfo.MediaInfo mi = new MediaInfo.MediaInfo();
-            string fullPathToContentItem = pathToContent + "\\" + contentName;
-            mi.Open(fullPathToContentItem);
+            // string fullPathToContentItem = pathToContent + "\\" + contentName;
+            mi.Open(contentName);
 
             string mediaDataFromVideo = mi.Inform();
 
             string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.StartsWith("Duration"));
             string durationFromString = "";
 
-
+            // TODO здесь можно отрефакторить убрав личшнее прохождение по пустому пространству
             for (int i = 0; i < durationFromMediaList.Length; i++)
             {
                 if (durationFromMediaList[i].ToString() == ":")
@@ -266,72 +349,17 @@ namespace Efir
             return duration;
         }
 
-        /*      public static Duration GetDurationContent(string path, string nameContent)
-              {
-                  Shell32.Shell sh = new Shell32.Shell();
-                  Shell32.Folder rFolder = sh.NameSpace(path);
-                  Shell32.FolderItem rFiles = rFolder.ParseName(System.IO.Path.GetFileName(nameContent));
-                  string videosLength = rFolder.GetDetailsOf(rFiles, 27).Trim();
-
-                  *//*  using (FileStream fs = File.Open(path, FileMode.Open))
-                  {
-                  var media = new MediaInfoWrapper(fs);
-                  var test = media.Duration;
-                  }
-                  */
-
-        /* if (!string.IsNullOrEmpty(videosLength))
-        {
-        DateTime contentDuration = Convert.ToDateTime(videosLength);
-        Duration time = contentDuration.TimeOfDay;
-        }
-        else
-        {
-        MessageBox.Show(nameContent);
-        }*/
-        /*   try
-        {
-        DateTime contentDuration = Convert.ToDateTime(videosLength);
-        Duration time = contentDuration.TimeOfDay;
-        }
-        catch (Exception ex)
-        {
-        MessageBox.Show(ex.Message.ToString());
-        }*//*
-
-        if (!DateTime.TryParse(videosLength, out _))
-        {
-
-            // var test = nameContent;
-            //MessageBox.Show(nameContent);
-        }
-        else
-        {*//*
-            DateTime contentDuration = Convert.ToDateTime(videosLength);
-            Duration time = contentDuration.TimeOfDay;*//*
-        }
-
-        DateTime contentDuration = Convert.ToDateTime(videosLength);
-        Duration time = contentDuration.TimeOfDay;
-
-        return time;
-    }*/
-
-
-
-
-
-
-        #endregion
-
 
         #endregion
 
         #endregion
 
+        #endregion
 
-
-
-
+        private void GenerateEfir_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO Сюда доавить заполнение поля  Film.LastRun  просто вписать в него DateTime.Now();
+            //TODO сделать реальную проверку сколько раз запускался фильм (а не когда база создавалась) film.NumOfRun++;
+        }
     }
 }
