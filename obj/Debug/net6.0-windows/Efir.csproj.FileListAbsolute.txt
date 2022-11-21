@@ -83,3 +83,4 @@ Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\Zlib.Portable.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\linux-x64\native\libz3.so
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\osx-x64\native\libz3.dylib
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win-x64\native\libz3.dll
+Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\FFmpeg.NET.dll

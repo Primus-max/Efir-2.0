@@ -137,7 +137,7 @@
                                         Click="OpenLectionDialog_Click"/>
 
                                 <TextBlock Text="Всего: "/>
-                                <TextBlock x:Name="CountOfFilm" />
+                                <TextBlock x:Name="CountOfFilmTextBlock" />
                             </StackPanel>
 
                             <StackPanel

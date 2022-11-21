@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IjhWZUjnip/RyW6COcZvutou4LFDG457NFcKKvrJnfd4hACWto4h9zSEh6Jm47pytThEsIL+vsHMWVVbJcINLg==",
+  "dgSpecHash": "9HLrvURXNZaLx9pi+Tb1koOHO1wcidADf15t6UmmX/50NVBdO3G2FXI/XY0azfwLAUY0070WVJyBGynhAVcgvQ==",
   "success": true,
   "projectFilePath": "Z:\\Programming\\ProjectC#\\Efir\\Efir.csproj",
   "expectedPackageFiles": [
@@ -69,6 +69,7 @@
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
+    "C:\\Users\\SKTV-1\\.nuget\\packages\\xffmpeg.net\\7.1.3\\xffmpeg.net.7.1.3.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\zenlib\\3.1.1\\zenlib.3.1.1.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\zlib.portable.signed\\1.11.0\\zlib.portable.signed.1.11.0.nupkg.sha512"
   ],

@@ -1004,6 +1004,15 @@
           }
         }
       },
+      "xFFmpeg.NET/7.1.3": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/FFmpeg.NET.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/FFmpeg.NET.dll": {}
+        }
+      },
       "ZenLib/3.1.1": {
         "type": "package",
         "dependencies": {
@@ -3872,6 +3881,21 @@
         "version.txt"
       ]
     },
+    "xFFmpeg.NET/7.1.3": {
+      "sha512": "eeS81EmxXxv/0WeArWJp/myjCcLk84ctzmriAXc8vo0iOqVow4eJ3PxR6iPt8/Toi2g2wiEmkRZAWKlEsJd81A==",
+      "type": "package",
+      "path": "xffmpeg.net/7.1.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "README.md",
+        "icon.png",
+        "lib/netstandard2.1/FFmpeg.NET.dll",
+        "xffmpeg.net.7.1.3.nupkg.sha512",
+        "xffmpeg.net.nuspec"
+      ]
+    },
     "ZenLib/3.1.1": {
       "sha512": "lYr/bsLA9k/CUu/hvGgC2xE1EpJBNhJAmnQOEbTg1o8HA9s7WGrToOC0PGg7PEXAyiATvFC7P2qLNPFofDjx+Q==",
       "type": "package",
@@ -3907,6 +3931,7 @@
       "MaterialDesignColors >= 2.0.9",
       "MaterialDesignThemes >= 4.6.1",
       "MaterialDesignThemes.MahApps >= 0.2.5",
+      "MediaInfo.Core.Native >= 21.9.1",
       "MediaInfo.Wrapper.Core >= 21.9.3",
       "Microsoft.WindowsAPICodePack-Shell >= 1.1.0",
       "System.Data.SQLite >= 1.0.116",
@@ -3914,7 +3939,8 @@
       "System.Data.SQLite.EF6 >= 1.0.116",
       "System.Data.SQLite.Linq >= 1.0.116",
       "ZenLib >= 3.1.1",
-      "Zlib.Portable.Signed >= 1.11.0"
+      "Zlib.Portable.Signed >= 1.11.0",
+      "xFFmpeg.NET >= 7.1.3"
     ]
   },
   "packageFolders": {
@@ -3980,6 +4006,10 @@
             "target": "Package",
             "version": "[0.2.5, )"
           },
+          "MediaInfo.Core.Native": {
+            "target": "Package",
+            "version": "[21.9.1, )"
+          },
           "MediaInfo.Wrapper.Core": {
             "target": "Package",
             "version": "[21.9.3, )"
@@ -4011,6 +4041,10 @@
           "Zlib.Portable.Signed": {
             "target": "Package",
             "version": "[1.11.0, )"
+          },
+          "xFFmpeg.NET": {
+            "target": "Package",
+            "version": "[7.1.3, )"
           }
         },
         "imports": [

@@ -24,6 +24,8 @@ using Efir.Model;
 using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
 using System.Text.RegularExpressions;
 using MediaInfoLib;
+using FFmpeg.NET;
+using System.Globalization;
 
 namespace Efir
 {
@@ -41,21 +43,40 @@ namespace Efir
         #endregion
 
         string CountFilm = "";
-        private static Duration time;
+
 
         public MainWindow()
         {
             InitializeComponent();
-            /*string path = ""*/
-            /*  using (FileStream fs = File.Open(@"Z:\cd1.avi", FileMode.Open))
-            {
-            var media = new MediaInfoWrapper(fs);
-
-            var test = media.Duration;
-            }*/
-
-
         }
+
+
+
+
+        #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
+        // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа 
+        /*public void GetDutayion()
+        {
+            string path = @"Z:\cd1.avi";
+            int frameWidth = 0;
+            int frameHeight = 0;
+            byte[] fileDataByte = new byte[8];
+            using (FileStream stream = new FileStream(path, FileMode.Open))
+            {
+                stream.Seek(64, SeekOrigin.Begin);
+                stream.Read(fileDataByte, 4, 12);
+                frameWidth = BitConverter.ToInt32(fileDataByte, 4);
+                frameHeight = BitConverter.ToInt32(fileDataByte, 8);
+
+                // var media = new MediaInfoWrapper(stream);
+
+
+            }
+
+        }*/
+        #endregion
+
+
         #region БЛОК МЕДИА
 
         #region СОБЫТИЯ
@@ -182,69 +203,119 @@ namespace Efir
                 film.Name = item.Name;
                 film.Path = item.FullName;
                 film.LastRun = DateTime.Now;
-                film.Duration = GetDurationContent(pathToContent, item.Name);
+                film.Duration = DurationContent(pathToContent, film.Name);
                 film.NumOfRun++;
                 film.NumOfSeries = 1;
 
-
+                var testfdgasdf = film;
 
                 Films.Add(film);
+                film = new Film();
             }
 
             var test = Films;
-            CountOfFilm.Text = Convert.ToString(Films.Count);
+            CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
         }
 
-        public static Duration GetDurationContent(string path, string nameContent)
+
+        public TimeSpan DurationContent(string pathToContent, string contentName)
         {
-            Shell32.Shell sh = new Shell32.Shell();
-            Shell32.Folder rFolder = sh.NameSpace(path);
-            Shell32.FolderItem rFiles = rFolder.ParseName(System.IO.Path.GetFileName(nameContent));
-            string videosLength = rFolder.GetDetailsOf(rFiles, 27).Trim();
+            MediaInfo.MediaInfo mi = new MediaInfo.MediaInfo();
+            string fullPathToContentItem = pathToContent + "\\" + contentName;
+            mi.Open(fullPathToContentItem);
 
-            /*  using (FileStream fs = File.Open(path, FileMode.Open))
-            {
-            var media = new MediaInfoWrapper(fs);
-            var test = media.Duration;
-            }
-            */
+            string mediaDataFromVideo = mi.Inform();
 
-            /* if (!string.IsNullOrEmpty(videosLength))
-            {
-            DateTime contentDuration = Convert.ToDateTime(videosLength);
-            Duration time = contentDuration.TimeOfDay;
-            }
-            else
-            {
-            MessageBox.Show(nameContent);
-            }*/
-            /*   try
-            {
-            DateTime contentDuration = Convert.ToDateTime(videosLength);
-            Duration time = contentDuration.TimeOfDay;
-            }
-            catch (Exception ex)
-            {
-            MessageBox.Show(ex.Message.ToString());
-            }*/
+            string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.StartsWith("Duration"));
+            string durationFromString = "";
 
-            if (!DateTime.TryParse(videosLength, out _))
-            {
 
-                // var test = nameContent;
-                //MessageBox.Show(nameContent);
-            }
-            else
-            {/*
-                DateTime contentDuration = Convert.ToDateTime(videosLength);
-                Duration time = contentDuration.TimeOfDay;*/
+            for (int i = 0; i < durationFromMediaList.Length; i++)
+            {
+                if (durationFromMediaList[i].ToString() == ":")
+                {
+                    durationFromString = durationFromMediaList.Remove(0, i + 1);
+                }
+
             }
 
-            DateTime contentDuration = Convert.ToDateTime(videosLength);
-            Duration time = contentDuration.TimeOfDay;
+            int h = 0;
+            int m = 0;
+            int s = 0;
 
-            return time;
+
+            var durationSplit = durationFromString.Split(" ");
+
+            for (int j = 0; j < durationSplit.Length; j++)
+            {
+                if (durationSplit[j].ToLower().StartsWith("h".ToLower()))
+                {
+                    h = Convert.ToInt16(durationSplit[j - 1]);
+                }
+                if (durationSplit[j].ToLower().StartsWith("m".ToLower()))
+                {
+                    m = Convert.ToInt16(durationSplit[j - 1]);
+                }
+                if (durationSplit[j].ToLower().StartsWith("s".ToLower()))
+                {
+                    s = Convert.ToInt16(durationSplit[j - 1]);
+                }
+            }
+            TimeSpan duration = new TimeSpan(h, m, s);
+
+            return duration;
         }
+
+        /*      public static Duration GetDurationContent(string path, string nameContent)
+              {
+                  Shell32.Shell sh = new Shell32.Shell();
+                  Shell32.Folder rFolder = sh.NameSpace(path);
+                  Shell32.FolderItem rFiles = rFolder.ParseName(System.IO.Path.GetFileName(nameContent));
+                  string videosLength = rFolder.GetDetailsOf(rFiles, 27).Trim();
+
+                  *//*  using (FileStream fs = File.Open(path, FileMode.Open))
+                  {
+                  var media = new MediaInfoWrapper(fs);
+                  var test = media.Duration;
+                  }
+                  */
+
+        /* if (!string.IsNullOrEmpty(videosLength))
+        {
+        DateTime contentDuration = Convert.ToDateTime(videosLength);
+        Duration time = contentDuration.TimeOfDay;
+        }
+        else
+        {
+        MessageBox.Show(nameContent);
+        }*/
+        /*   try
+        {
+        DateTime contentDuration = Convert.ToDateTime(videosLength);
+        Duration time = contentDuration.TimeOfDay;
+        }
+        catch (Exception ex)
+        {
+        MessageBox.Show(ex.Message.ToString());
+        }*//*
+
+        if (!DateTime.TryParse(videosLength, out _))
+        {
+
+            // var test = nameContent;
+            //MessageBox.Show(nameContent);
+        }
+        else
+        {*//*
+            DateTime contentDuration = Convert.ToDateTime(videosLength);
+            Duration time = contentDuration.TimeOfDay;*//*
+        }
+
+        DateTime contentDuration = Convert.ToDateTime(videosLength);
+        Duration time = contentDuration.TimeOfDay;
+
+        return time;
+    }*/
 
 
 
