@@ -215,7 +215,7 @@ namespace Efir
                     {
                         film.Name = item.Name;
                         film.Path = item.FullName;
-                        film.Duration = DurationContent(pathToContent, film.Name);
+                        film.Duration = DurationContent(pathToContent, item.FullName);
                         film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
 
                         Films.Add(film);
@@ -223,11 +223,11 @@ namespace Efir
                     }
 
                 }
-                DirectoryInfo[] dirs = directory.GetDirectories();
+                /*DirectoryInfo[] dirs = directory.GetDirectories();
                 foreach (DirectoryInfo dir in dirs)
                 {
                     var swertsert = dir.FullName;
-                }
+                }*/
             }
 
             // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
@@ -277,6 +277,7 @@ namespace Efir
                             // film = new Film();
                         }
                     }
+                    CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
                 }
                 // directory.FullName;
 
@@ -294,7 +295,7 @@ namespace Efir
 
             // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
 
-            CountOfSeriesTextBlock.Text = Convert.ToString(Series.Count);
+
         }
 
 
