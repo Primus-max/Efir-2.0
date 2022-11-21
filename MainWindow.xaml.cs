@@ -275,9 +275,9 @@ namespace Efir
                                 series.SumOfSeries = filteredFileList.Count(); //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
                                 series.ThisSeries += 1;
 
-
                                 Series.Add(series);
                                 series = new Series();
+                                ProgressDownLoadingContent.Value += 1;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -288,15 +288,12 @@ namespace Efir
 
                     MessageBox.Show(ex.Message);
                 }
-                /*
-                                NumericComparer ns = new NumericComparer();
-                                Array.Sort(files, ns);*/
-
 
             }
         }
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
+        //TODO  вынести данный класс в отдельный файл 
         class StringNumberComparer : IComparer<string>
         {
             public int Compare(string x, string y)

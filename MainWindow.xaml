@@ -249,6 +249,15 @@
                             </StackPanel>
 
                         </StackPanel>
+                        <!--Прогресс загрузки-->
+                        <StackPanel>
+                            <TextBlock />
+                            <ProgressBar
+                                x:Name="ProgressDownLoadingContent"
+                                Value="25"
+                                Height="20" />
+                        </StackPanel>
+
                     </StackPanel>
                 </TabItem>
                 <!--<TabItem
