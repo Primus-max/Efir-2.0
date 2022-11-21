@@ -195,41 +195,39 @@ namespace Efir
             Film film = new Film();
             List<Film> Films = new List<Film>();
 
-
-
-            //CountOfFilmTextBlock.Text = Convert.ToString(dic.Length);
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (directory.Exists)
             {
-                IEnumerable<FileInfo> allFileList = directory.GetFiles("*.*", SearchOption.AllDirectories);
-                IEnumerable<FileSystemInfo> filteredFileList =
-                    from file in allFileList
-                    where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                    file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                    select file;
-
-                // собираю класс Film
-                foreach (FileInfo item in filteredFileList)
+                try
                 {
-                    if (filteredFileList != null)
+                    IEnumerable<FileInfo> allFileList = directory.GetFiles("*.*", SearchOption.AllDirectories);
+                    IEnumerable<FileSystemInfo> filteredFileList =
+                        from file in allFileList
+                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                        select file;
+
+                    // собираю класс Film
+                    foreach (FileInfo item in filteredFileList)
                     {
-                        film.Name = item.Name;
-                        film.Path = item.FullName;
-                        film.Duration = DurationContent(pathToContent, item.FullName);
-                        film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
+                        if (filteredFileList != null)
+                        {
+                            film.Name = item.Name;
+                            film.Path = item.FullName;
+                            film.Duration = DurationContent(pathToContent, item.FullName);
+                            film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
 
-                        Films.Add(film);
-                        // film = new Film();
+                            Films.Add(film);
+
+                        }
                     }
-
                 }
-                /*DirectoryInfo[] dirs = directory.GetDirectories();
-                foreach (DirectoryInfo dir in dirs)
+                catch (Exception ex)
                 {
-                    var swertsert = dir.FullName;
-                }*/
-            }
 
+                    MessageBox.Show(ex.Message);
+                }
+            }
             // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
 
             CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
@@ -242,65 +240,117 @@ namespace Efir
             Series series = new Series();
             List<Series> Series = new List<Series>();
 
-
-            //CountOfFilmTextBlock.Text = Convert.ToString(dic.Length);
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-            if (firstDirectory.Exists && firstDirectory.GetDirectories().Length > 0)
+            if (firstDirectory.Exists)
             {
-                DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                //DirectoryInfo secondDirectory;
-
-
-                for (int i = 0; i < listDirectories.Length; i++)
+                try
                 {
-                    string directroryName = listDirectories[i].FullName;
-                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                                                                     "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                                                                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
-                    IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                    IEnumerable<FileSystemInfo> filteredFileList =
-                        from file in allFileList
-                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                        select file;
-
-                    foreach (FileInfo item in filteredFileList)
+                    for (int i = 0; i < listDirectories.Length; i++)
                     {
-                        if (filteredFileList != null)
+                        string directroryName = listDirectories[i].FullName;
+                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                        IEnumerable<FileSystemInfo> filteredFileList =
+                            from file in allFileList
+                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                            select file;
+
+
+                        StringNumberComparer comparer = new StringNumberComparer();
+
+                        foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
                         {
-                            series.Name = listDirectories[i].Name;
-                            series.Path = item.FullName;
-                            series.DurationOfSeries = DurationContent(pathToContent, item.ToString());
+                            if (filteredFileList != null)
+                            {
+                                series.Name = listDirectories[i].Name;
+                                series.Path = item.FullName;
+                                series.DurationOfSeries = DurationContent(pathToContent, item.ToString());
+                                series.SumOfSeries = filteredFileList.Count(); //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
+                                series.ThisSeries += 1;
 
-                            series.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
 
-                            Series.Add(series);
-                            // film = new Film();
+                                Series.Add(series);
+                                series = new Series();
+                            }
                         }
+                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
                     }
-                    CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
                 }
-                // directory.FullName;
+                catch (Exception ex)
+                {
 
-                /* IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                 IEnumerable<FileSystemInfo> filteredFileList =
-                     from file in allFileList
-                     where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                     file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                     select file;
- */
+                    MessageBox.Show(ex.Message);
+                }
+                /*
+                                NumericComparer ns = new NumericComparer();
+                                Array.Sort(files, ns);*/
 
-                // собираю класс Film
 
             }
+        }
 
-            // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
+        // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
+        class StringNumberComparer : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                int compareResult;
+                int xIndex = 0, yIndex = 0;
+                int xIndexLast = 0, yIndexLast = 0;
+                int xNumber, yNumber;
+                int xLength = x.Length;
+                int yLength = y.Length;
 
+                do
+                {
+                    bool xHasNextNumber = TryGetNextNumber(x, ref xIndex, out xNumber);
+                    bool yHasNextNumber = TryGetNextNumber(y, ref yIndex, out yNumber);
 
+                    if (!(xHasNextNumber && yHasNextNumber))
+                    {
+                        // At least one the strings has either no more number or contains non-numeric chars
+                        // In this case do a string comparison of that last part
+                        return x.Substring(xIndexLast).CompareTo(y.Substring(yIndexLast));
+                    }
+
+                    xIndexLast = xIndex;
+                    yIndexLast = yIndex;
+
+                    compareResult = xNumber.CompareTo(yNumber);
+                }
+                while (compareResult == 0
+                    && xIndex < xLength
+                    && yIndex < yLength);
+
+                return compareResult;
+            }
+
+            private bool TryGetNextNumber(string text, ref int startIndex, out int number)
+            {
+                number = 0;
+
+                int pos = text.IndexOf('.', startIndex);
+                if (pos < 0) pos = text.Length;
+
+                if (!int.TryParse(text.Substring(startIndex, pos - startIndex), out number))
+                    return false;
+
+                startIndex = pos + 1;
+
+                return true;
+            }
         }
 
 
         // получаю длительность файла
-        //TODO отрефакторить: сократить время работ
+        //TODO отрефакторить: сократить время работы
         //TODO отрефакторить: сделать проверки на нулевые значения ловля ошибок
         public TimeSpan DurationContent(string pathToContent, string contentName)
         {

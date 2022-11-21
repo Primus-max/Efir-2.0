@@ -13,7 +13,8 @@ namespace Efir.Model
         public string Description { get; set; }     // описание
         public int NumOfRun { get; set; }           // колличество показов       
         public TimeSpan DurationOfSeries { get; set; }   // длительность серии        
-        public int NumOfSeries { get; set; }        // колличество  серий
+        public int SumOfSeries { get; set; }        // колличество  серий
+        public int ThisSeries { get; set; }         // текущая серия
         public DateTime LastRun { get; set; }       // последний показ
         public string Path { get; set; }            // путь к сериалу
     }
