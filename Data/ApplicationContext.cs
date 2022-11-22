@@ -16,6 +16,7 @@ namespace Efir.Data
         public DbSet<Documentaries> Documentarieses { get; set; } = null!;
         public DbSet<Educational> Educationals { get; set; } = null!;
         public DbSet<Entertainment> Entertainments { get; set; } = null!;
+        public DbSet<Prevention> Preventions { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=MediaDB.db");
