@@ -84,3 +84,4 @@ Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\linux-x64\native
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\osx-x64\native\libz3.dylib
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win-x64\native\libz3.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\FFmpeg.NET.dll
+Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\GeneratedInternalTypeHelper.g.cs

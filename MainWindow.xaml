@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Efir"
+        xmlns:vm="clr-namespace:Efir.ViewModels"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -16,7 +17,9 @@
         Title="Программа телепередач Эфир-1.0"
         Height="450"
         Width="800" >
-
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <materialDesign:Card>
             <TabControl
@@ -254,7 +257,7 @@
                             <TextBlock />
                             <ProgressBar
                                 x:Name="ProgressDownLoadingContent"
-                                Value="1"
+                                Value="{Binding ValueProgressDownlaodingSeries}"
                                 Height="20"
                                 SmallChange="1"
                                 Foreground="#FF006BD4" />
