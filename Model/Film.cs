@@ -19,9 +19,9 @@ namespace Efir.Model
         public DateTime LastRun { get; set; }   // последний показ
         public string Path { get; set; }        // путь к фильму
 
-        //public Film() { }
+        public Film() { }
 
-        /*public Film(int id, string name, string description, int numOfRun, Duration duration, int series, int numOfSeries, DateTime lastRun, string path)
+        public Film(int id, string name, string description, int numOfRun, TimeSpan duration, int series, int numOfSeries, DateTime lastRun, string path)
         {
             this.Id = id;
             this.Name = name;
@@ -32,6 +32,6 @@ namespace Efir.Model
             this.NumOfSeries = numOfSeries;
             this.LastRun = lastRun;
             this.Path = path;
-        }*/
+        }
     }
 }

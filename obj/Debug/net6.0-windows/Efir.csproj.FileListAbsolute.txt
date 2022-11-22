@@ -101,18 +101,11 @@ Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\Microsoft.Extensions.Depe
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\Microsoft.Extensions.Logging.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\Microsoft.Extensions.Options.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\Microsoft.Extensions.Primitives.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\Microsoft.Win32.SystemEvents.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\SQLitePCLRaw.batteries_v2.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\SQLitePCLRaw.core.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Configuration.ConfigurationManager.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Drawing.Common.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Security.Cryptography.ProtectedData.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Security.Permissions.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Text.Encodings.Web.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Text.Json.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\System.Windows.Extensions.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\alpine-arm\native\libe_sqlite3.so
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\alpine-arm64\native\libe_sqlite3.so
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\alpine-x64\native\libe_sqlite3.so
@@ -135,7 +128,4 @@ Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win-arm\native\e
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win-x64\native\e_sqlite3.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win-x86\native\e_sqlite3.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Drawing.Common.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
-Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Windows.Extensions.dll

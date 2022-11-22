@@ -65,11 +65,11 @@ namespace Efir
             db.Serieses.Load();
             db.Films.Load();
             // и устанавливаем данные в качестве контекста
-            var asdfdfg = db.Serieses.Local.ToObservableCollection();
-            foreach (var item in asdfdfg)
-            {
-                var eoriowiepriw = item;
-            }
+            /* var asdfdfg = db.Films.Local.ToObservableCollection();
+             foreach (var item in asdfdfg)
+             {
+                 var eoriowiepriw = item;
+             }*/
             // загружаем данные из БД
             // db.Serieses.Load();
             // и устанавливаем данные в качестве контекста
@@ -208,7 +208,7 @@ namespace Efir
 
         #region добавление и сохранение контента в базу
 
-        // добавление фильма
+        // добавление фильмов
         public void AddFilmAtDB(string pathToContent)
         {
             DirectoryInfo directory = new DirectoryInfo(pathToContent);
@@ -253,7 +253,7 @@ namespace Efir
             }
         }
 
-        // добавление сериала
+        // добавление сериалов
         public async void AddSreiestDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
@@ -291,9 +291,9 @@ namespace Efir
                             {
                                 series.Name = listDirectories[i].Name;
                                 series.Path = item.FullName;
-                                series.DurationOfSeries = DurationContent(pathToContent, item.ToString());
-                                series.SumOfSeries = filteredFileList.Count();
-                                series.ThisSeries += 1;
+                                series.Duration = DurationContent(pathToContent, item.ToString());
+                                series.NumOfSeries = filteredFileList.Count();
+                                series.IsSeries += 1;
 
                                 //добавдяю сериал в базу
                                 db.Serieses.Add(series);
@@ -306,20 +306,86 @@ namespace Efir
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
-                        // await System.Threading.Tasks.Task.Yield();
-                        await System.Threading.Tasks.Task.Yield();
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
+            await System.Threading.Tasks.Task.Yield();
+        }
+
+        // добавление лекций
+        public async void AddLectiontDB(string pathToContent)
+        {
+            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+            Lection lection = new Lection();
+            List<Lection> Lections = new List<Lection>();
+
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            if (firstDirectory.Exists)
+            {
+                try
+                {
+                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
+                    "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                    for (int i = 0; i < listDirectories.Length; i++)
+                    {
+                        string directroryName = listDirectories[i].FullName;
+                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                        IEnumerable<FileSystemInfo> filteredFileList =
+                            from file in allFileList
+                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                            select file;
+
+
+                        StringNumberComparer comparer = new StringNumberComparer();
+                        MainWindowViewModel viewModel = new MainWindowViewModel();
+
+                        foreach (FileInfo item in filteredFileList)
+                        {
+                            if (filteredFileList != null)
+                            {
+                                lection.Name = listDirectories[i].Name;
+                                lection.Path = item.FullName;
+                                lection.Duration = DurationContent(pathToContent, item.ToString());
+                                lection.NumOfSeries = filteredFileList.Count();
+                                lection.Series += 1;
+
+                                //добавдяю сериал в базу
+                                db.Lections.Add(lection);
+                                db.SaveChanges();
+                                lection = new Lection();
+
+                                viewModel.ValueProgressDownlaodingSeries += 1;
+
+                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                            }
+                        }
+                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            await System.Threading.Tasks.Task.Yield();
         }
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
         //TODO  вынести данный класс в отдельный файл
+        /// <summary>
+        /// Реализация сортировки цифр в строковом типе
+        /// </summary>
         class StringNumberComparer : IComparer<string>
         {
             public int Compare(string x, string y)
