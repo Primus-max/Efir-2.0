@@ -65,6 +65,7 @@ namespace Efir
             db.Serieses.Load();
             db.Films.Load();
             db.Documentarieses.Load();
+            db.Educationals.Load();
             // и устанавливаем данные в качестве контекста
             /* var asdfdfg = db.Films.Local.ToObservableCollection();
              foreach (var item in asdfdfg)
@@ -383,7 +384,6 @@ namespace Efir
         }
 
         // добавление документалок
-
         public async void AddDocumentariestDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
@@ -430,6 +430,71 @@ namespace Efir
                                 db.Documentarieses.Add(documentaries);
                                 db.SaveChanges();
                                 documentaries = new Documentaries();
+
+                                viewModel.ValueProgressDownlaodingSeries += 1;
+
+                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                            }
+                        }
+                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            await System.Threading.Tasks.Task.Yield();
+        }
+
+        // добавление образовательных
+        public async void AddEducationaltDB(string pathToContent)
+        {
+            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+            Educational educational = new Educational();
+            //List<Educational> Ed = new List<Documentaries>();
+
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            if (firstDirectory.Exists)
+            {
+                try
+                {
+                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
+                    "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                    for (int i = 0; i < listDirectories.Length; i++)
+                    {
+                        string directroryName = listDirectories[i].FullName;
+                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                        IEnumerable<FileSystemInfo> filteredFileList =
+                            from file in allFileList
+                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                            select file;
+
+
+                        StringNumberComparer comparer = new StringNumberComparer();
+                        MainWindowViewModel viewModel = new MainWindowViewModel();
+
+                        foreach (FileInfo item in filteredFileList)
+                        {
+                            if (filteredFileList != null)
+                            {
+                                educational.Name = listDirectories[i].Name;
+                                educational.Path = item.FullName;
+                                educational.Duration = DurationContent(pathToContent, item.ToString());
+                                educational.NumOfSeries = filteredFileList.Count();
+                                educational.Series += 1;
+
+                                //добавдяю сериал в базу
+                                db.Educationals.Add(educational);
+                                db.SaveChanges();
+                                educational = new Educational();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
