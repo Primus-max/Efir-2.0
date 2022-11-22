@@ -59,13 +59,13 @@ namespace Efir
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
             // гарантируем, что база данных создана
             db.Database.EnsureCreated();
             db.Serieses.Load();
             db.Films.Load();
             db.Documentarieses.Load();
             db.Educationals.Load();
+            db.Entertainments.Load();
             // и устанавливаем данные в качестве контекста
             /* var asdfdfg = db.Films.Local.ToObservableCollection();
              foreach (var item in asdfdfg)
@@ -495,6 +495,71 @@ namespace Efir
                                 db.Educationals.Add(educational);
                                 db.SaveChanges();
                                 educational = new Educational();
+
+                                viewModel.ValueProgressDownlaodingSeries += 1;
+
+                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                            }
+                        }
+                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            await System.Threading.Tasks.Task.Yield();
+        }
+
+        // добавление развлекательных
+        public async void AddEntertainmenttDB(string pathToContent)
+        {
+            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+            Entertainment entertainment = new Entertainment();
+            //List<Educational> Ed = new List<Documentaries>();
+
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            if (firstDirectory.Exists)
+            {
+                try
+                {
+                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
+                    "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                    for (int i = 0; i < listDirectories.Length; i++)
+                    {
+                        string directroryName = listDirectories[i].FullName;
+                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                        IEnumerable<FileSystemInfo> filteredFileList =
+                            from file in allFileList
+                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                            select file;
+
+
+                        StringNumberComparer comparer = new StringNumberComparer();
+                        MainWindowViewModel viewModel = new MainWindowViewModel();
+
+                        foreach (FileInfo item in filteredFileList)
+                        {
+                            if (filteredFileList != null)
+                            {
+                                entertainment.Name = listDirectories[i].Name;
+                                entertainment.Path = item.FullName;
+                                entertainment.Duration = DurationContent(pathToContent, item.ToString());
+                                entertainment.NumOfSeries = filteredFileList.Count();
+                                entertainment.Series += 1;
+
+                                //добавдяю сериал в базу
+                                db.Entertainments.Add(entertainment);
+                                db.SaveChanges();
+                                entertainment = new Entertainment();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
