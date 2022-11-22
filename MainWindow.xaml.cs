@@ -26,14 +26,19 @@ using System.Text.RegularExpressions;
 using MediaInfoLib;
 using FFmpeg.NET;
 using System.Globalization;
+using Efir.ViewModels;
+using System.Threading;
+using Efir.Data;
+using System.Data.Entity;
 
 namespace Efir
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IAsyncDisposable
     {
+        ApplicationContext db = new ApplicationContext();
 
         #region ПЕРМЕННЫЕ: блок медиа
         private string pathToFilms = "";
@@ -41,10 +46,8 @@ namespace Efir
         private string pathToLection = "";
         private string pathToDocumental = "";
 
-        int ValueProgressDownlaodingSeries = 10;
-        int MaxValueProgressUplaodingSeries = 10;
-
         #endregion
+
 
         string CountFilm = "";
 
@@ -52,10 +55,26 @@ namespace Efir
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
         }
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
 
-
-
+            // гарантируем, что база данных создана
+            db.Database.EnsureCreated();
+            db.Serieses.Load();
+            db.Films.Load();
+            // и устанавливаем данные в качестве контекста
+            var asdfdfg = db.Serieses.Local.ToObservableCollection();
+            foreach (var item in asdfdfg)
+            {
+                var eoriowiepriw = item;
+            }
+            // загружаем данные из БД
+            // db.Serieses.Load();
+            // и устанавливаем данные в качестве контекста
+            //DataContext = db.Serieses.Local.ToObservableCollection();
+        }
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
         // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
@@ -218,10 +237,13 @@ namespace Efir
                             film.Duration = DurationContent(pathToContent, item.FullName);
                             film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
 
-                            Films.Add(film);
-
+                            db.Films.Add(film);
+                            db.SaveChanges();
+                            film = new Film();
                         }
                     }
+                    //TODO сделать правильное отображение колличества фильмов если он есть в базе
+                    CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
                 }
                 catch (Exception ex)
                 {
@@ -229,13 +251,10 @@ namespace Efir
                     MessageBox.Show(ex.Message);
                 }
             }
-            // -------------------------------- ВРЕМЕННО!!!!!!!!!!!!!!!!---------------------------
-
-            CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
         }
 
         // добавление сериала
-        public void AddSreiestDB(string pathToContent)
+        public async void AddSreiestDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Series series = new Series();
@@ -248,8 +267,8 @@ namespace Efir
                 {
                     DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
                     if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
-                                                                     "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
-                                                                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
+                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
                     for (int i = 0; i < listDirectories.Length; i++)
                     {
@@ -265,7 +284,7 @@ namespace Efir
 
 
                         StringNumberComparer comparer = new StringNumberComparer();
-
+                        MainWindowViewModel viewModel = new MainWindowViewModel();
                         foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
                         {
                             if (filteredFileList != null)
@@ -273,21 +292,26 @@ namespace Efir
                                 series.Name = listDirectories[i].Name;
                                 series.Path = item.FullName;
                                 series.DurationOfSeries = DurationContent(pathToContent, item.ToString());
-                                series.SumOfSeries = filteredFileList.Count(); //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
+                                series.SumOfSeries = filteredFileList.Count();
                                 series.ThisSeries += 1;
 
-                                Series.Add(series);
+                                //добавдяю сериал в базу
+                                db.Serieses.Add(series);
+                                db.SaveChanges();
                                 series = new Series();
-                                ValueProgressDownlaodingSeries += 1;
-                                ProgressDownLoadingContent.Value += ValueProgressDownlaodingSeries;
+
+                                viewModel.ValueProgressDownlaodingSeries += 1;
+
+                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        // await System.Threading.Tasks.Task.Yield();
+                        await System.Threading.Tasks.Task.Yield();
                     }
                 }
                 catch (Exception ex)
                 {
-
                     MessageBox.Show(ex.Message);
                 }
 
@@ -295,7 +319,7 @@ namespace Efir
         }
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
-        //TODO  вынести данный класс в отдельный файл 
+        //TODO  вынести данный класс в отдельный файл
         class StringNumberComparer : IComparer<string>
         {
             public int Compare(string x, string y)
@@ -325,8 +349,8 @@ namespace Efir
                     compareResult = xNumber.CompareTo(yNumber);
                 }
                 while (compareResult == 0
-                    && xIndex < xLength
-                    && yIndex < yLength);
+                && xIndex < xLength
+                && yIndex < yLength);
 
                 return compareResult;
             }
@@ -395,7 +419,7 @@ namespace Efir
                 }
             }
             TimeSpan duration = new TimeSpan(h, m, s);
-
+            // await System.Threading.Tasks.Task.Yield();
             return duration;
         }
 
@@ -410,6 +434,14 @@ namespace Efir
         {
             //TODO Сюда доавить заполнение поля  Film.LastRun  просто вписать в него DateTime.Now();
             //TODO сделать реальную проверку сколько раз запускался фильм (а не когда база создавалась) film.NumOfRun++;
+
         }
+
+        public ValueTask DisposeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+
     }
 }

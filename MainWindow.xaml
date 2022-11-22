@@ -16,7 +16,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Программа телепередач Эфир-1.0"
         Height="450"
-        Width="800" >
+        Width="800" Loaded="MainWindow_Loaded" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -236,7 +236,7 @@
                                     materialDesign:HintAssist.HelperTextFontSize="14"
                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                     Foreground="#c5c5c5"
-                                    VerticalAlignment="Center"/>
+                                    VerticalAlignment="Center" />
                                 <Button Style="{StaticResource MaterialDesignRaisedButton}"
                                         Content="{materialDesign:PackIcon FolderSearchOutline}"
                                         Click="OpenDocumentalDialog_Click"/>
@@ -261,6 +261,8 @@
                                 Height="20"
                                 SmallChange="1"
                                 Foreground="#FF006BD4" />
+
+                            <TextBlock Text="{Binding ValueProgressDownlaodingSeries}"/>
                         </StackPanel>
 
                     </StackPanel>

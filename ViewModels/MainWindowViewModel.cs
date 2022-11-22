@@ -23,7 +23,7 @@ namespace Efir.ViewModels
         #region БЛОК МЕДИА
 
         #region прогресс бар
-        private int _ValueProgressDownlaodingSeries = 0;
+        private int _ValueProgressDownlaodingSeries = 10;
         /// <summary>
         /// Индикатор загрузки для сериалов
         /// </summary>

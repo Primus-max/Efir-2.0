@@ -10,7 +10,7 @@ namespace Efir.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }     // описание
+        public string? Description { get; set; }     // описание
         public int NumOfRun { get; set; }           // колличество показов       
         public TimeSpan DurationOfSeries { get; set; }   // длительность серии        
         public int SumOfSeries { get; set; }        // колличество  серий
