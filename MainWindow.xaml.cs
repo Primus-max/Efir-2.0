@@ -41,7 +41,8 @@ namespace Efir
         private string pathToLection = "";
         private string pathToDocumental = "";
 
-
+        int ValueProgressDownlaodingSeries = 10;
+        int MaxValueProgressUplaodingSeries = 10;
 
         #endregion
 
@@ -277,7 +278,8 @@ namespace Efir
 
                                 Series.Add(series);
                                 series = new Series();
-                                ProgressDownLoadingContent.Value += 1;
+                                ValueProgressDownlaodingSeries += 1;
+                                ProgressDownLoadingContent.Value += ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);

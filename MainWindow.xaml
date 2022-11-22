@@ -254,8 +254,10 @@
                             <TextBlock />
                             <ProgressBar
                                 x:Name="ProgressDownLoadingContent"
-                                Value="25"
-                                Height="20" />
+                                Value="1"
+                                Height="20"
+                                SmallChange="1"
+                                Foreground="#FF006BD4" />
                         </StackPanel>
 
                     </StackPanel>
