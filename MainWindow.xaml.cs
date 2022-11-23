@@ -68,6 +68,7 @@ namespace Efir
             db.Entertainments.Load();
             db.Preventions.Load();
             db.SeriesCollections.Load();
+            db.DocumentariesCollections.Load();
             // и устанавливаем данные в качестве контекста
             /* var asdfdfg = db.Films.Local.ToObservableCollection();
              foreach (var item in asdfdfg)
