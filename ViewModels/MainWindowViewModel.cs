@@ -34,6 +34,18 @@ namespace Efir.ViewModels
         }
         #endregion
 
+        /* private int _CountPartFilm = 1;
+         /// <summary>
+         /// Индикатор загрузки для сериалов
+         /// </summary>
+         public int CountPartFilm
+         {
+             get => _CountPartFilm;
+             set => Set(ref _CountPartFilm, value);
+         }
+ */
+
+
         #region текст боксы для путей
 
 

@@ -39,6 +39,9 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO запуск программы по середине окна
+        //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
+        //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет 
         ApplicationContext db = new ApplicationContext();
         MainWindowViewModel mainModel = new MainWindowViewModel();
 
@@ -51,7 +54,6 @@ namespace Efir
         private string pathToPrevention = "";
 
         #endregion
-
 
         string CountFilm = "";
 
@@ -73,11 +75,7 @@ namespace Efir
             db.Preventions.Load();
 
             // и устанавливаем данные в качестве контекста
-            /* var asdfdfg = db.Films.Local.ToObservableCollection();
-             foreach (var item in asdfdfg)
-             {
-                 var eoriowiepriw = item;
-             }*/
+
             // загружаем данные из БД
             // db.Serieses.Load();
             // и устанавливаем данные в качестве контекста
@@ -112,7 +110,7 @@ namespace Efir
 
         #region СОБЫТИЯ
 
-        #region открытие диалогов для выбора путей
+        #region открытие диалогов для выбора файлов
         private void OpenFilmsDialog_Click(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
@@ -271,6 +269,8 @@ namespace Efir
         #region МЕТОДЫ
 
         #region добавление и сохранение контента в базу
+
+        // TODO для документалок сделать показ всех документалок а не колличество папок в отличии от сериалов
         // добавление документалок
         public async void AddDocumentariesAtDB(string pathToContent)
         {
@@ -291,8 +291,11 @@ namespace Efir
 
                     for (int i = 0; i < listDirectories.Length; i++)
                     {
+                        int countDoc = 0;
+
                         string directroryName = listDirectories[i].FullName;
                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                        List<Documentaries> documentaries1 = new List<Documentaries>();
 
                         IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
                         IEnumerable<FileSystemInfo> filteredFileList =
@@ -307,23 +310,26 @@ namespace Efir
 
                         foreach (FileInfo item in filteredFileList)
                         {
-                            if (filteredFileList != null)
-                            {
-                                documentaries.Name = listDirectories[i].Name;
-                                documentaries.Path = item.FullName;
-                                documentaries.Duration = DurationContent(pathToContent, item.ToString());
-                                documentaries.NumOfSeries = filteredFileList.Count();
-                                documentaries.Series += 1;
+                            countDoc += 1;
+
+                            documentaries.Name = listDirectories[i].Name;
+                            documentaries.Path = item.FullName;
+                            documentaries.Duration = DurationContent(pathToContent, item.ToString());
+                            documentaries.NumOfSeries = filteredFileList.Count();
+                            documentaries.Series = countDoc;
 
 
-                                db.Documentarieses.Add(documentaries);
-                                db.SaveChanges();
-                                documentaries = new Documentaries();
+                            // db.Documentarieses.Add(documentaries);
+                            // db.SaveChanges();
+                            documentaries1.Add(documentaries);
+                            documentaries = new Documentaries();
 
-                                viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
-                            }
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+
+                            ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
+
                         }
                         CountOfDocumentalTextBlock.Text = Convert.ToString(listDirectories.Length);
 
@@ -473,6 +479,8 @@ namespace Efir
             DirectoryInfo directory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
+            MainWindowViewModel viewModel = new MainWindowViewModel();
+            int countPartFilm = 0;
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (directory.Exists)
@@ -489,17 +497,19 @@ namespace Efir
                     // собираю класс Film
                     foreach (FileInfo item in filteredFileList)
                     {
-                        if (filteredFileList != null)
-                        {
-                            film.Name = item.Name;
-                            film.Path = item.FullName;
-                            film.Duration = DurationContent(pathToContent, item.FullName);
-                            film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
+                        countPartFilm += 1;
 
-                            db.Films.Add(film);
-                            db.SaveChanges();
-                            film = new Film();
-                        }
+                        film.Name = item.Name;
+                        film.Path = item.FullName;
+                        film.Duration = DurationContent(pathToContent, item.FullName);
+                        film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
+                        film.Series = countPartFilm;
+
+                        // db.Films.Add(film);
+                        // db.SaveChanges();
+                        Films.Add(film);
+                        film = new Film();
+
                     }
                     //TODO сделать правильное отображение колличества фильмов если он есть в базе
                     CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
@@ -576,6 +586,7 @@ namespace Efir
             await System.Threading.Tasks.Task.Yield();
         }
 
+        // TODO для профилактических отображать колличество контента а не папок
         // добавление профилактических
         public async void AddPreventionAtDB(string pathToContent)
         {
