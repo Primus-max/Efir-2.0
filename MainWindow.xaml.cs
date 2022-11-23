@@ -39,6 +39,7 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO сделать в настройках программы возможность добавления флага для определения жанра, этот флаг будет отображаться в имении папки
         //TODO запуск программы по середине окна
         //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
         //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет 
@@ -73,6 +74,7 @@ namespace Efir
             db.Educationals.Load();
             db.Entertainments.Load();
             db.Preventions.Load();
+            db.TvShows.Load();
 
             // и устанавливаем данные в качестве контекста
 
@@ -182,33 +184,33 @@ namespace Efir
             }
         }
 
-        private void OpenDocumentariesDialog_Click(object sender, RoutedEventArgs e)
-        {
-            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
-            commonOpenFileDialog.IsFolderPicker = true;
-            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+        /* private void OpenDocumentariesDialog_Click(object sender, RoutedEventArgs e)
+         {
+             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+             commonOpenFileDialog.IsFolderPicker = true;
+             commonOpenFileDialog.AddToMostRecentlyUsedList = true;
 
-            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                try
-                {
-                    FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
-                    pathToDocumentaries = FilePathToDocumentariesTextBox.Text;
-                    AddDocumentariesAtDB(pathToDocumentaries);
-                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
-                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
-                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
-                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
-                }
-                catch (Exception ex)
-                {
-                    // TODO обработать правильно ошибки, найти значения и передать по русски
-                    MessageBox.Show($"Произошла ошибка: {ex.Message}");
-                }
-            }
-        }
+             if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+             {
+                 try
+                 {
+                     FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
+                     pathToDocumentaries = FilePathToDocumentariesTextBox.Text;
+                     AddDocumentariesAtDB(pathToDocumentaries);
+                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+                     //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+                     //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
+                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+                 }
+                 catch (Exception ex)
+                 {
+                     // TODO обработать правильно ошибки, найти значения и передать по русски
+                     MessageBox.Show($"Произошла ошибка: {ex.Message}");
+                 }
+             }
+         }*/
 
-        private void OpenEntertainmentDialog_Click(object sender, RoutedEventArgs e)
+        /*private void OpenEntertainmentDialog_Click(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
             commonOpenFileDialog.IsFolderPicker = true;
@@ -233,7 +235,7 @@ namespace Efir
                     MessageBox.Show($"Произошла ошибка: {ex.Message}");
                 }
             }
-        }
+        }*/
 
         private void OpenPreventionDialog_Click(object sender, RoutedEventArgs e)
         {
@@ -261,6 +263,33 @@ namespace Efir
                 }
             }
         }
+
+        private void OpenTvShowDialog_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+            commonOpenFileDialog.IsFolderPicker = true;
+            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+            commonOpenFileDialog.ShowPlacesList = true;
+
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    FilePathToTvShowTextBox.Text = commonOpenFileDialog.FileName;
+                    pathToPrevention = FilePathToTvShowTextBox.Text;
+
+                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
+                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+                }
+                catch (Exception ex)
+                {
+                    // TODO обработать правильно ошибки, найти значения и передать по русски
+                    MessageBox.Show($"Произошла ошибка: {ex.Message}");
+                }
+            }
+        }
         #endregion
 
         #endregion
@@ -272,7 +301,7 @@ namespace Efir
 
         // TODO для документалок сделать показ всех документалок а не колличество папок в отличии от сериалов
         // добавление документалок
-        public async void AddDocumentariesAtDB(string pathToContent)
+        /*public async void AddDocumentariesAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Documentaries documentaries = new Documentaries();
@@ -341,7 +370,7 @@ namespace Efir
                 }
             }
             await System.Threading.Tasks.Task.Yield();
-        }
+        }*/
 
         // добавление образовательных
         public async void AddEducationalAtDB(string pathToContent)
@@ -409,69 +438,69 @@ namespace Efir
         }
 
         // добавление развлекательных
-        public async void AddEntertainmentAtDB(string pathToContent)
-        {
-            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
-            Entertainment entertainment = new Entertainment();
-            //List<Educational> Ed = new List<Documentaries>();
+        /* public async void AddEntertainmentAtDB(string pathToContent)
+         {
+             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+             Entertainment entertainment = new Entertainment();
+             //List<Educational> Ed = new List<Documentaries>();
 
-            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-            if (firstDirectory.Exists)
-            {
-                try
-                {
-                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
-                    "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+             if (firstDirectory.Exists)
+             {
+                 try
+                 {
+                     DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                     if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
+                     "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
-                    for (int i = 0; i < listDirectories.Length; i++)
-                    {
-                        string directroryName = listDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                     for (int i = 0; i < listDirectories.Length; i++)
+                     {
+                         string directroryName = listDirectories[i].FullName;
+                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
-                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;
+                         IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                         IEnumerable<FileSystemInfo> filteredFileList =
+                             from file in allFileList
+                             where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                             file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                             select file;
 
 
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        MainWindowViewModel viewModel = new MainWindowViewModel();
+                         StringNumberComparer comparer = new StringNumberComparer();
+                         MainWindowViewModel viewModel = new MainWindowViewModel();
 
-                        foreach (FileInfo item in filteredFileList)
-                        {
-                            if (filteredFileList != null)
-                            {
-                                entertainment.Name = listDirectories[i].Name;
-                                entertainment.Path = item.FullName;
-                                entertainment.Duration = DurationContent(pathToContent, item.ToString());
-                                entertainment.NumOfSeries = filteredFileList.Count();
-                                entertainment.Series += 1;
+                         foreach (FileInfo item in filteredFileList)
+                         {
+                             if (filteredFileList != null)
+                             {
+                                 entertainment.Name = listDirectories[i].Name;
+                                 entertainment.Path = item.FullName;
+                                 entertainment.Duration = DurationContent(pathToContent, item.ToString());
+                                 entertainment.NumOfSeries = filteredFileList.Count();
+                                 entertainment.Series += 1;
 
-                                //добавдяю сериал в базу
-                                db.Entertainments.Add(entertainment);
-                                db.SaveChanges();
-                                entertainment = new Entertainment();
+                                 //добавдяю сериал в базу
+                                 db.Entertainments.Add(entertainment);
+                                 db.SaveChanges();
+                                 entertainment = new Entertainment();
 
-                                viewModel.ValueProgressDownlaodingSeries += 1;
+                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
-                            }
-                        }
-                        CountOfEntertainmentTextBlock.Text = Convert.ToString(listDirectories.Length);
+                                 ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
+                             }
+                         }
+                         CountOfEntertainmentTextBlock.Text = Convert.ToString(listDirectories.Length);
 
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            await System.Threading.Tasks.Task.Yield();
-        }
+                     }
+                 }
+                 catch (Exception ex)
+                 {
+                     MessageBox.Show(ex.Message);
+                 }
+             }
+             await System.Threading.Tasks.Task.Yield();
+         }*/
 
         // добавление фильмов
         public void AddFilmAtDB(string pathToContent)
@@ -640,7 +669,7 @@ namespace Efir
                                 ProgressDownLoadingContentPrevent.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfPreventionTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfPreventionlTextBlock.Text = Convert.ToString(listDirectories.Length);
 
                     }
                 }
@@ -719,6 +748,67 @@ namespace Efir
             await System.Threading.Tasks.Task.Yield();
         }
 
+        // добавление телепередач
+        public async void AddTvShowAtDB(string pathToContent)
+        {
+            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+            TvShow tvShow = new TvShow();
+
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            if (firstDirectory.Exists)
+            {
+                try
+                {
+                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                    for (int i = 0; i < listDirectories.Length; i++)
+                    {
+                        string directroryName = listDirectories[i].FullName;
+                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                        IEnumerable<FileSystemInfo> filteredFileList =
+                            from file in allFileList
+                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                            select file;
+
+
+                        StringNumberComparer comparer = new StringNumberComparer();
+                        MainWindowViewModel viewModel = new MainWindowViewModel();
+                        foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
+                        {
+                            if (filteredFileList != null)
+                            {
+                                tvShow.Name = listDirectories[i].Name;
+                                tvShow.Path = item.FullName;
+                                tvShow.Duration = DurationContent(pathToContent, item.ToString());
+                                tvShow.NumOfSeries = filteredFileList.Count();
+                                tvShow.Series += 1;
+
+                                db.TvShows.Add(tvShow);
+                                db.SaveChanges();
+                                tvShow = new TvShow();
+
+                                viewModel.ValueProgressDownlaodingSeries += 1;
+
+                                ProgressDownLoadingContentTvShow.Value += viewModel.ValueProgressDownlaodingSeries;
+                            }
+                        }
+
+                        CountOfTvShowTextBlock.Text = Convert.ToString(listDirectories.Length);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            await System.Threading.Tasks.Task.Yield();
+        }
 
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
