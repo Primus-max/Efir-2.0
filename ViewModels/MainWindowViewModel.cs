@@ -34,6 +34,20 @@ namespace Efir.ViewModels
         }
         #endregion
 
+        #region текст боксы для путей
+
+
+        private string _FilePathToDocumentariesextBox;
+        /// <summary>
+        /// Хранение пути для текст бокса
+        /// </summary>
+        public string FilePathToDocumentariesextBox
+        {
+            get => _FilePathToDocumentariesextBox;
+            set => Set(ref _FilePathToDocumentariesextBox, value);
+        }
+        #endregion
+
         #endregion
 
 

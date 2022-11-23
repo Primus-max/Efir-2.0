@@ -30,6 +30,7 @@ using Efir.ViewModels;
 using System.Threading;
 using Efir.Data;
 using System.Data.Entity;
+using Efir.ViewModels.Base;
 
 namespace Efir
 {
@@ -39,6 +40,7 @@ namespace Efir
     public partial class MainWindow : Window, IAsyncDisposable
     {
         ApplicationContext db = new ApplicationContext();
+        MainWindowViewModel mainModel = new MainWindowViewModel();
 
         #region ПЕРМЕННЫЕ: блок медиа
         private string pathToFilms = "";
@@ -124,7 +126,7 @@ namespace Efir
                     pathToFilms = FilePathToFilmTextBox.Text;
                     // Film film = new Film();
                     AddFilmAtDB(pathToFilms);
-                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле                    
                 }
                 catch (Exception ex)
                 {
@@ -180,7 +182,7 @@ namespace Efir
             }
         }
 
-        private void OpenDocumentalDialog_Click(object sender, RoutedEventArgs e)
+        private void OpenDocumentariesDialog_Click(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
             commonOpenFileDialog.IsFolderPicker = true;
@@ -190,18 +192,51 @@ namespace Efir
             {
                 try
                 {
-                    FilePathToDocumentalTextBox.Text = commonOpenFileDialog.FileName;
-                    pathToDocumental = FilePathToDocumentalTextBox.Text;
+                    FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
+                    pathToDocumental = FilePathToDocumentariesTextBox.Text;
+
+                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
                 {
+                    // TODO обработать правильно ошибки, найти значения и передать по русски
                     MessageBox.Show($"Произошла ошибка: {ex.Message}");
-
-
                 }
-
             }
+        }
+        private void OpenEntertainmentDialog_Click(object sender, RoutedEventArgs e)
+        {
+            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+            commonOpenFileDialog.IsFolderPicker = true;
+            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+            commonOpenFileDialog.ShowPlacesList = true;
+
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
+                    pathToDocumental = FilePathToDocumentariesTextBox.Text;
+
+                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
+                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+                }
+                catch (Exception ex)
+                {
+                    // TODO обработать правильно ошибки, найти значения и передать по русски
+                    MessageBox.Show($"Произошла ошибка: {ex.Message}");
+                }
+            }
+        }
+
+        private void OpenPreventionDialog_Click(object sender, RoutedEventArgs e)
+        {
+
         }
         #endregion
 
@@ -216,7 +251,7 @@ namespace Efir
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Documentaries documentaries = new Documentaries();
-            List<Documentaries> Documentarieses = new List<Documentaries>();
+            DocumentariesCollection collection = new DocumentariesCollection();
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
@@ -227,6 +262,7 @@ namespace Efir
                     if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
                     "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
 
                     for (int i = 0; i < listDirectories.Length; i++)
                     {
@@ -255,8 +291,8 @@ namespace Efir
                                 documentaries.Series += 1;
 
                                 //добавдяю сериал в базу
-                                db.Documentarieses.Add(documentaries);
-                                db.SaveChanges();
+                                // db.Documentarieses.Add(documentaries);
+                                // db.SaveChanges();
                                 documentaries = new Documentaries();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
