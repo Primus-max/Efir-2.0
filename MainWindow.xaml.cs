@@ -325,7 +325,7 @@ namespace Efir
                                 ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfDocumentalTextBlock.Text = Convert.ToString(listDirectories.Length);
 
                     }
                 }
@@ -455,7 +455,7 @@ namespace Efir
                                 ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfEntertainmentTextBlock.Text = Convert.ToString(listDirectories.Length);
 
                     }
                 }
@@ -561,11 +561,10 @@ namespace Efir
                                 lection = new Lection();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
-
                                 ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfLectionTextBlock.Text = Convert.ToString(listDirectories.Length);
 
                     }
                 }
@@ -630,7 +629,7 @@ namespace Efir
                                 ProgressDownLoadingContentPrevent.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfPreventionTextBlock.Text = Convert.ToString(listDirectories.Length);
 
                     }
                 }
