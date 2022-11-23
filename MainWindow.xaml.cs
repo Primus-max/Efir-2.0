@@ -67,6 +67,7 @@ namespace Efir
             db.Educationals.Load();
             db.Entertainments.Load();
             db.Preventions.Load();
+            db.SeriesCollections.Load();
             // и устанавливаем данные в качестве контекста
             /* var asdfdfg = db.Films.Local.ToObservableCollection();
              foreach (var item in asdfdfg)
@@ -641,7 +642,7 @@ namespace Efir
             }
             await System.Threading.Tasks.Task.Yield();
         }
-         
+
 
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
