@@ -18,7 +18,7 @@
         MinHeight="470"
         Height="470"
         MinWidth="750"
-        Width="780"
+        Width="800"
         Loaded="MainWindow_Loaded" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -329,7 +329,7 @@
 
                                         <ProgressBar
                                             x:Name="ProgressDownLoadingContentEntertainment"
-                                            Value="{Binding ValueProgressDownlaodingSeries}"
+                                            Value="26"
                                             Width="120"
                                             Height="20"
                                             SmallChange="1"
@@ -373,7 +373,7 @@
 
                                         <ProgressBar
                                             x:Name="ProgressDownLoadingContentPrevent"
-                                            Value="{Binding ValueProgressDownlaodingSeries}"
+                                            Value="18"
                                             Width="120"
                                             Height="20"
                                             SmallChange="1"

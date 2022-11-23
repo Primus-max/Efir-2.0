@@ -46,7 +46,9 @@ namespace Efir
         private string pathToFilms = "";
         private string pathToSeries = "";
         private string pathToLection = "";
-        private string pathToDocumental = "";
+        private string pathToDocumentaries = "";
+        private string pathToEntertainment = "";
+        private string pathToPrevention = "";
 
         #endregion
 
@@ -69,8 +71,7 @@ namespace Efir
             db.Educationals.Load();
             db.Entertainments.Load();
             db.Preventions.Load();
-            db.SeriesCollections.Load();
-            db.DocumentariesCollections.Load();
+
             // и устанавливаем данные в качестве контекста
             /* var asdfdfg = db.Films.Local.ToObservableCollection();
              foreach (var item in asdfdfg)
@@ -172,6 +173,7 @@ namespace Efir
                 {
                     FilePathToLectionTextBox.Text = commonOpenFileDialog.FileName;
                     pathToLection = FilePathToLectionTextBox.Text;
+                    AddLectiontAtDB(pathToLection);
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
@@ -193,8 +195,8 @@ namespace Efir
                 try
                 {
                     FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
-                    pathToDocumental = FilePathToDocumentariesTextBox.Text;
-
+                    pathToDocumentaries = FilePathToDocumentariesTextBox.Text;
+                    AddDocumentariesAtDB(pathToDocumentaries);
                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
                     //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
                     //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
@@ -207,6 +209,7 @@ namespace Efir
                 }
             }
         }
+
         private void OpenEntertainmentDialog_Click(object sender, RoutedEventArgs e)
         {
             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
@@ -218,9 +221,9 @@ namespace Efir
             {
                 try
                 {
-                    FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
-                    pathToDocumental = FilePathToDocumentariesTextBox.Text;
-
+                    FilePathToEntertainmentTextBox.Text = commonOpenFileDialog.FileName;
+                    pathToEntertainment = FilePathToEntertainmentTextBox.Text;
+                    AddEntertainmentAtDB(pathToEntertainment);
                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
                     //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
                     //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
@@ -236,7 +239,29 @@ namespace Efir
 
         private void OpenPreventionDialog_Click(object sender, RoutedEventArgs e)
         {
+            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+            commonOpenFileDialog.IsFolderPicker = true;
+            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+            commonOpenFileDialog.ShowPlacesList = true;
 
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    FilePathToPreventionTextBox.Text = commonOpenFileDialog.FileName;
+                    pathToPrevention = FilePathToPreventionTextBox.Text;
+                    AddPreventionAtDB(pathToPrevention);
+                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
+                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+                }
+                catch (Exception ex)
+                {
+                    // TODO обработать правильно ошибки, найти значения и передать по русски
+                    MessageBox.Show($"Произошла ошибка: {ex.Message}");
+                }
+            }
         }
         #endregion
 
@@ -247,11 +272,11 @@ namespace Efir
 
         #region добавление и сохранение контента в базу
         // добавление документалок
-        public async void AddDocumentariestDB(string pathToContent)
+        public async void AddDocumentariesAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Documentaries documentaries = new Documentaries();
-            DocumentariesCollection collection = new DocumentariesCollection();
+
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
@@ -290,14 +315,14 @@ namespace Efir
                                 documentaries.NumOfSeries = filteredFileList.Count();
                                 documentaries.Series += 1;
 
-                                //добавдяю сериал в базу
-                                // db.Documentarieses.Add(documentaries);
-                                // db.SaveChanges();
+
+                                db.Documentarieses.Add(documentaries);
+                                db.SaveChanges();
                                 documentaries = new Documentaries();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                                ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -313,7 +338,7 @@ namespace Efir
         }
 
         // добавление образовательных
-        public async void AddEducationaltDB(string pathToContent)
+        public async void AddEducationalAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Educational educational = new Educational();
@@ -362,7 +387,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                                // ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -378,7 +403,7 @@ namespace Efir
         }
 
         // добавление развлекательных
-        public async void AddEntertainmenttDB(string pathToContent)
+        public async void AddEntertainmentAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Entertainment entertainment = new Entertainment();
@@ -427,7 +452,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                                ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -488,7 +513,7 @@ namespace Efir
         }
 
         // добавление лекций
-        public async void AddLectiontDB(string pathToContent)
+        public async void AddLectiontAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Lection lection = new Lection();
@@ -537,7 +562,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                                ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -553,7 +578,7 @@ namespace Efir
         }
 
         // добавление профилактических
-        public async void AddPreventiontDB(string pathToContent)
+        public async void AddPreventionAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Prevention prevention = new Prevention();
@@ -602,7 +627,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                                ProgressDownLoadingContentPrevent.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -622,7 +647,6 @@ namespace Efir
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Series series = new Series();
-            List<Series> Series = new List<Series>();
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
@@ -659,16 +683,21 @@ namespace Efir
                                 series.NumOfSeries = filteredFileList.Count();
                                 series.IsSeries += 1;
 
-                                //добавдяю сериал в базу
+                                //seriesCollection.Id = series.Id;
+                                //seriesCollection.Name = series.Name;
+                                //seriesCollection.Path = listDirectories[i].FullName;
+                                //seriesCollection.NumOfSeries = series.NumOfSeries;
+
                                 db.Serieses.Add(series);
                                 db.SaveChanges();
                                 series = new Series();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
+                                ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
+
                         CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
                     }
                 }
