@@ -70,9 +70,9 @@ namespace Efir
             db.Database.EnsureCreated();
             db.Serieses.Load();
             db.Films.Load();
-            db.Documentarieses.Load();
+            //db.Documentarieses.Load();
             db.Educationals.Load();
-            db.Entertainments.Load();
+            //db.Entertainments.Load();
             db.Preventions.Load();
             db.TvShows.Load();
 
@@ -150,7 +150,7 @@ namespace Efir
                 {
                     FilePathToSeriesTextBox.Text = commonOpenFileDialog.FileName;
                     pathToSeries = FilePathToSeriesTextBox.Text;
-                    AddSreiestDB(pathToSeries);
+                    AddSreiesAtDB(pathToSeries);
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
@@ -506,6 +506,7 @@ namespace Efir
         public void AddFilmAtDB(string pathToContent)
         {
             DirectoryInfo directory = new DirectoryInfo(pathToContent);
+            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
             MainWindowViewModel viewModel = new MainWindowViewModel();
@@ -514,7 +515,7 @@ namespace Efir
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (directory.Exists)
             {
-                try
+                /*try
                 {
                     IEnumerable<FileInfo> allFileList = directory.GetFiles("*.*", SearchOption.AllDirectories);
                     IEnumerable<FileSystemInfo> filteredFileList =
@@ -523,19 +524,37 @@ namespace Efir
                         file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
                         select file;
 
+                    string lastNameFIlm = "";
+                    bool filmeFinded = false;
                     // собираю класс Film
                     foreach (FileInfo item in filteredFileList)
                     {
+
                         countPartFilm += 1;
+
+                        //проверяю текущий фильм с последним чтобы понять один и тот ли жто фильм, если да то записываю им части
+                        //TODO отрефакторить функцию, она крайне тяжелая
+
+                        *//*   var chunkedFilmName = item.Name.Split(" ");
+                           Film? firstFilm = new Film();
+
+                           if (lastNameFIlm.StartsWith((chunkedFilmName[0]).ToString()) && !filmeFinded)
+                           {
+                               firstFilm = Films.FindLast(f => f.Name == lastNameFIlm);
+                               firstFilm.Series = 1;
+                               filmeFinded = true;
+                           }*//*
 
                         film.Name = item.Name;
                         film.Path = item.FullName;
                         film.Duration = DurationContent(pathToContent, item.FullName);
-                        film.NumOfSeries = 1; //TODO посчитать сколько серий в сезоне или сколько частей в фильме, по дефолту - 1
-                        film.Series = countPartFilm;
+                        film.NumOfSeries = countPartFilm > 0 ? countPartFilm : 1;
+                        //film.Series = firstFilm.Series + 1;
 
-                        // db.Films.Add(film);
-                        // db.SaveChanges();
+                        lastNameFIlm = film.Name;
+
+                        db.Films.Add(film);
+                        db.SaveChanges();
                         Films.Add(film);
                         film = new Film();
 
@@ -547,9 +566,82 @@ namespace Efir
                 {
 
                     MessageBox.Show(ex.Message);
+                }*/
+                try
+                {
+                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                    for (int i = 0; i < listDirectories.Length; i++)
+                    {
+                        int countFilm = 0;
+                        string directroryName = listDirectories[i].FullName;
+                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+                        var contentListMedia = GetedFileFromDirectory(secondDirectory);
+
+                        /* IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                         IEnumerable<FileSystemInfo> filteredFileList =
+                             from file in allFileList
+                             where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                             file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                             select file;*/
+
+
+                        StringNumberComparer comparer = new StringNumberComparer();
+                        //MainWindowViewModel viewModel = new MainWindowViewModel();
+                        foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                        {
+                            countFilm += 1;
+
+                            if (contentListMedia != null)
+                            {
+                                film.Name = listDirectories[i].Name;
+                                film.Path = item.FullName;
+                                film.Duration = DurationContent(pathToContent, item.ToString());
+                                film.NumOfSeries = contentListMedia.Count();
+                                film.Series += countFilm;
+
+                                //seriesCollection.Id = series.Id;
+                                //seriesCollection.Name = series.Name;
+                                //seriesCollection.Path = listDirectories[i].FullName;
+                                //seriesCollection.NumOfSeries = series.NumOfSeries;
+
+                                db.Films.Add(film);
+                                db.SaveChanges();
+                                film = new Film();
+
+                                viewModel.ValueProgressDownlaodingSeries += 1;
+
+                                ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                            }
+                        }
+
+                        CountOfFilmTextBlock.Text = Convert.ToString(listDirectories.Length);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
+
+        // получаю файлы из директорий
+        private IEnumerable<FileSystemInfo> GetedFileFromDirectory(DirectoryInfo dir)
+        {
+            IEnumerable<FileInfo> allFileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
+            IEnumerable<FileSystemInfo> filteredFileList =
+                from file in allFileList
+                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                select file;
+
+            return filteredFileList;
+        }
+
 
         // добавление лекций
         public async void AddLectiontAtDB(string pathToContent)
@@ -682,7 +774,7 @@ namespace Efir
         }
 
         // добавление сериалов
-        public async void AddSreiestDB(string pathToContent)
+        public async void AddSreiesAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Series series = new Series();
@@ -733,7 +825,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
+                                ProgressDownLoadingContentSeries.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
 
