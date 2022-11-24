@@ -39,6 +39,7 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках        
         //TODO сделать в настройках программы возможность добавления флага для определения жанра, этот флаг будет отображаться в имении папки
         //TODO запуск программы по середине окна
         //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
@@ -67,8 +68,6 @@ namespace Efir
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
-            CountOfFilmTextBlock.Text = Convert.ToString(db.Films.Count());
-            FilePathToFilmTextBox.Text = db.Films.ToList()[0].Path;
 
 
             // гарантируем, что база данных создана
@@ -81,7 +80,10 @@ namespace Efir
             db.Preventions.Load();
             db.TvShows.Load();
 
-            // и устанавливаем данные в качестве контекста
+
+            CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
+            //FilePathToFilmTextBox.Text = db?.Films.ToList()?[0].Path == null ? "" : db?.Films.ToList()[0].Path;
+
 
             // загружаем данные из БД
             // db.Serieses.Load();
@@ -510,20 +512,13 @@ namespace Efir
         // добавление фильмов
         public void AddFilmAtDB(string pathToContent)
         {
-            //DirectoryInfo directory = new DirectoryInfo(pathToContent);
+
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
             MainWindowViewModel viewModel = new MainWindowViewModel();
             IEnumerable<FileInfo> contentListMedia;
 
-
-            var asdfd = firstDirectory.Parent;
-            var asdsdfsfd = firstDirectory.Root;
-            var adtr = firstDirectory.LinkTarget;
-            var dkfj = firstDirectory.EnumerateFiles();
-            var fgfg = firstDirectory.Exists;
-            var fdfgd = firstDirectory.Extension;
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
@@ -612,62 +607,150 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Lection lection = new Lection();
             List<Lection> Lections = new List<Lection>();
+            MainWindowViewModel viewModel = new MainWindowViewModel();
+            IEnumerable<FileInfo> contentListMedia;
+
+            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+            //if (firstDirectory.Exists)
+            //{
+            //    try
+            //    {
+            //        DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+            //        if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
+            //        "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+            //        "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+            //        for (int i = 0; i < listDirectories.Length; i++)
+            //        {
+            //            string directroryName = listDirectories[i].FullName;
+            //            DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+
+            //            IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+            //            IEnumerable<FileSystemInfo> filteredFileList =
+            //                from file in allFileList
+            //                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+            //                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+            //                select file;
+
+
+            //            StringNumberComparer comparer = new StringNumberComparer();
+            //            MainWindowViewModel viewModel = new MainWindowViewModel();
+
+            //            foreach (FileInfo item in filteredFileList)
+            //            {
+            //                if (filteredFileList != null)
+            //                {
+            //                    lection.Name = listDirectories[i].Name;
+            //                    lection.Path = item.FullName;
+            //                    lection.Duration = DurationContent(pathToContent, item.ToString());
+            //                    lection.NumOfSeries = filteredFileList.Count();
+            //                    lection.Series += 1;
+
+            //                    //добавдяю сериал в базу
+            //                    db.Lections.Add(lection);
+            //                    db.SaveChanges();
+            //                    lection = new Lection();
+
+            //                    viewModel.ValueProgressDownlaodingSeries += 1;
+            //                    ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
+            //                }
+            //            }
+            //            CountOfLectionTextBlock.Text = Convert.ToString(listDirectories.Length);
+
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        MessageBox.Show(ex.Message);
+            //    }
+            //}
+            //await System.Threading.Tasks.Task.Yield();
+
+
+
+
+
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
+                int countLection = 0;
                 try
                 {
-                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
-                    "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+                    bool searchOpt = true;
+                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
+
+                    StringNumberComparer comparer = new StringNumberComparer();
+                    //MainWindowViewModel viewModel = new MainWindowViewModel();
+                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                    {
+                        countLection += 1;
+
+                        if (contentListMedia != null)
+                        {
+                            lection.Name = item.Name;
+                            lection.Path = item.FullName;
+                            lection.Duration = DurationContent(pathToContent, item.ToString());
+                            lection.NumOfSeries = contentListMedia.Count();
+                            lection.Series += countLection;
+
+                            db.Lections.Add(lection);
+                            db.SaveChanges();
+                            lection = new Lection();
+                            searchOpt = false;
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+                            //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                        }
+                    }
+
+                    //TODO пересмотреть данный диалог
+                    DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
+                    if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
-                    for (int i = 0; i < listDirectories.Length; i++)
+                    for (int i = 0; i < listInnerDirectories.Length; i++)
                     {
-                        string directroryName = listDirectories[i].FullName;
+                        countLection = 0;
+                        string directroryName = listInnerDirectories[i].FullName;
                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                        searchOpt = true;
+                        contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
 
-                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;
-
-
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        MainWindowViewModel viewModel = new MainWindowViewModel();
-
-                        foreach (FileInfo item in filteredFileList)
+                        foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                         {
-                            if (filteredFileList != null)
+                            countLection += 1;
+
+                            if (contentListMedia != null)
                             {
-                                lection.Name = listDirectories[i].Name;
+
+                                lection.Name = item.Name;
+                                lection.Description = listInnerDirectories[i].Name;
                                 lection.Path = item.FullName;
                                 lection.Duration = DurationContent(pathToContent, item.ToString());
-                                lection.NumOfSeries = filteredFileList.Count();
-                                lection.Series += 1;
+                                lection.NumOfSeries = contentListMedia.Count();
+                                lection.Series += countLection;
 
-                                //добавдяю сериал в базу
                                 db.Lections.Add(lection);
                                 db.SaveChanges();
                                 lection = new Lection();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
+
                                 ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfLectionTextBlock.Text = Convert.ToString(listDirectories.Length);
 
+                        CountOfLectionTextBlock.Text = Convert.ToString(db.Lections.Count());
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
+                await System.Threading.Tasks.Task.Yield();
             }
-            await System.Threading.Tasks.Task.Yield();
         }
 
         // TODO для профилактических отображать колличество контента а не папок
