@@ -45,7 +45,13 @@ namespace Efir
         //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
         //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет 
         ApplicationContext db = new ApplicationContext();
-        // MainWindowViewModel mainModel = new MainWindowViewModel();
+
+
+        #region ПЕРЕМЕННЫЕ: блок эфир
+
+        #endregion
+
+
 
         #region ПЕРМЕННЫЕ: блок медиа
         private string pathToFilms = "";
@@ -55,9 +61,9 @@ namespace Efir
         private string pathToEntertainment = "";
         private string pathToPrevention = "";
 
+        string CountFilm = "";
         #endregion
 
-        string CountFilm = "";
 
 
         public MainWindow()
@@ -111,6 +117,11 @@ namespace Efir
         }*/
         #endregion
 
+        #region БЛОК ЭФИР
+
+
+
+        #endregion
 
         #region БЛОК МЕДИА
 
@@ -529,8 +540,6 @@ namespace Efir
                     //MainWindowViewModel viewModel = new MainWindowViewModel();
                     foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                     {
-                        countFilm += 1;
-
                         if (contentListMedia != null)
                         {
                             film.Name = item.Name;
@@ -768,7 +777,7 @@ namespace Efir
                             }
                         }
 
-                        CountOfLectionTextBlock.Text = Convert.ToString(db.Lections.Count());
+                        CountOfPreventionlTextBlock.Text = Convert.ToString(db.Preventions.Count());
                     }
                 }
                 catch (Exception ex)
@@ -1051,6 +1060,9 @@ namespace Efir
             throw new NotImplementedException();
         }
 
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
     }
 }

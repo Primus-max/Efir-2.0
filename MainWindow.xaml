@@ -57,8 +57,117 @@
                         <TextBlock
                             Margin="0,0,0,8"
                             Text="Сделай макет программы телепередач на неделю" />
+
+
+                        <TabControl
+                            Width="Auto"
+                            materialDesign:ColorZoneAssist.Mode="Custom"
+                            materialDesign:ColorZoneAssist.Foreground="Gold" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch">
+                            <TabItem Width="100"
+                                     Padding="0">
+                                <TabItem.Header>
+                                    понедельник
+                                </TabItem.Header>
+                                <StackPanel Height="300">
+                                    <ListView>
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn>
+                                                    <GridViewColumnHeader>
+                                                        Время
+                                                    </GridViewColumnHeader>
+                                                </GridViewColumn>
+
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem
+                                Width="90"
+                                Padding="0"
+                                Header="вторник">
+                                <StackPanel >
+                                    <ListView
+                                        ItemsSource="{Binding Items1}" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False" Background="#FFFDFDFD">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn
+                                                    DisplayMemberBinding="{Binding Code}"
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" />
+
+                                                <GridViewColumn
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Name}"
+                                                    Header="Название" />
+                                                <GridViewColumn
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Описание" />
+                                                <GridViewColumn
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
+
+                            </TabItem>
+                            <TabItem Width="70"
+                                     Padding="0"
+                                     Header="среда" MinWidth="70">
+                                <TextBlock
+                                    Margin="8"
+                                    Text="Custom Tab 2" />
+
+                            </TabItem>
+                            <TabItem
+                                Header="четверг">
+                                <TextBlock
+                                    Margin="8"
+                                    Text="Custom Tab 2" />
+
+                            </TabItem>
+                            <TabItem
+                                Header="пятница">
+                                <TextBlock
+                                    Margin="8"
+                                    Text="Custom Tab 2" />
+
+                            </TabItem>
+                            <TabItem
+                                Header="суббота">
+                                <TextBlock
+                                    Margin="8"
+                                    Text="Custom Tab 2" />
+
+                            </TabItem>
+                            <TabItem
+                                Header="воскресение">
+                                <TextBlock
+                                    Margin="8"
+                                    Text="Custom Tab 2" />
+
+                            </TabItem>
+                        </TabControl>
                         <Button Content="Создать Эфир" Click="GenerateEfir_Click"/>
                     </StackPanel>
+
+
+
                 </TabItem>
                 <TabItem
                     Width="100">
