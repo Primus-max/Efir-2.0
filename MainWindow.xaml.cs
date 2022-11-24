@@ -281,7 +281,7 @@ namespace Efir
                 {
                     FilePathToTvShowTextBox.Text = commonOpenFileDialog.FileName;
                     pathToPrevention = FilePathToTvShowTextBox.Text;
-
+                    AddTvShowAtDB(pathToPrevention);
                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
                     //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
                     //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
@@ -854,6 +854,7 @@ namespace Efir
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
+                int countTvShow = 0;
                 try
                 {
                     DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
@@ -863,6 +864,7 @@ namespace Efir
 
                     for (int i = 0; i < listDirectories.Length; i++)
                     {
+                        countTvShow = 0;
                         string directroryName = listDirectories[i].FullName;
                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
@@ -876,15 +878,17 @@ namespace Efir
 
                         StringNumberComparer comparer = new StringNumberComparer();
                         MainWindowViewModel viewModel = new MainWindowViewModel();
+
                         foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
                         {
+                            countTvShow += 1;
                             if (filteredFileList != null)
                             {
                                 tvShow.Name = listDirectories[i].Name;
                                 tvShow.Path = item.FullName;
                                 tvShow.Duration = DurationContent(pathToContent, item.ToString());
                                 tvShow.NumOfSeries = filteredFileList.Count();
-                                tvShow.Series += 1;
+                                tvShow.Series = countTvShow;
 
                                 db.TvShows.Add(tvShow);
                                 db.SaveChanges();
@@ -896,7 +900,7 @@ namespace Efir
                             }
                         }
 
-                        CountOfTvShowTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfTvShowTextBlock.Text = Convert.ToString(db.Preventions.Count());
                     }
                 }
                 catch (Exception ex)
