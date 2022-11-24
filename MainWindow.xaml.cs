@@ -66,6 +66,11 @@ namespace Efir
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
+            CountOfFilmTextBlock.Text = Convert.ToString(db.Films.Count());
+            FilePathToFilmTextBox.Text = db.Films.ToList()[0].Path;
+
+
             // гарантируем, что база данных создана
             db.Database.EnsureCreated();
             db.Serieses.Load();
@@ -505,109 +510,78 @@ namespace Efir
         // добавление фильмов
         public void AddFilmAtDB(string pathToContent)
         {
-            DirectoryInfo directory = new DirectoryInfo(pathToContent);
+            //DirectoryInfo directory = new DirectoryInfo(pathToContent);
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
             MainWindowViewModel viewModel = new MainWindowViewModel();
-            int countPartFilm = 0;
+            IEnumerable<FileInfo> contentListMedia;
 
+
+            var asdfd = firstDirectory.Parent;
+            var asdsdfsfd = firstDirectory.Root;
+            var adtr = firstDirectory.LinkTarget;
+            var dkfj = firstDirectory.EnumerateFiles();
+            var fgfg = firstDirectory.Exists;
+            var fdfgd = firstDirectory.Extension;
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-            if (directory.Exists)
+            if (firstDirectory.Exists)
             {
-                /*try
-                {
-                    IEnumerable<FileInfo> allFileList = directory.GetFiles("*.*", SearchOption.AllDirectories);
-                    IEnumerable<FileSystemInfo> filteredFileList =
-                        from file in allFileList
-                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                        select file;
-
-                    string lastNameFIlm = "";
-                    bool filmeFinded = false;
-                    // собираю класс Film
-                    foreach (FileInfo item in filteredFileList)
-                    {
-
-                        countPartFilm += 1;
-
-                        //проверяю текущий фильм с последним чтобы понять один и тот ли жто фильм, если да то записываю им части
-                        //TODO отрефакторить функцию, она крайне тяжелая
-
-                        *//*   var chunkedFilmName = item.Name.Split(" ");
-                           Film? firstFilm = new Film();
-
-                           if (lastNameFIlm.StartsWith((chunkedFilmName[0]).ToString()) && !filmeFinded)
-                           {
-                               firstFilm = Films.FindLast(f => f.Name == lastNameFIlm);
-                               firstFilm.Series = 1;
-                               filmeFinded = true;
-                           }*//*
-
-                        film.Name = item.Name;
-                        film.Path = item.FullName;
-                        film.Duration = DurationContent(pathToContent, item.FullName);
-                        film.NumOfSeries = countPartFilm > 0 ? countPartFilm : 1;
-                        //film.Series = firstFilm.Series + 1;
-
-                        lastNameFIlm = film.Name;
-
-                        db.Films.Add(film);
-                        db.SaveChanges();
-                        Films.Add(film);
-                        film = new Film();
-
-                    }
-                    //TODO сделать правильное отображение колличества фильмов если он есть в базе
-                    CountOfFilmTextBlock.Text = Convert.ToString(Films.Count);
-                }
-                catch (Exception ex)
-                {
-
-                    MessageBox.Show(ex.Message);
-                }*/
+                int countFilm = 0;
                 try
                 {
-                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                    bool searchOpt = true;
+                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
+
+                    StringNumberComparer comparer = new StringNumberComparer();
+                    //MainWindowViewModel viewModel = new MainWindowViewModel();
+                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                    {
+                        countFilm += 1;
+
+                        if (contentListMedia != null)
+                        {
+                            film.Name = item.Name;
+                            film.Path = item.FullName;
+                            film.Duration = DurationContent(pathToContent, item.ToString());
+                            film.NumOfSeries = contentListMedia.Count();
+                            film.Series += countFilm;
+
+                            db.Films.Add(film);
+                            db.SaveChanges();
+                            film = new Film();
+                            searchOpt = false;
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+
+                            // ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                        }
+                    }
+
+                    DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
+                    if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
                     "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
-                    for (int i = 0; i < listDirectories.Length; i++)
+                    for (int i = 0; i < listInnerDirectories.Length; i++)
                     {
-                        int countFilm = 0;
-                        string directroryName = listDirectories[i].FullName;
+                        countFilm = 0;
+                        string directroryName = listInnerDirectories[i].FullName;
                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                        searchOpt = true;
+                        contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
 
-                        var contentListMedia = GetedFileFromDirectory(secondDirectory);
-
-                        /* IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                         IEnumerable<FileSystemInfo> filteredFileList =
-                             from file in allFileList
-                             where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                             file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                             select file;*/
-
-
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        //MainWindowViewModel viewModel = new MainWindowViewModel();
                         foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                         {
                             countFilm += 1;
 
                             if (contentListMedia != null)
                             {
-                                film.Name = listDirectories[i].Name;
+                                film.Name = listInnerDirectories[i].Name;
                                 film.Path = item.FullName;
                                 film.Duration = DurationContent(pathToContent, item.ToString());
                                 film.NumOfSeries = contentListMedia.Count();
                                 film.Series += countFilm;
-
-                                //seriesCollection.Id = series.Id;
-                                //seriesCollection.Name = series.Name;
-                                //seriesCollection.Path = listDirectories[i].FullName;
-                                //seriesCollection.NumOfSeries = series.NumOfSeries;
 
                                 db.Films.Add(film);
                                 db.SaveChanges();
@@ -619,7 +593,7 @@ namespace Efir
                             }
                         }
 
-                        CountOfFilmTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        CountOfFilmTextBlock.Text = Convert.ToString(db.Films.Count());
                     }
                 }
                 catch (Exception ex)
@@ -629,18 +603,7 @@ namespace Efir
             }
         }
 
-        // получаю файлы из директорий
-        private IEnumerable<FileSystemInfo> GetedFileFromDirectory(DirectoryInfo dir)
-        {
-            IEnumerable<FileInfo> allFileList = dir.GetFiles("*.*", SearchOption.AllDirectories);
-            IEnumerable<FileSystemInfo> filteredFileList =
-                from file in allFileList
-                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                select file;
 
-            return filteredFileList;
-        }
 
 
         // добавление лекций
@@ -959,6 +922,18 @@ namespace Efir
             }
         }
 
+        // получаю файлы из директорий
+        private IEnumerable<FileSystemInfo> GetedFileFromDirectory(DirectoryInfo dir, bool searchOpt)
+        {
+            IEnumerable<FileInfo> allFileList = dir.GetFiles("*.*", searchOpt ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories);
+            IEnumerable<FileSystemInfo> filteredFileList =
+                from file in allFileList
+                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                select file;
+
+            return filteredFileList;
+        }
 
         // получаю длительность файла
         //TODO отрефакторить: сократить время работы
