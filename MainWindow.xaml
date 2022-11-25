@@ -8,6 +8,9 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:controlzex="urn:controlzex" x:Class="Efir.MainWindow"
     mc:Ignorable="d"
+
+    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+
     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
     TextElement.FontWeight="Regular"
     TextElement.FontSize="13"
@@ -86,6 +89,9 @@
                                 Header="вторник">
                                 <StackPanel >
                                     <ListView
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
                                         Height="300"
                                         ItemsSource="{Binding testList}" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False" Background="#FFFDFDFD" AllowDrop="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                         <ListView.View>

@@ -62,6 +62,14 @@
           }
         }
       },
+      "gong-wpf-dragdrop/3.2.0": {
+        "runtime": {
+          "lib/net6.0-windows7.0/GongSolutions.WPF.DragDrop.dll": {
+            "assemblyVersion": "3.0.0.0",
+            "fileVersion": "3.2.0.23"
+          }
+        }
+      },
       "MahApps.Metro/2.0.0": {
         "dependencies": {
           "ControlzEx": "4.3.0"
@@ -1311,6 +1319,13 @@
       "sha512": "sha512-yj1+/4tci7Panu3jKDHYizxwVm0Jvm7b7m057b5h4u8NUHGCR8WIWirBTw+8EptRffwftIWPBeIRGNKD1ewEMQ==",
       "path": "entityframework/6.4.4",
       "hashPath": "entityframework.6.4.4.nupkg.sha512"
+    },
+    "gong-wpf-dragdrop/3.2.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Sg3h2GZ2qOG/boscpRd5+pVe1VtZ72VTHCE25ajpXu5FNU40sskBvmuz47Q0/7bmtITzV3K+6OR5R0s0lglvNw==",
+      "path": "gong-wpf-dragdrop/3.2.0",
+      "hashPath": "gong-wpf-dragdrop.3.2.0.nupkg.sha512"
     },
     "MahApps.Metro/2.0.0": {
       "type": "package",

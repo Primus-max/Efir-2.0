@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "pbDNZ9xsQ2xXk5I+jFvzLhhUCqlREPSm9gZYikV3WNGM8JCFpqLk6SYl+f/FcWN1S51sZaHa3KpPjr57CyLGdQ==",
+  "dgSpecHash": "xjbF9vc8KY1ZtFd66IdymUR8uvTkBOX5rZ3SOYIW71KrK26Fec3uWOSYTlmTBEjnFLf9YKgi/fgJUUzYJYpOHw==",
   "success": true,
   "projectFilePath": "Z:\\Programming\\ProjectC#\\Efir\\Efir.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\SKTV-1\\.nuget\\packages\\decisiondiagrams\\1.2.0\\decisiondiagrams.1.2.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\devexpress.data\\22.1.6\\devexpress.data.22.1.6.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
+    "C:\\Users\\SKTV-1\\.nuget\\packages\\gong-wpf-dragdrop\\3.2.0\\gong-wpf-dragdrop.3.2.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\mahapps.metro\\2.0.0\\mahapps.metro.2.0.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\materialdesigncolors\\2.0.9\\materialdesigncolors.2.0.9.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\materialdesignthemes\\4.6.1\\materialdesignthemes.4.6.1.nupkg.sha512",

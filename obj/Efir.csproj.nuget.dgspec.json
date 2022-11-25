@@ -90,6 +90,10 @@
               "target": "Package",
               "version": "[1.11.0, )"
             },
+            "gong-wpf-dragdrop": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
             "xFFmpeg.NET": {
               "target": "Package",
               "version": "[7.1.3, )"

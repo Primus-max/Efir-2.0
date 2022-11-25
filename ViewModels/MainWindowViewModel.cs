@@ -1,6 +1,7 @@
 ﻿using Efir.ViewModels.Base;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,8 +35,8 @@ namespace Efir.ViewModels
         }
         #endregion
 
-        private List<string> _testList = new List<string>(10);
-        public List<string> testList
+        private ObservableCollection<string> _testList = new ObservableCollection<string>();
+        public ObservableCollection<string> testList
         {
             get => _testList;
             set => Set(ref _testList, value);
