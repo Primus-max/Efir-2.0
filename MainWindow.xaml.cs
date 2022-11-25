@@ -49,6 +49,9 @@ namespace Efir
 
         #region ПЕРЕМЕННЫЕ: блок эфир
 
+
+
+
         #endregion
 
 
@@ -68,6 +71,7 @@ namespace Efir
 
         public MainWindow()
         {
+
             InitializeComponent();
             Loaded += MainWindow_Loaded;
         }

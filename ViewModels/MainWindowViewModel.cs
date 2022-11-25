@@ -34,16 +34,24 @@ namespace Efir.ViewModels
         }
         #endregion
 
+        private List<string> _testList = new List<string>(10);
+        public List<string> testList
+        {
+            get => _testList;
+            set => Set(ref _testList, value);
+        }
+
+
         /* private int _CountPartFilm = 1;
-         /// <summary>
-         /// Индикатор загрузки для сериалов
-         /// </summary>
-         public int CountPartFilm
-         {
-             get => _CountPartFilm;
-             set => Set(ref _CountPartFilm, value);
-         }
- */
+        /// <summary>
+            /// Индикатор загрузки для сериалов
+        /// </summary>
+        public int CountPartFilm
+        {
+get => _CountPartFilm;
+set => Set(ref _CountPartFilm, value);
+                }
+                */
 
 
         #region текст боксы для путей
@@ -63,5 +71,13 @@ namespace Efir.ViewModels
         #endregion
 
 
+        public MainWindowViewModel()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                testList.Add("ТЕст" + i.ToString());
+            }
+
+        }
     }
 }
