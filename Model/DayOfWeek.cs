@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Efir.Model
 {
-    internal class DayOfWeek
+    public class DayOfWeek
     {
         public int Id { get; set; }
         public TimeSpan TimeToEfir { get; set; }

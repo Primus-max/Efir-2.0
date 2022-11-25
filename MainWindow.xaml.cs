@@ -31,6 +31,8 @@ using System.Threading;
 using Efir.Data;
 using System.Data.Entity;
 using Efir.ViewModels.Base;
+using System.Collections.ObjectModel;
+using DayOfWeek = Efir.Model.DayOfWeek;
 
 namespace Efir
 {
@@ -49,7 +51,42 @@ namespace Efir
 
         #region ПЕРЕМЕННЫЕ: блок эфир
 
+        #region Получаю лист программы от пользователя
 
+        //public ObservableCollection<GridView> ItemEfirDay = new ObservableCollection<GridView>();
+        public ObservableCollection<DayOfWeek> EfirOfDayList = new ObservableCollection<DayOfWeek>();
+
+        public void GetCollectionEfirDay()
+        {
+            DayOfWeek dayOfWeek = new DayOfWeek();
+            var sdfg = TimeEfirOfDay.GetLocalValueEnumerator();
+
+
+
+            //var dfgdfh = Testing.FindResource();
+
+            for (int i = 0; i < 10; i++)
+            {
+                dayOfWeek.TimeToEfir = new TimeSpan();
+                dayOfWeek.Description = "Описание события";
+                dayOfWeek.Event = "Лекция";
+
+                EfirOfDayList.Add(dayOfWeek);
+                dayOfWeek = new DayOfWeek();
+
+                Testing.ItemsSource = EfirOfDayList;
+            }
+
+
+        }
+        public void SetCollectionEfirOnDay()
+        {
+
+
+        }
+
+
+        #endregion
 
 
         #endregion
@@ -74,6 +111,7 @@ namespace Efir
 
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            GetCollectionEfirDay();
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {

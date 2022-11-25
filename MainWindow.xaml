@@ -89,39 +89,42 @@
                                 Header="вторник">
                                 <StackPanel >
                                     <ListView
+                                        x:Name="Testing"
                                         dd:DragDrop.IsDragSource="True"
                                         dd:DragDrop.IsDropTarget="True"
                                         dd:DragDrop.UseDefaultDragAdorner="True"
                                         Height="300"
-                                        ItemsSource="{Binding testList}" d:ItemsSource="{d:SampleData ItemCount=5}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False" Background="#FFFDFDFD" AllowDrop="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False" Background="#FFFDFDFD" AllowDrop="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                         <ListView.View>
-                                            <GridView>
+                                            <GridView >
                                                 <GridViewColumn
-
+                                                    x:Name="TimeEfirOfDay"
                                                     Header="Время"
                                                     materialDesign:BottomDashedLineAdorner.Thickness="1" >
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
                                                             <materialDesign:TimePicker
+
                                                                 SelectedTimeFormat="Short"
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                />
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
-
-
                                                 <GridViewColumn
-                                                    x:Name="TestList"
+                                                    x:Name="NameEfirOfDay"
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Str}"
+                                                    DisplayMemberBinding="{Binding Event}"
                                                     Header="Название" />
                                                 <GridViewColumn
+                                                    x:Name="DescriptionEfirOfDay"
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Описание" />
                                                 <GridViewColumn
+                                                    x:Name="OptionEfirOfDay"
                                                     Header="Опции">
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
