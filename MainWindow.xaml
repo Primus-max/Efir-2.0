@@ -96,7 +96,7 @@
                                         Height="300"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" UseLayoutRounding="False" Background="#FFFDFDFD" AllowDrop="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                                         <ListView.View>
-                                            <GridView >
+                                            <GridView x:Name="GridOfDay">
                                                 <GridViewColumn
                                                     x:Name="TimeEfirOfDay"
                                                     Header="Время"

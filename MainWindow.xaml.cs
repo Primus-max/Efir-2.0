@@ -59,29 +59,50 @@ namespace Efir
         public void GetCollectionEfirDay()
         {
             DayOfWeek dayOfWeek = new DayOfWeek();
-            var sdfg = TimeEfirOfDay.GetLocalValueEnumerator();
 
 
+            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "Жить здорово", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 1 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "Техника пожарной безопасности. Начальник ПЧ", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 2 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "Уроки русского языка", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 3 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "Тихая река 2 серия", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 3 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "В бой идут одни старики", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 4 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "Профилактика гриппа", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 5 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "Жить здорово", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 6 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "Техника пожарной безопасности. Начальник ПЧ", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 7 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "Уроки русского языка", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 8 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "Тихая река 2 серия", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 9 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "В бой идут одни старики", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 10 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "Профилактика гриппа", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 11 });
 
-            //var dfgdfh = Testing.FindResource();
+            Testing.ItemsSource = EfirOfDayList;
 
-            for (int i = 0; i < 10; i++)
-            {
-                dayOfWeek.TimeToEfir = new TimeSpan();
-                dayOfWeek.Description = "Описание события";
-                dayOfWeek.Event = "Лекция";
+            /*     for (int i = 0; i < 10; i++)
+                 {
+                     dayOfWeek.TimeToEfir = new TimeSpan();
+                     dayOfWeek.Description = "Описание события";
+                     dayOfWeek.Event = "Лекция";
 
-                EfirOfDayList.Add(dayOfWeek);
-                dayOfWeek = new DayOfWeek();
+                     EfirOfDayList.Add(dayOfWeek);
+                     dayOfWeek = new DayOfWeek();
 
-                Testing.ItemsSource = EfirOfDayList;
-            }
+                     Testing.ItemsSource = EfirOfDayList;
+                 }*/
+
+            var sdfg = EfirOfDayList.ToList();
+
+            // SetCollectionEfirOnDay();
+            //List<GridViewColumn> items = (List<GridViewColumn>)Testing.ItemsSource;
 
 
         }
         public void SetCollectionEfirOnDay()
         {
+            for (int i = 0; i < GridOfDay.Columns.Count; i++)
+            {
+                var adsf = GridOfDay.Columns[i];
 
+                var sdfsdf = adsf.GetLocalValueEnumerator();
+            }
 
         }
 
