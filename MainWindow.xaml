@@ -70,72 +70,72 @@
                                      Padding="0"
                                      Header="Понедельник">
 
-                                <!--<StackPanel Height="300">
-                                <ListView
+                                <StackPanel Height="300">
+                                    <ListView
 
-                                Height="300"
+                                        Height="300"
 
-                                dd:DragDrop.IsDragSource="True"
-                                dd:DragDrop.IsDropTarget="True"
-                                dd:DragDrop.UseDefaultDragAdorner="True"
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
 
-                                IsSynchronizedWithCurrentItem="True"
-                                HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
-                                HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Center"
-                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                ScrollViewer.CanContentScroll="True"
-                                AllowDrop="True"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
-                                <ListView.View>
-                                <GridView >
-                                <GridViewColumn
-                                Header="Время"
-                                materialDesign:BottomDashedLineAdorner.Thickness="1" >
+                                        IsSynchronizedWithCurrentItem="True"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.CanContentScroll="True"
+                                        AllowDrop="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.View>
+                                            <GridView >
+                                                <GridViewColumn
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
 
-                                <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                <materialDesign:TimePicker
-                                Text="{Binding TimeToEfir, Mode=TwoWay}"
-                                SelectedTimeFormat="Short"
-                                Language="ru-RU"
-                                HorizontalAlignment="Left"
-                                HorizontalContentAlignment="Left"
-                                Is24Hours="True" />
-                                </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:TimePicker
+                                                                Text="{Binding TimeToEfir, Mode=TwoWay}"
+                                                                SelectedTimeFormat="Short"
+                                                                Language="ru-RU"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left"
+                                                                Is24Hours="True" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn
 
-                                Width="Auto"
-                                DisplayMemberBinding="{Binding Event}"
-                                Header="Событие" />
-                                <GridViewColumn
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Event}"
+                                                    Header="Событие" />
+                                                <GridViewColumn
 
-                                DisplayMemberBinding="{Binding Description}"
-                                Header="Уточнить" />
-                                <GridViewColumn
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Уточнить" />
+                                                <GridViewColumn
 
-                                Header="Опции">
-                                <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                <ComboBox
-                                Width="100">
-                                <ComboBoxItem
-                                Content="Test" />
-                                <ComboBoxItem
-                                Content="Test2" />
-                                <ComboBoxItem
-                                Content="Test3" />
-                                </ComboBox>
-                                </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                </GridView>
-                                </ListView.View>
-                                </ListView>
-                                </StackPanel>-->
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
                             </TabItem>
                             <TabItem
                                 Width="90"
@@ -213,42 +213,361 @@
                             <TabItem Width="70"
                                      Padding="0"
                                      Header="среда" MinWidth="70">
-                                <TextBlock
-                                    Margin="8"
-                                    Text="Custom Tab 2" />
+                                <StackPanel >
+                                    <ListView
+
+                                        Height="300"
+
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
+
+                                        IsSynchronizedWithCurrentItem="True"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.CanContentScroll="True"
+                                        AllowDrop="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.View>
+                                            <GridView >
+                                                <GridViewColumn
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
+
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:TimePicker
+                                                                Text="{Binding TimeToEfir, Mode=TwoWay}"
+
+                                                                SelectedTimeFormat="Short"
+                                                                Language="ru-RU"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left"
+                                                                Is24Hours="True" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn
+
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Event}"
+                                                    Header="Событие" />
+                                                <GridViewColumn
+
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Уточнить" />
+                                                <GridViewColumn
+
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
 
                             </TabItem>
                             <TabItem
                                 Header="четверг">
-                                <TextBlock
-                                    Margin="8"
-                                    Text="Custom Tab 2" />
+                                <StackPanel >
+                                    <ListView
+
+                                        Height="300"
+
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
+
+                                        IsSynchronizedWithCurrentItem="True"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.CanContentScroll="True"
+                                        AllowDrop="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.View>
+                                            <GridView >
+                                                <GridViewColumn
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
+
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:TimePicker
+                                                                Text="{Binding TimeToEfir, Mode=TwoWay}"
+
+                                                                SelectedTimeFormat="Short"
+                                                                Language="ru-RU"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left"
+                                                                Is24Hours="True" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn
+
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Event}"
+                                                    Header="Событие" />
+                                                <GridViewColumn
+
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Уточнить" />
+                                                <GridViewColumn
+
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
 
                             </TabItem>
                             <TabItem
                                 Header="пятница">
-                                <TextBlock
-                                    Margin="8"
-                                    Text="Custom Tab 2" />
+                                <StackPanel >
+                                    <ListView
+
+                                        Height="300"
+
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
+
+                                        IsSynchronizedWithCurrentItem="True"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.CanContentScroll="True"
+                                        AllowDrop="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.View>
+                                            <GridView >
+                                                <GridViewColumn
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
+
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:TimePicker
+                                                                Text="{Binding TimeToEfir, Mode=TwoWay}"
+
+                                                                SelectedTimeFormat="Short"
+                                                                Language="ru-RU"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left"
+                                                                Is24Hours="True" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn
+
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Event}"
+                                                    Header="Событие" />
+                                                <GridViewColumn
+
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Уточнить" />
+                                                <GridViewColumn
+
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
 
                             </TabItem>
                             <TabItem
                                 Header="суббота">
-                                <TextBlock
-                                    Margin="8"
-                                    Text="Custom Tab 2" />
+                                <StackPanel >
+                                    <ListView
 
+                                        Height="300"
+
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
+
+                                        IsSynchronizedWithCurrentItem="True"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.CanContentScroll="True"
+                                        AllowDrop="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.View>
+                                            <GridView >
+                                                <GridViewColumn
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
+
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:TimePicker
+                                                                Text="{Binding TimeToEfir, Mode=TwoWay}"
+
+                                                                SelectedTimeFormat="Short"
+                                                                Language="ru-RU"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left"
+                                                                Is24Hours="True" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn
+
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Event}"
+                                                    Header="Событие" />
+                                                <GridViewColumn
+
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Уточнить" />
+                                                <GridViewColumn
+
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
                             </TabItem>
                             <TabItem
                                 Header="воскресение">
-                                <TextBlock
-                                    Margin="8"
-                                    Text="Custom Tab 2" />
+                                <StackPanel >
+                                    <ListView
+
+                                        Height="300"
+
+                                        dd:DragDrop.IsDragSource="True"
+                                        dd:DragDrop.IsDropTarget="True"
+                                        dd:DragDrop.UseDefaultDragAdorner="True"
+
+                                        IsSynchronizedWithCurrentItem="True"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Center"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                        ScrollViewer.CanContentScroll="True"
+                                        AllowDrop="True"
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.View>
+                                            <GridView >
+                                                <GridViewColumn
+                                                    Header="Время"
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
+
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <materialDesign:TimePicker
+                                                                Text="{Binding TimeToEfir, Mode=TwoWay}"
+
+                                                                SelectedTimeFormat="Short"
+                                                                Language="ru-RU"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left"
+                                                                Is24Hours="True" />
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                                <GridViewColumn
+
+                                                    Width="Auto"
+                                                    DisplayMemberBinding="{Binding Event}"
+                                                    Header="Событие" />
+                                                <GridViewColumn
+
+                                                    DisplayMemberBinding="{Binding Description}"
+                                                    Header="Уточнить" />
+                                                <GridViewColumn
+
+                                                    Header="Опции">
+                                                    <GridViewColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox
+                                                                Width="100">
+                                                                <ComboBoxItem
+                                                                    Content="Test" />
+                                                                <ComboBoxItem
+                                                                    Content="Test2" />
+                                                                <ComboBoxItem
+                                                                    Content="Test3" />
+                                                            </ComboBox>
+                                                        </DataTemplate>
+                                                    </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </StackPanel>
 
                             </TabItem>
                         </TabControl>
                         <Button Content="Создать Эфир"
-                                Click="GenerateEfir_Click"/>
+                                Margin="0 30 0 0"/>
 
 
                     </StackPanel>
