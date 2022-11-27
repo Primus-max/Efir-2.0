@@ -1,36 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using System.Drawing;
-
 using System.IO;
-using Microsoft.Win32;
-using DevExpress.Utils.CommonDialogs.Internal;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MaterialDesignThemes.Wpf;
 using Efir.Model;
-using static Microsoft.WindowsAPICodePack.Shell.PropertySystem.SystemProperties.System;
-using System.Text.RegularExpressions;
-using MediaInfoLib;
-using FFmpeg.NET;
-using System.Globalization;
 using Efir.ViewModels;
-using System.Threading;
 using Efir.Data;
 using System.Data.Entity;
-using Efir.ViewModels.Base;
 using System.Collections.ObjectModel;
 using DayOfWeek = Efir.Model.DayOfWeek;
 
@@ -47,7 +28,7 @@ namespace Efir
         //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
         //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет 
         ApplicationContext db = new ApplicationContext();
-
+        DayOfWeek dayOfWeek = new DayOfWeek();
 
         #region ПЕРЕМЕННЫЕ: блок эфир
 
@@ -58,43 +39,29 @@ namespace Efir
 
         public void GetCollectionEfirDay()
         {
-            DayOfWeek dayOfWeek = new DayOfWeek();
-
-
-            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "Жить здорово", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 1 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "Техника пожарной безопасности. Начальник ПЧ", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 2 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "Уроки русского языка", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 3 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "Тихая река 2 серия", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 3 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "В бой идут одни старики", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 4 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "Профилактика гриппа", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 5 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "Жить здорово", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 6 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "Техника пожарной безопасности. Начальник ПЧ", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 7 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "Уроки русского языка", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 8 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "Тихая река 2 серия", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 9 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "В бой идут одни старики", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 10 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "Профилактика гриппа", TimeToEfir = new TimeSpan(), Option = "NOT", Id = 11 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 1 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 2 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 4 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 5 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 6 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 7 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 8 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 9 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 10 });
+            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 11 });
 
             Testing.ItemsSource = EfirOfDayList;
 
-            /*     for (int i = 0; i < 10; i++)
-                 {
-                     dayOfWeek.TimeToEfir = new TimeSpan();
-                     dayOfWeek.Description = "Описание события";
-                     dayOfWeek.Event = "Лекция";
-
-                     EfirOfDayList.Add(dayOfWeek);
-                     dayOfWeek = new DayOfWeek();
-
-                     Testing.ItemsSource = EfirOfDayList;
-                 }*/
-
             var sdfg = EfirOfDayList.ToList();
-
-            // SetCollectionEfirOnDay();
-            //List<GridViewColumn> items = (List<GridViewColumn>)Testing.ItemsSource;
-
-
         }
+
+
+
+
+
+
         public void SetCollectionEfirOnDay()
         {
             for (int i = 0; i < GridOfDay.Columns.Count; i++)
@@ -108,6 +75,8 @@ namespace Efir
 
 
         #endregion
+
+
 
 
         #endregion
@@ -129,7 +98,6 @@ namespace Efir
 
         public MainWindow()
         {
-
             InitializeComponent();
             Loaded += MainWindow_Loaded;
             GetCollectionEfirDay();
@@ -176,6 +144,113 @@ namespace Efir
 
 
         }
+
+        }*/
+
+
+        // поиск элемента в дереве(например textblock в listview)
+        /*public static T? FindVisualChildByName<T>(DependencyObject parent, string name) where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                string? controlName = child.GetValue(Control.NameProperty) as string;
+                if (controlName == name)
+                {
+                    return child as T;
+                }
+                else
+                {
+                    T? result = FindVisualChildByName<T>(child, name);
+                    if (result != null)
+                        return result;
+                }
+            }
+            return null;
+        }*/
+
+        // так же, получение ребенка из родительского дерева
+        /*private static T? GetFrameworkElementByName<T>(FrameworkElement referenceElement) where T : FrameworkElement
+
+        {
+
+            FrameworkElement? child = null;
+
+            for (Int32 i = 0; i < VisualTreeHelper.GetChildrenCount(referenceElement); i++)
+
+            {
+
+                child = VisualTreeHelper.GetChild(referenceElement, i) as FrameworkElement;
+
+                System.Diagnostics.Debug.WriteLine(child);
+
+                if (child != null && child.GetType() == typeof(T))
+
+                { break; }
+
+                else if (child != null)
+
+                {
+
+                    child = GetFrameworkElementByName<T>(child);
+
+                    if (child != null && child.GetType() == typeof(T))
+
+                    {
+
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            return child as T;
+
+        }*/
+
+        /* private void FindElement(object sender, RoutedEventArgs e)
+
+        {
+
+            // get the current selected item
+
+            ListViewItem? item = Testing.ItemContainerGenerator.ContainerFromIndex(Testing.SelectedIndex) as ListViewItem;
+
+            TextBlock textYear = null;
+
+            if (item != null)
+
+            {
+
+                //get the item's template parent
+
+                ContentPresenter templateParent = GetFrameworkElementByName<ContentPresenter>(item);
+
+                //get the DataTemplate that TextBlock in.
+
+                DataTemplate dataTemplate = listview.ItemTemplate;
+
+                if (dataTemplate != null && templateParent != null)
+
+                {
+
+                    textYear = dataTemplate.FindName("textYear", templateParent) as TextBlock;
+
+                }
+
+                if (textYear != null)
+
+                {
+
+                    MessageBox.Show(String.Format("Current item's Year is:{0}", textYear.Text));
+
+                }
+
+            }
+
+
 
         }*/
         #endregion
@@ -983,7 +1058,6 @@ namespace Efir
             await System.Threading.Tasks.Task.Yield();
         }
 
-
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
         //TODO  вынести данный класс в отдельный файл        
         class StringNumberComparer : IComparer<string>
@@ -1123,9 +1197,5 @@ namespace Efir
             throw new NotImplementedException();
         }
 
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
     }
 }

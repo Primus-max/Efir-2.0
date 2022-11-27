@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<AppConfig>App.config</AppConfig>
 		<UseWPF>true</UseWPF>
+		<PlatformTarget>AnyCPU</PlatformTarget>
 	</PropertyGroup>
 
 	<ItemGroup>
