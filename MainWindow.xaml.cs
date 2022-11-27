@@ -14,6 +14,7 @@ using Efir.Data;
 using System.Data.Entity;
 using System.Collections.ObjectModel;
 using DayOfWeek = Efir.Model.DayOfWeek;
+using System.Text.Json;
 
 namespace Efir
 {
@@ -59,8 +60,43 @@ namespace Efir
 
 
 
+        public void JSONTests()
+        {
+            Person tom = new Person("Tom", 37);
+            string json = JsonSerializer.Serialize(tom);
+            var sdfs = json;
+            Person? restoredPerson = JsonSerializer.Deserialize<Person>(json);
+            var fkd = restoredPerson?.Name; // Tom
+            Event @event = new Event("ЛЕКЦИИ", 0);
+
+        }
 
 
+
+
+
+        class Person
+        {
+            public string Name { get; }
+            public int Age { get; set; }
+            public Person(string name, int age)
+            {
+                Name = name;
+                Age = age;
+            }
+        }
+
+        public void SetListEvent()
+        {
+            Event @event = new Event();
+
+        }
+        public void GetListEvent()
+        {
+            var listEvent = ListEventtoMedia.GetLocalValueEnumerator();
+
+
+        }
 
         public void SetCollectionEfirOnDay()
         {
@@ -100,7 +136,9 @@ namespace Efir
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            JSONTests();
             GetCollectionEfirDay();
+            GetListEvent();
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
