@@ -71,13 +71,24 @@ namespace Efir
             var fkd = restoredPerson?.Name; // Tom
 
 
+            MainWindowViewModel model = new MainWindowViewModel();
+
+            var dfgdfg = model.EventList();
+
+
         }
 
-        public void SetListEvent()
-        {
-            //Event @event = new Event();
+        /*        public void SetListEvent()
+                {
+                    MainWindowViewModel model = new MainWindowViewModel();
+                    ObservableCollection<Event> EventList = new ObservableCollection<Event>();
+                    EventList.Add(new Event(model.LectionEvent, 1));
+                    EventList.Add(new Event(model.FilmsEvent, 1));
+                    EventList.Add(new Event(model.SeriesEvent, 1));
+                    EventList.Add(new Event(model.PreventionEvent, 1));
+                    EventList.Add(new Event(model.TvShowEvent, 1));
 
-        }
+                }*/
         public void GetListEvent()
         {
             var listEvent = ListEventtoMedia.GetLocalValueEnumerator();

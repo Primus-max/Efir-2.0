@@ -1,4 +1,5 @@
-﻿using Efir.ViewModels.Base;
+﻿using Efir.Model;
+using Efir.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,6 +24,7 @@ namespace Efir.ViewModels
 
 
         #region Список названий всех событий
+
         private string _LectionEvent = "ЛЕКЦИИ";
         public string LectionEvent
         {
@@ -50,6 +52,24 @@ namespace Efir.ViewModels
         {
             get => _TvShowEvent;
         }
+
+        /// <summary>
+        /// Получаю список всех событий, имя и булиного значение
+        /// </summary>       
+        public ObservableCollection<Event> EventList()
+        {
+            return new ObservableCollection<Event>
+          {
+              new Event(LectionEvent, 1),
+              new Event(FilmsEvent, 1),
+              new Event (SeriesEvent, 1),
+              new Event(PreventionEvent, 1),
+              new Event(TvShowEvent, 1)
+
+          };
+
+        }
+
         #endregion
 
 
@@ -99,6 +119,8 @@ namespace Efir.ViewModels
             {
                 testList.Add("ТЕст" + i.ToString());
             }
+
+
 
         }
     }
