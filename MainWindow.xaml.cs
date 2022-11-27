@@ -60,35 +60,22 @@ namespace Efir
 
 
 
+
         public void JSONTests()
         {
-            Person tom = new Person("Tom", 37);
-            string json = JsonSerializer.Serialize(tom);
-            var sdfs = json;
-            Person? restoredPerson = JsonSerializer.Deserialize<Person>(json);
-            var fkd = restoredPerson?.Name; // Tom
             Event @event = new Event("ЛЕКЦИИ", 0);
 
-        }
+            string json = JsonSerializer.Serialize(@event);
+            var sdfs = json;
+            Event? restoredPerson = JsonSerializer.Deserialize<Event>(json);
+            var fkd = restoredPerson?.Name; // Tom
 
 
-
-
-
-        class Person
-        {
-            public string Name { get; }
-            public int Age { get; set; }
-            public Person(string name, int age)
-            {
-                Name = name;
-                Age = age;
-            }
         }
 
         public void SetListEvent()
         {
-            Event @event = new Event();
+            //Event @event = new Event();
 
         }
         public void GetListEvent()

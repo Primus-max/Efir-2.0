@@ -21,6 +21,38 @@ namespace Efir.ViewModels
             set => Set(ref _Title, value);
         }
 
+
+        #region Список названий всех событий
+        private string _LectionEvent = "ЛЕКЦИИ";
+        public string LectionEvent
+        {
+            get => _LectionEvent;
+        }
+
+        private string _FilmsEvent = "ФИЛЬМЫ";
+        public string FilmsEvent
+        {
+            get => _FilmsEvent;
+        }
+
+        private string _SeriesEvent = "СЕРИАЛЫ";
+        public string SeriesEvent
+        {
+            get => _SeriesEvent;
+        }
+        private string _PreventionEvent = "ПРОФИЛАКТИКА";
+        public string PreventionEvent
+        {
+            get => _PreventionEvent;
+        }
+        private string _TvShowEvent = "ТЕЛЕПЕРЕДАЧИ";
+        public string TvShowEvent
+        {
+            get => _TvShowEvent;
+        }
+        #endregion
+
+
         #region БЛОК МЕДИА
 
         #region прогресс бар
@@ -42,17 +74,6 @@ namespace Efir.ViewModels
             set => Set(ref _testList, value);
         }
 
-
-        /* private int _CountPartFilm = 1;
-        /// <summary>
-            /// Индикатор загрузки для сериалов
-        /// </summary>
-        public int CountPartFilm
-        {
-get => _CountPartFilm;
-set => Set(ref _CountPartFilm, value);
-                }
-                */
 
 
         #region текст боксы для путей
