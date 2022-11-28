@@ -111,7 +111,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
@@ -199,7 +199,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
@@ -286,7 +286,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
@@ -371,7 +371,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
@@ -456,7 +456,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
@@ -541,7 +541,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
@@ -625,7 +625,7 @@
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
-                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" />
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
