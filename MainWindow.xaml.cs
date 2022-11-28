@@ -78,7 +78,6 @@ namespace Efir
 
         private void AddEvent_Click(object sender, RoutedEventArgs e)
         {
-            // EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИИ", TimeToEfir = new TimeSpan(DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond) });
             SetEventItemWithContextMenu();
         }
 
@@ -119,7 +118,7 @@ namespace Efir
             }*/
         }
 
-
+        #region Добавление события с учетом дня недели
         private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
         {
             TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
@@ -131,32 +130,44 @@ namespace Efir
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                //ObservableCollection<EfirOnMonday> EfirOfMonday = new ObservableCollection<EfirOnMonday>();
-                EfirOfMonday.Add(new EfirOnMonday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0), Id = RandomId });
+                EfirOfMonday.Add(new EfirOnMonday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
                 EfirListOnMonday.ItemsSource = EfirOfMonday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
-                MessageBox.Show("Вторник");
+                EfirOfTuesday.Add(new EfirOnTuesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EventListOnTuesday.ItemsSource = EfirOfTuesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
-                MessageBox.Show("Среда");
+                EfirOfWednesday.Add(new EfirOnWednesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EventListOnWednesday.ItemsSource = EfirOfWednesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
-                MessageBox.Show("Четверг");
+                EfirOfThursday.Add(new EfirOnThursday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EventListOnThursday.ItemsSource = EfirOfThursday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
-                MessageBox.Show("Пятница");
+                EfirOfFriday.Add(new EfirOnFriday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EventListOnFriday.ItemsSource = EfirOfFriday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                MessageBox.Show("Воскресение");
+                EfirOfSaturday.Add(new EfitOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EventListOnSaturday.ItemsSource = EfirOfSaturday;
             }
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(), Option = "NOT" });
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
+            {
+                EfirOfSunday.Add(new EfirOnSunday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EventListOnSunday.ItemsSource = EfirOfSunday;
+            }
+            //EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(), Option = "NOT" });
         }
+        #endregion
+
+
 
         #endregion
 

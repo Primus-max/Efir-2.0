@@ -27,18 +27,18 @@
     </Window.DataContext>
     <Window.Resources >
         <!--<ControlTemplate x:Key="ContextMenuAddEvent">
-            <ContextMenu >
-                <MenuItem  Header="Добавить" Click="AddEvent_Click">
-                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
-                    <MenuItem Header="{Binding TvShowEvent}" />
-                    <MenuItem Header="{Binding SeriesEvent}" />
-                    <MenuItem Header="{Binding FilmsEvent}" />
-                    <MenuItem Header="{Binding News}" />
-                    <MenuItem Header="{Binding LectionEvent}" />
-                    <MenuItem Header="{Binding Break}" />
-                </MenuItem>
-                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
-            </ContextMenu>
+        <ContextMenu >
+        <MenuItem  Header="Добавить" Click="AddEvent_Click">
+        <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+        <MenuItem Header="{Binding TvShowEvent}" />
+        <MenuItem Header="{Binding SeriesEvent}" />
+        <MenuItem Header="{Binding FilmsEvent}" />
+        <MenuItem Header="{Binding News}" />
+        <MenuItem Header="{Binding LectionEvent}" />
+        <MenuItem Header="{Binding Break}" />
+        </MenuItem>
+        <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
+        </ContextMenu>
         </ControlTemplate>-->
     </Window.Resources>
     <Grid>
@@ -263,7 +263,7 @@
                                      Header="Среда" MinWidth="70">
                                 <StackPanel >
                                     <ListView
-
+                                        x:Name="EventListOnWednesday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -279,6 +279,20 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding SeriesEvent}" />
+                                                    <MenuItem Header="{Binding FilmsEvent}" />
+                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding Break}" />
+                                                </MenuItem>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
+                                            </ContextMenu>
+                                        </ListView.ContextMenu>
                                         <ListView.View>
                                             <GridView >
                                                 <GridViewColumn
@@ -301,7 +315,7 @@
                                                 <GridViewColumn
 
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Event}"
+                                                    DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
@@ -334,7 +348,7 @@
                                 Header="Четверг">
                                 <StackPanel >
                                     <ListView
-
+                                        x:Name="EventListOnThursday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -350,6 +364,20 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding SeriesEvent}" />
+                                                    <MenuItem Header="{Binding FilmsEvent}" />
+                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding Break}" />
+                                                </MenuItem>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
+                                            </ContextMenu>
+                                        </ListView.ContextMenu>
                                         <ListView.View>
                                             <GridView >
                                                 <GridViewColumn
@@ -372,7 +400,7 @@
                                                 <GridViewColumn
 
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Event}"
+                                                    DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
@@ -405,7 +433,7 @@
                                 Header="Пятница">
                                 <StackPanel >
                                     <ListView
-
+                                        x:Name="EventListOnFriday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -421,6 +449,20 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding SeriesEvent}" />
+                                                    <MenuItem Header="{Binding FilmsEvent}" />
+                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding Break}" />
+                                                </MenuItem>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
+                                            </ContextMenu>
+                                        </ListView.ContextMenu>
                                         <ListView.View>
                                             <GridView >
                                                 <GridViewColumn
@@ -443,7 +485,7 @@
                                                 <GridViewColumn
 
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Event}"
+                                                    DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
@@ -476,7 +518,7 @@
                                 Header="Суббота">
                                 <StackPanel >
                                     <ListView
-
+                                        x:Name="EventListOnSaturday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -492,6 +534,20 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding SeriesEvent}" />
+                                                    <MenuItem Header="{Binding FilmsEvent}" />
+                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding Break}" />
+                                                </MenuItem>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
+                                            </ContextMenu>
+                                        </ListView.ContextMenu>
                                         <ListView.View>
                                             <GridView >
                                                 <GridViewColumn
@@ -514,7 +570,7 @@
                                                 <GridViewColumn
 
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Event}"
+                                                    DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
@@ -546,6 +602,7 @@
                                 Header="Воскресение">
                                 <StackPanel >
                                     <ListView
+                                        x:Name="EventListOnSunday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -561,6 +618,20 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        <ListView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding SeriesEvent}" />
+                                                    <MenuItem Header="{Binding FilmsEvent}" />
+                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding Break}" />
+                                                </MenuItem>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
+                                            </ContextMenu>
+                                        </ListView.ContextMenu>
                                         <ListView.View>
                                             <GridView >
                                                 <GridViewColumn
@@ -583,7 +654,7 @@
                                                 <GridViewColumn
 
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Event}"
+                                                    DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
