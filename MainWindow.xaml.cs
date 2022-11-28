@@ -165,6 +165,11 @@ namespace Efir
             }
             //EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(), Option = "NOT" });
         }
+
+        private void AddTvShowAtList_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
         #endregion
 
 
@@ -1310,7 +1315,5 @@ namespace Efir
             EfirOnTuesday efirOnTuesday = new EfirOnTuesday();
 
         }
-
-
     }
 }

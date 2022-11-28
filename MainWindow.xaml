@@ -108,7 +108,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" Click="AddEvent_Click">
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
-                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" />
                                                     <MenuItem Header="{Binding FilmsEvent}" />
                                                     <MenuItem Header="{Binding News}" />
@@ -890,12 +890,6 @@
                             <StackPanel
                                 Orientation="Horizontal"
                                 Margin="10,0,0,30">
-                                <!--<TextBlock
-                                FontSize="16"
-                                Text="Документальные: "
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Margin="0,0,10,0"/>-->
                                 <TextBox
                                     x:Name="FilePathToPreventionTextBox"
                                     Width="310"
@@ -1030,12 +1024,6 @@
                             <StackPanel
                                 Orientation="Horizontal"
                                 Margin="10,0,0,30">
-                                <!--<TextBlock
-                                FontSize="16"
-                                Text="Документальные: "
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Margin="0,0,10,0"/>-->
                                 <TextBox
                                     x:Name="FilePathToTvShowTextBox"
                                     Width="310"
@@ -1088,40 +1076,6 @@
 
                     </StackPanel>
                 </TabItem>
-                <!--<TabItem
-                Width="100">
-                <TabItem.Header>
-                <StackPanel
-                Width="auto"
-                Height="auto">
-                <materialDesign:PackIcon
-                Width="24"
-                Height="24"
-                HorizontalAlignment="Center"
-                Kind="MusicBoxMultiple" />
-                <TextBlock
-                HorizontalAlignment="Center"
-                Text="Sounds" />
-                </StackPanel>
-                </TabItem.Header>
-                <StackPanel
-                Margin="16">
-                <TextBlock
-                Margin="0,0,0,8"
-                Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                Text="Sounds" />
-                <TextBlock>
-                <Run
-                Text="tab 4 content. Default look and behaviors." />
-                <LineBreak />
-                <LineBreak />
-                <Run
-                FontStyle="Italic">
-                Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-                </Run>
-                </TextBlock>
-                </StackPanel>
-                </TabItem>-->
             </TabControl>
         </materialDesign:Card>
     </Grid>
