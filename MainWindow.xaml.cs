@@ -23,21 +23,31 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
-        //TODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках        
+        //TODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках
         //TODO сделать в настройках программы возможность добавления флага для определения жанра, этот флаг будет отображаться в имении папки
         //TODO запуск программы по середине окна
         //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
-        //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет 
+        //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет
         ApplicationContext db = new ApplicationContext();
         DayOfWeek dayOfWeek = new DayOfWeek();
 
         #region ПЕРЕМЕННЫЕ: блок эфир
 
+        #region Модели дней недели для хранения и добавления в базу
+        public ObservableCollection<DayOfWeek> EfirOfDayList = new ObservableCollection<DayOfWeek>();
+        public ObservableCollection<EfirOnMonday> EfirOfMonday = new ObservableCollection<EfirOnMonday>();
+        public ObservableCollection<EfirOnTuesday> EfirOfTuesday = new ObservableCollection<EfirOnTuesday>();
+        public ObservableCollection<EfirOnWednesday> EfirOfWednesday = new ObservableCollection<EfirOnWednesday>();
+        public ObservableCollection<EfirOnThursday> EfirOfThursday = new ObservableCollection<EfirOnThursday>();
+        public ObservableCollection<EfirOnFriday> EfirOfFriday = new ObservableCollection<EfirOnFriday>();
+        public ObservableCollection<EfitOnSaturday> EfirOfSaturday = new ObservableCollection<EfitOnSaturday>();
+        public ObservableCollection<EfirOnSunday> EfirOfSunday = new ObservableCollection<EfirOnSunday>();
+        #endregion
+
         #region Получаю лист программы от пользователя
 
         //public ObservableCollection<GridView> ItemEfirDay = new ObservableCollection<GridView>();
-        public ObservableCollection<DayOfWeek> EfirOfDayList = new ObservableCollection<DayOfWeek>();
-        public ObservableCollection<EfirOnTuesday> EfirOfTuesday = new ObservableCollection<EfirOnTuesday>();
+
 
         public void GetCollectionEfirDay()
         {
@@ -54,24 +64,64 @@ namespace Efir
             EfirOfDayList.Add(new DayOfWeek { EventName = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 9 });
             EfirOfDayList.Add(new DayOfWeek { EventName = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 10 });
             EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 11 });
-*/
+            */
 
             //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
             //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
 
             EventListOnTuesday.ItemsSource = EfirOfDayList;
             // var sdfg = EfirOfDayList.ToList();
+            /* AddEventFromContextMenu.Items.Clear();
+             AddEventFromContextMenu.ItemsSource = model.EventList();*/
         }
 
 
-        private void TESET(object sender, RoutedEventArgs e)
+        private void AddEvent_Click(object sender, RoutedEventArgs e)
         {
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИИ", TimeToEfir = new TimeSpan(DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond) });
+            // EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИИ", TimeToEfir = new TimeSpan(DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond) });
+            SetEventItemWithContextMenu();
+        }
+
+        private void RemoveEvent_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         public void SetEventItemWithContextMenu()
         {
+            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
 
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
+            {
+                // ObservableCollection<EfirOnMonday> EfirOfMonday = new ObservableCollection<EfirOnMonday>();
+
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+            {
+                MessageBox.Show("Вторник");
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
+            {
+                MessageBox.Show("Среда");
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
+            {
+                MessageBox.Show("Четверг");
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
+            {
+                MessageBox.Show("Пятница");
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
+            {
+                MessageBox.Show("Воскресение");
+            }
+        }
+
+
+        private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
+        {
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(), Option = "NOT" });
         }
 
         #endregion
@@ -127,6 +177,9 @@ namespace Efir
             // db.Serieses.Load();
             // и устанавливаем данные в качестве контекста
             //DataContext = db.Serieses.Local.ToObservableCollection();
+            #region Установка источников данных для листов
+            EfirListOnMonday.ItemsSource = EfirOfMonday;
+            #endregion
         }
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
@@ -154,109 +207,109 @@ namespace Efir
 
         // поиск элемента в дереве(например textblock в listview)
         /*public static T? FindVisualChildByName<T>(DependencyObject parent, string name) where T : DependencyObject
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                string? controlName = child.GetValue(Control.NameProperty) as string;
-                if (controlName == name)
-                {
-                    return child as T;
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+              {
+              var child = VisualTreeHelper.GetChild(parent, i);
+              string? controlName = child.GetValue(Control.NameProperty) as string;
+              if (controlName == name)
+              {
+              return child as T;
+              }
+              else
+              {
+            T? result = FindVisualChildByName<T>(child, name);
+                if (result != null)
+                return result;
                 }
-                else
-                {
-                    T? result = FindVisualChildByName<T>(child, name);
-                    if (result != null)
-                        return result;
                 }
-            }
-            return null;
-        }*/
+                return null;
+                }*/
 
         // так же, получение ребенка из родительского дерева
         /*private static T? GetFrameworkElementByName<T>(FrameworkElement referenceElement) where T : FrameworkElement
 
-        {
+            {
 
             FrameworkElement? child = null;
 
             for (Int32 i = 0; i < VisualTreeHelper.GetChildrenCount(referenceElement); i++)
 
-            {
+              {
 
-                child = VisualTreeHelper.GetChild(referenceElement, i) as FrameworkElement;
+              child = VisualTreeHelper.GetChild(referenceElement, i) as FrameworkElement;
 
-                System.Diagnostics.Debug.WriteLine(child);
+              System.Diagnostics.Debug.WriteLine(child);
+
+              if (child != null && child.GetType() == typeof(T))
+
+              { break; }
+
+              else if (child != null)
+
+              {
+
+            child = GetFrameworkElementByName<T>(child);
 
                 if (child != null && child.GetType() == typeof(T))
 
-                { break; }
-
-                else if (child != null)
-
                 {
 
-                    child = GetFrameworkElementByName<T>(child);
-
-                    if (child != null && child.GetType() == typeof(T))
-
-                    {
-
-                        break;
-
-                    }
+                break;
 
                 }
 
-            }
+                }
 
-            return child as T;
+                }
 
-        }*/
+                return child as T;
+
+                }*/
 
         /* private void FindElement(object sender, RoutedEventArgs e)
 
         {
 
-            // get the current selected item
+        // get the current selected item
 
-            ListViewItem? item = Testing.ItemContainerGenerator.ContainerFromIndex(Testing.SelectedIndex) as ListViewItem;
+        ListViewItem? item = Testing.ItemContainerGenerator.ContainerFromIndex(Testing.SelectedIndex) as ListViewItem;
 
-            TextBlock textYear = null;
+        TextBlock textYear = null;
 
-            if (item != null)
+        if (item != null)
+
+        {
+
+        //get the item's template parent
+
+        ContentPresenter templateParent = GetFrameworkElementByName<ContentPresenter>(item);
+
+            //get the DataTemplate that TextBlock in.
+
+            DataTemplate dataTemplate = listview.ItemTemplate;
+
+            if (dataTemplate != null && templateParent != null)
 
             {
 
-                //get the item's template parent
+            textYear = dataTemplate.FindName("textYear", templateParent) as TextBlock;
 
-                ContentPresenter templateParent = GetFrameworkElementByName<ContentPresenter>(item);
+            }
 
-                //get the DataTemplate that TextBlock in.
+            if (textYear != null)
 
-                DataTemplate dataTemplate = listview.ItemTemplate;
+            {
 
-                if (dataTemplate != null && templateParent != null)
+            MessageBox.Show(String.Format("Current item's Year is:{0}", textYear.Text));
 
-                {
-
-                    textYear = dataTemplate.FindName("textYear", templateParent) as TextBlock;
-
-                }
-
-                if (textYear != null)
-
-                {
-
-                    MessageBox.Show(String.Format("Current item's Year is:{0}", textYear.Text));
-
-                }
+            }
 
             }
 
 
 
-        }*/
+            }*/
         #endregion
 
         #region БЛОК ЭФИР
@@ -284,7 +337,7 @@ namespace Efir
                     pathToFilms = FilePathToFilmTextBox.Text;
                     // Film film = new Film();
                     AddFilmAtDB(pathToFilms);
-                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле                    
+                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
                 {
@@ -342,56 +395,56 @@ namespace Efir
         }
 
         /* private void OpenDocumentariesDialog_Click(object sender, RoutedEventArgs e)
-         {
-             CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
-             commonOpenFileDialog.IsFolderPicker = true;
-             commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+        {
+        CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+        commonOpenFileDialog.IsFolderPicker = true;
+        commonOpenFileDialog.AddToMostRecentlyUsedList = true;
 
-             if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
-             {
-                 try
-                 {
-                     FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
-                     pathToDocumentaries = FilePathToDocumentariesTextBox.Text;
-                     AddDocumentariesAtDB(pathToDocumentaries);
-                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
-                     //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
-                     //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
-                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
-                 }
-                 catch (Exception ex)
-                 {
-                     // TODO обработать правильно ошибки, найти значения и передать по русски
-                     MessageBox.Show($"Произошла ошибка: {ex.Message}");
-                 }
-             }
-         }*/
+        if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+        {
+        try
+        {
+        FilePathToDocumentariesTextBox.Text = commonOpenFileDialog.FileName;
+        pathToDocumentaries = FilePathToDocumentariesTextBox.Text;
+        AddDocumentariesAtDB(pathToDocumentaries);
+        //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+        //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+        //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
+        // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+        }
+        catch (Exception ex)
+        {
+        // TODO обработать правильно ошибки, найти значения и передать по русски
+        MessageBox.Show($"Произошла ошибка: {ex.Message}");
+        }
+        }
+        }*/
 
         /*private void OpenEntertainmentDialog_Click(object sender, RoutedEventArgs e)
         {
-            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
-            commonOpenFileDialog.IsFolderPicker = true;
-            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
-            commonOpenFileDialog.ShowPlacesList = true;
+        CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+        commonOpenFileDialog.IsFolderPicker = true;
+        commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+        commonOpenFileDialog.ShowPlacesList = true;
 
-            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                try
-                {
-                    FilePathToEntertainmentTextBox.Text = commonOpenFileDialog.FileName;
-                    pathToEntertainment = FilePathToEntertainmentTextBox.Text;
-                    AddEntertainmentAtDB(pathToEntertainment);
-                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
-                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
-                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
-                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
-                }
-                catch (Exception ex)
-                {
-                    // TODO обработать правильно ошибки, найти значения и передать по русски
-                    MessageBox.Show($"Произошла ошибка: {ex.Message}");
-                }
-            }
+        if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+        {
+        try
+        {
+        FilePathToEntertainmentTextBox.Text = commonOpenFileDialog.FileName;
+        pathToEntertainment = FilePathToEntertainmentTextBox.Text;
+        AddEntertainmentAtDB(pathToEntertainment);
+        //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
+        //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
+        //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
+        // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
+        }
+        catch (Exception ex)
+        {
+        // TODO обработать правильно ошибки, найти значения и передать по русски
+        MessageBox.Show($"Произошла ошибка: {ex.Message}");
+        }
+        }
         }*/
 
         private void OpenPreventionDialog_Click(object sender, RoutedEventArgs e)
@@ -460,35 +513,35 @@ namespace Efir
         // добавление документалок
         /*public async void AddDocumentariesAtDB(string pathToContent)
         {
-            DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
-            Documentaries documentaries = new Documentaries();
+        DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+        Documentaries documentaries = new Documentaries();
 
 
-            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-            if (firstDirectory.Exists)
-            {
-                try
-                {
-                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
-                    "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+        //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+        if (firstDirectory.Exists)
+        {
+        try
+        {
+        DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+        if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
+        "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+        "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
 
-                    for (int i = 0; i < listDirectories.Length; i++)
-                    {
-                        int countDoc = 0;
+        for (int i = 0; i < listDirectories.Length; i++)
+          {
+          int countDoc = 0;
 
-                        string directroryName = listDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-                        List<Documentaries> documentaries1 = new List<Documentaries>();
+          string directroryName = listDirectories[i].FullName;
+          DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+        List<Documentaries> documentaries1 = new List<Documentaries>();
 
-                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;
+                IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                    IEnumerable<FileSystemInfo> filteredFileList =
+                        from file in allFileList
+                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                        select file;
 
 
                         StringNumberComparer comparer = new StringNumberComparer();
@@ -496,38 +549,38 @@ namespace Efir
 
                         foreach (FileInfo item in filteredFileList)
                         {
-                            countDoc += 1;
+                        countDoc += 1;
 
-                            documentaries.Name = listDirectories[i].Name;
-                            documentaries.Path = item.FullName;
-                            documentaries.Duration = DurationContent(pathToContent, item.ToString());
-                            documentaries.NumOfSeries = filteredFileList.Count();
-                            documentaries.Series = countDoc;
-
-
-                            // db.Documentarieses.Add(documentaries);
-                            // db.SaveChanges();
-                            documentaries1.Add(documentaries);
-                            documentaries = new Documentaries();
+                        documentaries.Name = listDirectories[i].Name;
+                        documentaries.Path = item.FullName;
+                        documentaries.Duration = DurationContent(pathToContent, item.ToString());
+                        documentaries.NumOfSeries = filteredFileList.Count();
+                        documentaries.Series = countDoc;
 
 
+                        // db.Documentarieses.Add(documentaries);
+                        // db.SaveChanges();
+                        documentaries1.Add(documentaries);
+                        documentaries = new Documentaries();
 
-                            viewModel.ValueProgressDownlaodingSeries += 1;
 
-                            ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
+
+                        viewModel.ValueProgressDownlaodingSeries += 1;
+
+                        ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
 
                         }
                         CountOfDocumentalTextBlock.Text = Convert.ToString(listDirectories.Length);
 
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-            await System.Threading.Tasks.Task.Yield();
-        }*/
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        MessageBox.Show(ex.Message);
+                        }
+                        }
+                        await System.Threading.Tasks.Task.Yield();
+                        }*/
 
         // добавление образовательных
         public async void AddEducationalAtDB(string pathToContent)
@@ -596,68 +649,68 @@ namespace Efir
 
         // добавление развлекательных
         /* public async void AddEntertainmentAtDB(string pathToContent)
-         {
-             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
-             Entertainment entertainment = new Entertainment();
-             //List<Educational> Ed = new List<Documentaries>();
+        {
+        DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
+        Entertainment entertainment = new Entertainment();
+        //List<Educational> Ed = new List<Documentaries>();
 
-             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-             if (firstDirectory.Exists)
-             {
-                 try
-                 {
-                     DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                     if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
-                     "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
-                     "ознакомьтесь пожалуйста с правилами добавления контента. ");
+                //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
+                if (firstDirectory.Exists)
+                {
+                try
+                {
+                DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
+                "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
+                "ознакомьтесь пожалуйста с правилами добавления контента. ");
 
-                     for (int i = 0; i < listDirectories.Length; i++)
-                     {
-                         string directroryName = listDirectories[i].FullName;
-                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                for (int i = 0; i < listDirectories.Length; i++)
+                  {
+                  string directroryName = listDirectories[i].FullName;
+                  DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
-                         IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                         IEnumerable<FileSystemInfo> filteredFileList =
-                             from file in allFileList
-                             where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                             file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                             select file;
+                IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                    IEnumerable<FileSystemInfo> filteredFileList =
+                        from file in allFileList
+                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                        select file;
 
 
-                         StringNumberComparer comparer = new StringNumberComparer();
-                         MainWindowViewModel viewModel = new MainWindowViewModel();
+                        StringNumberComparer comparer = new StringNumberComparer();
+                        MainWindowViewModel viewModel = new MainWindowViewModel();
 
-                         foreach (FileInfo item in filteredFileList)
-                         {
-                             if (filteredFileList != null)
-                             {
-                                 entertainment.Name = listDirectories[i].Name;
-                                 entertainment.Path = item.FullName;
-                                 entertainment.Duration = DurationContent(pathToContent, item.ToString());
-                                 entertainment.NumOfSeries = filteredFileList.Count();
-                                 entertainment.Series += 1;
+                        foreach (FileInfo item in filteredFileList)
+                        {
+                        if (filteredFileList != null)
+                        {
+                        entertainment.Name = listDirectories[i].Name;
+                        entertainment.Path = item.FullName;
+                        entertainment.Duration = DurationContent(pathToContent, item.ToString());
+                        entertainment.NumOfSeries = filteredFileList.Count();
+                        entertainment.Series += 1;
 
-                                 //добавдяю сериал в базу
-                                 db.Entertainments.Add(entertainment);
-                                 db.SaveChanges();
-                                 entertainment = new Entertainment();
+                        //добавдяю сериал в базу
+                        db.Entertainments.Add(entertainment);
+                        db.SaveChanges();
+                        entertainment = new Entertainment();
 
-                                 viewModel.ValueProgressDownlaodingSeries += 1;
+                        viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                 ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
-                             }
-                         }
-                         CountOfEntertainmentTextBlock.Text = Convert.ToString(listDirectories.Length);
+                        ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
+                        }
+                        }
+                        CountOfEntertainmentTextBlock.Text = Convert.ToString(listDirectories.Length);
 
-                     }
-                 }
-                 catch (Exception ex)
-                 {
-                     MessageBox.Show(ex.Message);
-                 }
-             }
-             await System.Threading.Tasks.Task.Yield();
-         }*/
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        MessageBox.Show(ex.Message);
+                        }
+                        }
+                        await System.Threading.Tasks.Task.Yield();
+                        }*/
 
         // добавление фильмов
         public void AddFilmAtDB(string pathToContent)
@@ -956,11 +1009,11 @@ namespace Efir
                         bool searchOpt = false;
                         contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
                         /*IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;*/
+                            IEnumerable<FileSystemInfo> filteredFileList =
+                                from file in allFileList
+                                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                                select file;*/
 
 
                         StringNumberComparer comparer = new StringNumberComparer();
@@ -1063,7 +1116,7 @@ namespace Efir
         }
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
-        //TODO  вынести данный класс в отдельный файл        
+        //TODO  вынести данный класс в отдельный файл
         class StringNumberComparer : IComparer<string>
         {
             public int Compare(string x, string y)
@@ -1195,7 +1248,7 @@ namespace Efir
 
         /// <summary>
         /// Реализаация одноименного интерфейса
-        /// </summary>        
+        /// </summary>
         public ValueTask DisposeAsync()
         {
             throw new NotImplementedException();

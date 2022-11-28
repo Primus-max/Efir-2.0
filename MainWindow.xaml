@@ -28,6 +28,7 @@
     <Grid>
         <materialDesign:Card>
             <TabControl
+
                 materialDesign:NavigationRailAssist.ShowSelectionBackground="True"
                 SnapsToDevicePixels="True"
                 Style="{StaticResource MaterialDesignNavigationRailTabControl}"
@@ -61,6 +62,7 @@
                             Text="Сделай макет программы телепередач на неделю" />
 
                         <TabControl
+                            x:Name="TabOfDayWeek"
                             Width="Auto"
                             materialDesign:ColorZoneAssist.Mode="Custom"
                             materialDesign:ColorZoneAssist.Foreground="Gold" HorizontalAlignment="Stretch" VerticalAlignment="Top" HorizontalContentAlignment="Left" VerticalContentAlignment="Stretch">
@@ -70,7 +72,7 @@
 
                                 <StackPanel Height="300">
                                     <ListView
-
+                                        x:Name="EfirListOnMonday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -137,8 +139,10 @@
                             </TabItem>
                             <TabItem
                                 Width="90"
-                                Padding="0"
-                                Header="вторник" >
+                                Padding="0" >
+                                <TabItem.Header>
+                                    Вторник
+                                </TabItem.Header>
                                 <StackPanel >
                                     <ListView
                                         Name="EventListOnTuesday"
@@ -158,8 +162,17 @@
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0" LostFocus="TEST">
                                         <ListView.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="Добавить" Click="TESET"></MenuItem>
+                                            <ContextMenu x:Name="AddEventFromContextMenu">
+                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                    <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding TvShowEvent}" />
+                                                    <MenuItem Header="{Binding SeriesEvent}" />
+                                                    <MenuItem Header="{Binding FilmsEvent}" />
+                                                    <MenuItem Header="{Binding News}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding Break}" />
+                                                </MenuItem>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
                                         </ListView.ContextMenu>
                                         <ListView.View>
@@ -216,7 +229,7 @@
                             </TabItem>
                             <TabItem Width="70"
                                      Padding="0"
-                                     Header="среда" MinWidth="70">
+                                     Header="Среда" MinWidth="70">
                                 <StackPanel >
                                     <ListView
 
@@ -287,7 +300,7 @@
 
                             </TabItem>
                             <TabItem
-                                Header="четверг">
+                                Header="Четверг">
                                 <StackPanel >
                                     <ListView
 
@@ -358,7 +371,7 @@
 
                             </TabItem>
                             <TabItem
-                                Header="пятница">
+                                Header="Пятница">
                                 <StackPanel >
                                     <ListView
 
@@ -429,7 +442,7 @@
 
                             </TabItem>
                             <TabItem
-                                Header="суббота">
+                                Header="Суббота">
                                 <StackPanel >
                                     <ListView
 
@@ -499,10 +512,9 @@
                                 </StackPanel>
                             </TabItem>
                             <TabItem
-                                Header="воскресение">
+                                Header="Воскресение">
                                 <StackPanel >
                                     <ListView
-
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
