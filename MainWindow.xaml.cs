@@ -37,76 +37,42 @@ namespace Efir
 
         //public ObservableCollection<GridView> ItemEfirDay = new ObservableCollection<GridView>();
         public ObservableCollection<DayOfWeek> EfirOfDayList = new ObservableCollection<DayOfWeek>();
+        public ObservableCollection<EfirOnTuesday> EfirOfTuesday = new ObservableCollection<EfirOnTuesday>();
 
         public void GetCollectionEfirDay()
         {
-            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 1 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 2 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 4 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 5 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 6 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 7 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 8 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 9 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 10 });
-            EfirOfDayList.Add(new DayOfWeek { Event = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 11 });
-
-            Testing.ItemsSource = EfirOfDayList;
-
-            var sdfg = EfirOfDayList.ToList();
-        }
-
-
-
-
-        public void JSONTests()
-        {
-            Event @event = new Event("ЛЕКЦИИ", 0);
-
-            string json = JsonSerializer.Serialize(@event);
-            var sdfs = json;
-            Event? restoredPerson = JsonSerializer.Deserialize<Event>(json);
-            var fkd = restoredPerson?.Name; // Tom
-
-
             MainWindowViewModel model = new MainWindowViewModel();
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 1 });
+            /*EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 2 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 4 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 5 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 6 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 7 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 8 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 9 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 10 });
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 11 });
+*/
 
-            var dfgdfg = model.EventList();
+            //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
+            //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
 
-
+            EventListOnTuesday.ItemsSource = EfirOfDayList;
+            // var sdfg = EfirOfDayList.ToList();
         }
 
-        /*        public void SetListEvent()
-                {
-                    MainWindowViewModel model = new MainWindowViewModel();
-                    ObservableCollection<Event> EventList = new ObservableCollection<Event>();
-                    EventList.Add(new Event(model.LectionEvent, 1));
-                    EventList.Add(new Event(model.FilmsEvent, 1));
-                    EventList.Add(new Event(model.SeriesEvent, 1));
-                    EventList.Add(new Event(model.PreventionEvent, 1));
-                    EventList.Add(new Event(model.TvShowEvent, 1));
 
-                }*/
-        public void GetListEvent()
+        private void TESET(object sender, RoutedEventArgs e)
         {
-            var listEvent = ListEventtoMedia.GetLocalValueEnumerator();
-
-
+            EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИИ", TimeToEfir = new TimeSpan(DateTime.Now.Minute, DateTime.Now.Second, DateTime.Now.Millisecond) });
         }
 
-        public void SetCollectionEfirOnDay()
+        public void SetEventItemWithContextMenu()
         {
-            for (int i = 0; i < GridOfDay.Columns.Count; i++)
-            {
-                var adsf = GridOfDay.Columns[i];
-
-                var sdfsdf = adsf.GetLocalValueEnumerator();
-            }
 
         }
-
 
         #endregion
 
@@ -134,9 +100,11 @@ namespace Efir
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
-            JSONTests();
             GetCollectionEfirDay();
-            GetListEvent();
+
+
+            //NameEfirOfDay.DisplayMemberBinding = model.EventList();
+
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -1232,6 +1200,13 @@ namespace Efir
         {
             throw new NotImplementedException();
         }
+
+        private void TEST(object sender, RoutedEventArgs e)
+        {
+            EfirOnTuesday efirOnTuesday = new EfirOnTuesday();
+
+        }
+
 
     }
 }

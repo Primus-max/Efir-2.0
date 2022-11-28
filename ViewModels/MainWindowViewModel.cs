@@ -25,6 +25,7 @@ namespace Efir.ViewModels
 
         #region Список названий всех событий
 
+
         private string _LectionEvent = "ЛЕКЦИИ";
         public string LectionEvent
         {
@@ -52,10 +53,20 @@ namespace Efir.ViewModels
         {
             get => _TvShowEvent;
         }
+        private string _Break = "ПЕРЕРЫВ";
+        public string Break
+        {
+            get => _Break;
+        }
+        private string _News = "НОВОСТИ";
+        public string News
+        {
+            get => _News;
+        }
 
         /// <summary>
         /// Получаю список всех событий, имя и булиного значение
-        /// </summary>       
+        /// </summary>          
         public ObservableCollection<Event> EventList()
         {
             return new ObservableCollection<Event>
@@ -64,11 +75,14 @@ namespace Efir.ViewModels
               new Event(FilmsEvent, 1),
               new Event (SeriesEvent, 1),
               new Event(PreventionEvent, 1),
-              new Event(TvShowEvent, 1)
-
+              new Event(TvShowEvent, 1),
+              new Event(Break, 1),
+              new Event(News, 1),
           };
 
         }
+
+
 
         #endregion
 

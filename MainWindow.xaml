@@ -19,10 +19,8 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"
     Title="Программа телепередач Эфир-1.0"
-    MinHeight="490"
-    Height="490"
-    MinWidth="750"
-    Width="800"
+    Height="520"
+    Width="810"
     Loaded="MainWindow_Loaded" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -143,7 +141,7 @@
                                 Header="вторник" >
                                 <StackPanel >
                                     <ListView
-                                        Name="Testing"
+                                        Name="EventListOnTuesday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -158,12 +156,18 @@
                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0" LostFocus="TEST">
+                                        <ListView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Добавить" Click="TESET"></MenuItem>
+                                            </ContextMenu>
+                                        </ListView.ContextMenu>
                                         <ListView.View>
                                             <GridView x:Name="GridOfDay">
                                                 <GridViewColumn
                                                     Header="Время"
-                                                    materialDesign:BottomDashedLineAdorner.Thickness="1" >
+                                                    materialDesign:BottomDashedLineAdorner.Thickness="1"
+                                                    >
 
                                                     <GridViewColumn.CellTemplate>
                                                         <DataTemplate>
@@ -181,7 +185,7 @@
                                                 <GridViewColumn
                                                     x:Name="NameEfirOfDay"
                                                     Width="Auto"
-                                                    DisplayMemberBinding="{Binding Event}"
+                                                    DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
                                                     x:Name="DescriptionEfirOfDay"
