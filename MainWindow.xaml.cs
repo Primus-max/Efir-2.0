@@ -206,6 +206,16 @@ namespace Efir
         }
         #endregion
 
+        #region Лекции
+        private void AddLectionAtList_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            string eventName = (string)menuItem.Header;
+
+            AddEventByEventName(eventName);
+        }
+        #endregion
+
         #region Фильмы
         private void AddFilmsAtList_Click(object sender, RoutedEventArgs e)
         {
@@ -1409,7 +1419,5 @@ namespace Efir
             EfirOnTuesday efirOnTuesday = new EfirOnTuesday();
 
         }
-
-
     }
 }

@@ -112,7 +112,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
@@ -200,7 +200,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
@@ -287,7 +287,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
@@ -372,7 +372,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
@@ -457,7 +457,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
@@ -542,7 +542,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
@@ -626,7 +626,7 @@
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
-                                                    <MenuItem Header="{Binding LectionEvent}" />
+                                                    <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" />
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
