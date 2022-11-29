@@ -90,12 +90,15 @@ namespace Efir
             //DataContext = db.Serieses.Local.ToObservableCollection();
 
             #region Установка источников данных для листов
-            ObservableCollection<EfirOnMonday> eventList = new ObservableCollection<EfirOnMonday>();
+            MainWindowViewModel model = new MainWindowViewModel();
+            model.EventListSource = new ObservableCollection<EfirOnMonday>();
+            //model.EventListSource = new ObservableCollection<EfirOnMonday>();
+
             foreach (var item in db.OnMonday.ToList())
             {
-                eventList.Add(item);
+                model.EventListSource.Add(item);
             }
-            EfirListOnMonday.ItemsSource = eventList;
+            EfirListOnMonday.ItemsSource = model.EventListSource;
 
 
             #endregion
@@ -364,6 +367,7 @@ namespace Efir
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
                 ObservableCollection<EfirOnMonday> eventList = new ObservableCollection<EfirOnMonday>();
+                MainWindowViewModel model = new MainWindowViewModel();
 
                 EfirOnMonday efir = new EfirOnMonday();
                 efir.EventName = eventName;
@@ -375,9 +379,10 @@ namespace Efir
                 db.SaveChanges();
                 foreach (var item in db.OnMonday.ToList())
                 {
-                    eventList.Add(item);
+                    //eventList.Add(item);
+                    model.EventListSource.Add(item);
                 }
-                EfirListOnMonday.ItemsSource = eventList;
+                EfirListOnMonday.ItemsSource = model.EventListSource;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
@@ -413,6 +418,9 @@ namespace Efir
 
         #endregion
 
+
+
+
         #region Удаление события с учетом дня недели
         private void RemoveEvent_Click(object sender, RoutedEventArgs e)
         {
@@ -421,13 +429,22 @@ namespace Efir
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
+                MainWindowViewModel model = new MainWindowViewModel();
+
                 var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
                 EfirOfMonday.Remove(selectedItem);
 
                 var itemInBase = db.OnMonday.ToList().Find(r => r.Id == selectedItem.Id);
                 db.OnMonday.Remove(itemInBase);
                 db.SaveChanges();
-                
+
+                //TODO рефактор этой функции. сделать из нее полноценный рефреш
+                foreach (var item in db.OnMonday.ToList())
+                {
+                    model.EventListSource.Add(item);
+                }
+
+                EfirListOnMonday.ItemsSource = model.EventListSource;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {

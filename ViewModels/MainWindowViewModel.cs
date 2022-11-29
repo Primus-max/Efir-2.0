@@ -64,23 +64,16 @@ namespace Efir.ViewModels
             get => _News;
         }
 
-        /// <summary>
-        /// Получаю список всех событий, имя и булиного значение
-        /// </summary>          
-        public ObservableCollection<Event> EventList()
+        #region Коллекции для отображения событий в дне
+        private ObservableCollection<EfirOnMonday> _EventListSource = new ObservableCollection<EfirOnMonday>();
+        public ObservableCollection<EfirOnMonday> EventListSource
         {
-            return new ObservableCollection<Event>
-          {
-              new Event(LectionEvent, 1),
-              new Event(FilmsEvent, 1),
-              new Event (SeriesEvent, 1),
-              new Event(PreventionEvent, 1),
-              new Event(TvShowEvent, 1),
-              new Event(Break, 1),
-              new Event(News, 1),
-          };
-
+            get => _EventListSource;
+            set => Set(ref _EventListSource, value);
         }
+        #endregion
+
+
 
 
 
