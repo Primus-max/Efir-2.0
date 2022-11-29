@@ -266,12 +266,12 @@ namespace Efir
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
                 EfirOfFriday.Add(new EfirOnFriday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EventListOnFriday.ItemsSource = EfirOfFriday;
+                EfirListOnFriday.ItemsSource = EfirOfFriday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
                 EfirOfSaturday.Add(new EfitOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EventListOnSaturday.ItemsSource = EfirOfSaturday;
+                EfirtListOnSaturday.ItemsSource = EfirOfSaturday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
@@ -310,11 +310,13 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
-
+                var removableItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
+                EfirOfFriday.Remove(removableItem);
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-
+                var removableItem = EfirtListOnSaturday.SelectedItem as EfitOnSaturday;
+                EfirOfSaturday.Remove(removableItem);
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {

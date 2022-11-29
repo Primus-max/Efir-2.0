@@ -433,7 +433,7 @@
                                 Header="Пятница">
                                 <StackPanel >
                                     <ListView
-                                        x:Name="EventListOnFriday"
+                                        x:Name="EfirListOnFriday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -460,7 +460,7 @@
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
                                                 </MenuItem>
-                                                <MenuItem Header="Удалить" />
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
                                         </ListView.ContextMenu>
                                         <ListView.View>
@@ -518,7 +518,7 @@
                                 Header="Суббота">
                                 <StackPanel >
                                     <ListView
-                                        x:Name="EventListOnSaturday"
+                                        x:Name="EfirtListOnSaturday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -545,7 +545,7 @@
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
                                                 </MenuItem>
-                                                <MenuItem Header="Удалить" />
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
                                         </ListView.ContextMenu>
                                         <ListView.View>
