@@ -92,23 +92,33 @@ namespace Efir
             #region Установка источников данных для листов
             MainWindowViewModel model = new MainWindowViewModel();
 
+            //Понедельник
             foreach (var item in db.OnMonday.ToList())
             {
                 model.EventListSourceMonday.Add(item);
             }
             EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
+            //Вторник
             foreach (var item in db.OnTuesday.ToList())
             {
                 model.EventListSourceTuesday.Add(item);
             }
             EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
 
+            //Среда
             foreach (var item in db.OnWednesday.ToList())
             {
                 model.EventListSourceWednesday.Add(item);
             }
             EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
+
+            //четврег
+            foreach (var item in db.OnThursday.ToList())
+            {
+                model.EventListSourceThursday.Add(item);
+            }
+            EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
             #endregion
         }
 
@@ -424,8 +434,20 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
-                EfirOfThursday.Add(new EfirOnThursday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EfirListOnThursday.ItemsSource = EfirOfThursday;
+                //EfirOfThursday.Add(new EfirOnThursday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                //EfirListOnThursday.ItemsSource = EfirOfThursday;
+
+                EfirOnThursday efir = new EfirOnThursday();
+                efir.EventName = eventName;
+                efir.TimeToEfir = new TimeSpan(0, 0, 0);
+
+                db.OnThursday.Add(efir);
+                db.SaveChanges();
+                foreach (var item in db.OnThursday.ToList())
+                {
+                    model.EventListSourceThursday.Add(item);
+                }
+                EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
