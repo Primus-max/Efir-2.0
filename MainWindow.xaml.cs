@@ -69,15 +69,15 @@ namespace Efir
         {
             // гарантируем, что база данных создана
             db.Database.EnsureCreated();
-            db.Serieses.Load();
-            db.Films.Load();
-            //db.Documentarieses.Load();
-            db.Educationals.Load();
-            //db.Entertainments.Load();
-            db.Preventions.Load();
-            db.TvShows.Load();
+            /* db.Serieses.Load();
+             db.Films.Load();
+             //db.Documentarieses.Load();
+             db.Educationals.Load();
+             //db.Entertainments.Load();
+             db.Preventions.Load();
+             db.TvShows.Load();
 
-            db.OnMonday.Load();
+             db.OnMonday.Load();*/
 
             //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
             CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
@@ -90,7 +90,12 @@ namespace Efir
             //DataContext = db.Serieses.Local.ToObservableCollection();
 
             #region Установка источников данных для листов
-
+            ObservableCollection<EfirOnMonday> eventList = new ObservableCollection<EfirOnMonday>();
+            foreach (var item in db.OnMonday.ToList())
+            {
+                eventList.Add(item);
+            }
+            EfirListOnMonday.ItemsSource = eventList;
 
 
             #endregion
@@ -239,7 +244,6 @@ namespace Efir
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
-
         }
         #endregion
 
@@ -359,8 +363,21 @@ namespace Efir
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                EfirOfMonday.Add(new EfirOnMonday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EfirListOnMonday.ItemsSource = EfirOfMonday;
+                ObservableCollection<EfirOnMonday> eventList = new ObservableCollection<EfirOnMonday>();
+
+                EfirOnMonday efir = new EfirOnMonday();
+                efir.EventName = eventName;
+                efir.TimeToEfir = new TimeSpan(0, 0, 0);
+
+                // EfirOfMonday.Add(new EfirOnMonday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+
+                db.OnMonday.Add(efir);
+                db.SaveChanges();
+                foreach (var item in db.OnMonday.ToList())
+                {
+                    eventList.Add(item);
+                }
+                EfirListOnMonday.ItemsSource = eventList;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
@@ -404,8 +421,13 @@ namespace Efir
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                var removableItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
-                EfirOfMonday.Remove(removableItem);
+                var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
+                EfirOfMonday.Remove(selectedItem);
+
+                var itemInBase = db.OnMonday.ToList().Find(r => r.Id == selectedItem.Id);
+                db.OnMonday.Remove(itemInBase);
+                db.SaveChanges();
+                
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
