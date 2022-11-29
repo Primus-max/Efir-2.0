@@ -106,7 +106,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -194,7 +194,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0" LostFocus="TEST">
                                         <ListView.ContextMenu>
                                             <ContextMenu x:Name="AddEventFromContextMenu">
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -281,7 +281,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -366,7 +366,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -451,7 +451,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -536,7 +536,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -620,7 +620,7 @@
                                         ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu>
-                                                <MenuItem  Header="Добавить" Click="AddEvent_Click">
+                                                <MenuItem  Header="Добавить">
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>

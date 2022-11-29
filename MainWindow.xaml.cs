@@ -75,45 +75,6 @@ namespace Efir
             AddEventFromContextMenu.ItemsSource = model.EventList();*/
         }
 
-
-        private void AddEvent_Click(object sender, RoutedEventArgs e)
-        {
-            SetEventItemWithContextMenu();
-        }
-
-
-
-        public void SetEventItemWithContextMenu()
-        {
-            /*TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
-
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
-            {
-            // ObservableCollection<EfirOnMonday> EfirOfMonday = new ObservableCollection<EfirOnMonday>();
-
-                    }
-                    if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
-                    {
-                    MessageBox.Show("Вторник");
-                    }
-                    if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
-                    {
-                    MessageBox.Show("Среда");
-                    }
-                    if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
-                    {
-                    MessageBox.Show("Четверг");
-                    }
-                    if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
-                    {
-                    MessageBox.Show("Пятница");
-                    }
-                    if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
-                    {
-                    MessageBox.Show("Воскресение");
-                    }*/
-        }
-
         #region Добавление события с учетом дня недели
 
         #region Профилактика
