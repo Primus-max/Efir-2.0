@@ -44,36 +44,187 @@ namespace Efir
         public ObservableCollection<EfirOnSunday> EfirOfSunday = new ObservableCollection<EfirOnSunday>();
         #endregion
 
-        #region Получаю лист программы от пользователя
-
-        //public ObservableCollection<GridView> ItemEfirDay = new ObservableCollection<GridView>();
+        #endregion
 
 
-        public void GetCollectionEfirDay()
+        #region ПЕРМЕННЫЕ: блок медиа
+        private string pathToFilms = "";
+        private string pathToSeries = "";
+        private string pathToLection = "";
+        private string pathToDocumentaries = "";
+        private string pathToEntertainment = "";
+        private string pathToPrevention = "";
+
+        string CountFilm = "";
+        #endregion
+
+
+
+        public MainWindow()
         {
-            MainWindowViewModel model = new MainWindowViewModel();
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 1 });
-            /*EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 2 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 3 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 4 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 5 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ТЕЛЕПЕРЕДАЧИ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 6 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ЛЕКЦИЯ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 7 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ОБРАЗОВАНИЕ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 8 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "СЕРИАЛ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 9 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ФИЛЬМ", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 10 });
-            EfirOfDayList.Add(new DayOfWeek { EventName = "ПРОФИЛАКТИКА", Description = "", TimeToEfir = new TimeSpan(hours: 1, minutes: 20, seconds: 30), Option = "NOT", Id = 11 });
-            */
-
-            //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
-            //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
-
-            EfirListOnTuesday.ItemsSource = EfirOfDayList;
-            // var sdfg = EfirOfDayList.ToList();
-            /* AddEventFromContextMenu.Items.Clear();
-            AddEventFromContextMenu.ItemsSource = model.EventList();*/
+            InitializeComponent();
+            Loaded += MainWindow_Loaded;
         }
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // гарантируем, что база данных создана
+            db.Database.EnsureCreated();
+            db.Serieses.Load();
+            db.Films.Load();
+            //db.Documentarieses.Load();
+            db.Educationals.Load();
+            //db.Entertainments.Load();
+            db.Preventions.Load();
+            db.TvShows.Load();
+
+            //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
+            CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
+            //FilePathToFilmTextBox.Text = db?.Films.ToList()?[0].Path == null ? "" : db?.Films.ToList()[0].Path;
+
+
+            // загружаем данные из БД
+            // db.Serieses.Load();
+            // и устанавливаем данные в качестве контекста
+            //DataContext = db.Serieses.Local.ToObservableCollection();
+
+            #region Установка источников данных для листов
+
+
+
+            #endregion
+        }
+
+        #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
+        // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
+        /*public void GetDutayion()
+        {
+        string path = @"Z:\cd1.avi";
+        int frameWidth = 0;
+        int frameHeight = 0;
+        byte[] fileDataByte = new byte[8];
+        using (FileStream stream = new FileStream(path, FileMode.Open))
+        {
+        stream.Seek(64, SeekOrigin.Begin);
+        stream.Read(fileDataByte, 4, 12);
+        frameWidth = BitConverter.ToInt32(fileDataByte, 4);
+        frameHeight = BitConverter.ToInt32(fileDataByte, 8);
+
+        // var media = new MediaInfoWrapper(stream);
+
+
+        }
+
+        }*/
+
+
+        // поиск элемента в дереве(например textblock в listview)
+        /*public static T? FindVisualChildByName<T>(DependencyObject parent, string name) where T : DependencyObject
+            {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+              {
+              var child = VisualTreeHelper.GetChild(parent, i);
+              string? controlName = child.GetValue(Control.NameProperty) as string;
+              if (controlName == name)
+              {
+              return child as T;
+              }
+              else
+              {
+            T? result = FindVisualChildByName<T>(child, name);
+                if (result != null)
+                return result;
+                }
+                }
+                return null;
+                }*/
+
+        // так же, получение ребенка из родительского дерева
+        /*private static T? GetFrameworkElementByName<T>(FrameworkElement referenceElement) where T : FrameworkElement
+
+            {
+
+            FrameworkElement? child = null;
+
+            for (Int32 i = 0; i < VisualTreeHelper.GetChildrenCount(referenceElement); i++)
+
+              {
+
+              child = VisualTreeHelper.GetChild(referenceElement, i) as FrameworkElement;
+
+              System.Diagnostics.Debug.WriteLine(child);
+
+              if (child != null && child.GetType() == typeof(T))
+
+              { break; }
+
+              else if (child != null)
+
+              {
+
+            child = GetFrameworkElementByName<T>(child);
+
+                if (child != null && child.GetType() == typeof(T))
+
+                {
+
+                break;
+
+                }
+
+                }
+
+                }
+
+                return child as T;
+
+                }*/
+
+        /* private void FindElement(object sender, RoutedEventArgs e)
+
+        {
+
+        // get the current selected item
+
+        ListViewItem? item = Testing.ItemContainerGenerator.ContainerFromIndex(Testing.SelectedIndex) as ListViewItem;
+
+        TextBlock textYear = null;
+
+        if (item != null)
+
+        {
+
+        //get the item's template parent
+
+        ContentPresenter templateParent = GetFrameworkElementByName<ContentPresenter>(item);
+
+            //get the DataTemplate that TextBlock in.
+
+            DataTemplate dataTemplate = listview.ItemTemplate;
+
+            if (dataTemplate != null && templateParent != null)
+
+            {
+
+            textYear = dataTemplate.FindName("textYear", templateParent) as TextBlock;
+
+            }
+
+            if (textYear != null)
+
+            {
+
+            MessageBox.Show(String.Format("Current item's Year is:{0}", textYear.Text));
+
+            }
+
+            }
+
+
+
+            }*/
+        #endregion
+
+        #region БЛОК ЭФИР
 
         #region Добавление события с учетом дня недели
 
@@ -286,204 +437,6 @@ namespace Efir
             }
         }
         #endregion
-
-        #endregion
-
-
-
-
-        #endregion
-
-
-
-        #region ПЕРМЕННЫЕ: блок медиа
-        private string pathToFilms = "";
-        private string pathToSeries = "";
-        private string pathToLection = "";
-        private string pathToDocumentaries = "";
-        private string pathToEntertainment = "";
-        private string pathToPrevention = "";
-
-        string CountFilm = "";
-        #endregion
-
-
-
-        public MainWindow()
-        {
-            InitializeComponent();
-            Loaded += MainWindow_Loaded;
-            GetCollectionEfirDay();
-
-
-            //NameEfirOfDay.DisplayMemberBinding = model.EventList();
-
-        }
-        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            // гарантируем, что база данных создана
-            db.Database.EnsureCreated();
-            db.Serieses.Load();
-            db.Films.Load();
-            //db.Documentarieses.Load();
-            db.Educationals.Load();
-            //db.Entertainments.Load();
-            db.Preventions.Load();
-            db.TvShows.Load();
-
-            //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
-            CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
-            //FilePathToFilmTextBox.Text = db?.Films.ToList()?[0].Path == null ? "" : db?.Films.ToList()[0].Path;
-
-
-            // загружаем данные из БД
-            // db.Serieses.Load();
-            // и устанавливаем данные в качестве контекста
-            //DataContext = db.Serieses.Local.ToObservableCollection();
-
-            #region Установка источников данных для листов
-            EfirListOnMonday.ItemsSource = EfirOfMonday;
-            if (EfirOfMonday.Count == 0)
-            {
-                //MessageBox.Show("Для добавления событий нажмите правой кнопку мышки на свободном месте (желательно в центре окна)");
-            }
-
-            #endregion
-        }
-
-        #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
-        // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
-        /*public void GetDutayion()
-        {
-        string path = @"Z:\cd1.avi";
-        int frameWidth = 0;
-        int frameHeight = 0;
-        byte[] fileDataByte = new byte[8];
-        using (FileStream stream = new FileStream(path, FileMode.Open))
-        {
-        stream.Seek(64, SeekOrigin.Begin);
-        stream.Read(fileDataByte, 4, 12);
-        frameWidth = BitConverter.ToInt32(fileDataByte, 4);
-        frameHeight = BitConverter.ToInt32(fileDataByte, 8);
-
-        // var media = new MediaInfoWrapper(stream);
-
-
-        }
-
-        }*/
-
-
-        // поиск элемента в дереве(например textblock в listview)
-        /*public static T? FindVisualChildByName<T>(DependencyObject parent, string name) where T : DependencyObject
-            {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-              {
-              var child = VisualTreeHelper.GetChild(parent, i);
-              string? controlName = child.GetValue(Control.NameProperty) as string;
-              if (controlName == name)
-              {
-              return child as T;
-              }
-              else
-              {
-            T? result = FindVisualChildByName<T>(child, name);
-                if (result != null)
-                return result;
-                }
-                }
-                return null;
-                }*/
-
-        // так же, получение ребенка из родительского дерева
-        /*private static T? GetFrameworkElementByName<T>(FrameworkElement referenceElement) where T : FrameworkElement
-
-            {
-
-            FrameworkElement? child = null;
-
-            for (Int32 i = 0; i < VisualTreeHelper.GetChildrenCount(referenceElement); i++)
-
-              {
-
-              child = VisualTreeHelper.GetChild(referenceElement, i) as FrameworkElement;
-
-              System.Diagnostics.Debug.WriteLine(child);
-
-              if (child != null && child.GetType() == typeof(T))
-
-              { break; }
-
-              else if (child != null)
-
-              {
-
-            child = GetFrameworkElementByName<T>(child);
-
-                if (child != null && child.GetType() == typeof(T))
-
-                {
-
-                break;
-
-                }
-
-                }
-
-                }
-
-                return child as T;
-
-                }*/
-
-        /* private void FindElement(object sender, RoutedEventArgs e)
-
-        {
-
-        // get the current selected item
-
-        ListViewItem? item = Testing.ItemContainerGenerator.ContainerFromIndex(Testing.SelectedIndex) as ListViewItem;
-
-        TextBlock textYear = null;
-
-        if (item != null)
-
-        {
-
-        //get the item's template parent
-
-        ContentPresenter templateParent = GetFrameworkElementByName<ContentPresenter>(item);
-
-            //get the DataTemplate that TextBlock in.
-
-            DataTemplate dataTemplate = listview.ItemTemplate;
-
-            if (dataTemplate != null && templateParent != null)
-
-            {
-
-            textYear = dataTemplate.FindName("textYear", templateParent) as TextBlock;
-
-            }
-
-            if (textYear != null)
-
-            {
-
-            MessageBox.Show(String.Format("Current item's Year is:{0}", textYear.Text));
-
-            }
-
-            }
-
-
-
-            }*/
-        #endregion
-
-        #region БЛОК ЭФИР
-
-
 
         #endregion
 
