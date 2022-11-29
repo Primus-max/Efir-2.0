@@ -69,7 +69,7 @@ namespace Efir
             //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
             //EfirOfTuesday.Add(new EfirOnTuesday { Events = new ObservableCollection<Event>() });
 
-            EventListOnTuesday.ItemsSource = EfirOfDayList;
+            EfirListOnTuesday.ItemsSource = EfirOfDayList;
             // var sdfg = EfirOfDayList.ToList();
             /* AddEventFromContextMenu.Items.Clear();
             AddEventFromContextMenu.ItemsSource = model.EventList();*/
@@ -81,11 +81,7 @@ namespace Efir
             SetEventItemWithContextMenu();
         }
 
-        private void RemoveEvent_Click(object sender, RoutedEventArgs e)
-        {
-            var removableItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
-            EfirOfMonday.Remove(removableItem);
-        }
+
 
         public void SetEventItemWithContextMenu()
         {
@@ -216,6 +212,16 @@ namespace Efir
         }
         #endregion
 
+        #region Перерыв
+        private void AddBreakAtList_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            string eventName = (string)menuItem.Header;
+
+            AddEventByEventName(eventName);
+        }
+        #endregion
+
         #region Фильмы
         private void AddFilmsAtList_Click(object sender, RoutedEventArgs e)
         {
@@ -245,12 +251,12 @@ namespace Efir
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
                 EfirOfTuesday.Add(new EfirOnTuesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EventListOnTuesday.ItemsSource = EfirOfTuesday;
+                EfirListOnTuesday.ItemsSource = EfirOfTuesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
                 EfirOfWednesday.Add(new EfirOnWednesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EventListOnWednesday.ItemsSource = EfirOfWednesday;
+                EfirListOnWednesday.ItemsSource = EfirOfWednesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
@@ -276,7 +282,45 @@ namespace Efir
 
         #endregion
 
+        #region Удаление события с учетом дня недели
+        private void RemoveEvent_Click(object sender, RoutedEventArgs e)
+        {
 
+            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
+
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
+            {
+                var removableItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
+                EfirOfMonday.Remove(removableItem);
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+            {
+                var removableItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
+                EfirOfTuesday.Remove(removableItem);
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
+            {
+                var removableItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
+                EfirOfWednesday.Remove(removableItem);
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
+            {
+
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
+            {
+
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
+            {
+
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
+            {
+
+            }
+        }
+        #endregion
 
         #endregion
 
