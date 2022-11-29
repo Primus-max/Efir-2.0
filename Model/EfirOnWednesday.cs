@@ -12,7 +12,7 @@ namespace Efir.Model
         public TimeSpan TimeToEfir { get; set; }
         public string EventName { get; set; }
         public string? Description { get; set; }
-        public string Option { get; set; }
+        public string? Option { get; set; }
 
         public EfirOnWednesday() { }
 

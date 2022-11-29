@@ -65,12 +65,55 @@ namespace Efir.ViewModels
         }
 
         #region Коллекции для отображения событий в дне
-        private ObservableCollection<EfirOnMonday> _EventListSource = new ObservableCollection<EfirOnMonday>();
-        public ObservableCollection<EfirOnMonday> EventListSource
+        private ObservableCollection<EfirOnMonday> _EventListSourceMonday = new ObservableCollection<EfirOnMonday>();
+        public ObservableCollection<EfirOnMonday> EventListSourceMonday
         {
-            get => _EventListSource;
-            set => Set(ref _EventListSource, value);
+            get => _EventListSourceMonday;
+            set => Set(ref _EventListSourceMonday, value);
         }
+
+        private ObservableCollection<EfirOnTuesday> _EventListSourceTuesday = new ObservableCollection<EfirOnTuesday>();
+        public ObservableCollection<EfirOnTuesday> EventListSourceTuesday
+        {
+            get => _EventListSourceTuesday;
+            set => Set(ref _EventListSourceTuesday, value);
+        }
+
+        private ObservableCollection<EfirOnWednesday> _EventListSourceWednesday = new ObservableCollection<EfirOnWednesday>();
+        public ObservableCollection<EfirOnWednesday> EventListSourceWednesday
+        {
+            get => _EventListSourceWednesday;
+            set => Set(ref _EventListSourceWednesday, value);
+        }
+
+        private ObservableCollection<EfirOnThursday> _EventListSourceThursday = new ObservableCollection<EfirOnThursday>();
+        public ObservableCollection<EfirOnThursday> EventListSourceThursday
+        {
+            get => _EventListSourceThursday;
+            set => Set(ref _EventListSourceThursday, value);
+        }
+
+        private ObservableCollection<EfirOnFriday> _EventListSourceFriday = new ObservableCollection<EfirOnFriday>();
+        public ObservableCollection<EfirOnFriday> EventListSourceFriday
+        {
+            get => _EventListSourceFriday;
+            set => Set(ref _EventListSourceFriday, value);
+        }
+
+        private ObservableCollection<EfirOnSaturday> _EventListSourceSaturday = new ObservableCollection<EfirOnSaturday>();
+        public ObservableCollection<EfirOnSaturday> EventListSourceSaturday
+        {
+            get => _EventListSourceSaturday;
+            set => Set(ref _EventListSourceSaturday, value);
+        }
+
+        private ObservableCollection<EfirOnSunday> _EventListSourceSunday = new ObservableCollection<EfirOnSunday>();
+        public ObservableCollection<EfirOnSunday> EventListSourceSunday
+        {
+            get => _EventListSourceSunday;
+            set => Set(ref _EventListSourceSunday, value);
+        }
+
         #endregion
 
 

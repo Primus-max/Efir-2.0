@@ -91,16 +91,18 @@ namespace Efir
 
             #region Установка источников данных для листов
             MainWindowViewModel model = new MainWindowViewModel();
-            model.EventListSource = new ObservableCollection<EfirOnMonday>();
-            //model.EventListSource = new ObservableCollection<EfirOnMonday>();
 
             foreach (var item in db.OnMonday.ToList())
             {
-                model.EventListSource.Add(item);
+                model.EventListSourceMonday.Add(item);
             }
-            EfirListOnMonday.ItemsSource = model.EventListSource;
+            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
-
+            foreach (var item in db.OnTuesday.ToList())
+            {
+                model.EventListSourceTuesday.Add(item);
+            }
+            EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
             #endregion
         }
 
@@ -358,7 +360,7 @@ namespace Efir
         private void AddEventByEventName(string eventName)
         {
             TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
-
+            MainWindowViewModel model = new MainWindowViewModel();
             /*var menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;*/
             /* Guid guid = Guid.NewGuid();
@@ -366,28 +368,36 @@ namespace Efir
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                ObservableCollection<EfirOnMonday> eventList = new ObservableCollection<EfirOnMonday>();
-                MainWindowViewModel model = new MainWindowViewModel();
 
                 EfirOnMonday efir = new EfirOnMonday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                // EfirOfMonday.Add(new EfirOnMonday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-
                 db.OnMonday.Add(efir);
                 db.SaveChanges();
                 foreach (var item in db.OnMonday.ToList())
                 {
-                    //eventList.Add(item);
-                    model.EventListSource.Add(item);
+                    model.EventListSourceMonday.Add(item);
                 }
-                EfirListOnMonday.ItemsSource = model.EventListSource;
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
-                EfirOfTuesday.Add(new EfirOnTuesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EfirListOnTuesday.ItemsSource = EfirOfTuesday;
+                //EfirOfTuesday.Add(new EfirOnTuesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                //EfirListOnTuesday.ItemsSource = EfirOfTuesday;
+
+                EfirOnTuesday efir = new EfirOnTuesday();
+                efir.EventName = eventName;
+                efir.TimeToEfir = new TimeSpan(0, 0, 0);
+
+                db.OnTuesday.Add(efir);
+                db.SaveChanges();
+                foreach (var item in db.OnTuesday.ToList())
+                {
+                    model.EventListSourceTuesday.Add(item);
+                }
+                EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
@@ -441,10 +451,10 @@ namespace Efir
                 //TODO рефактор этой функции. сделать из нее полноценный рефреш
                 foreach (var item in db.OnMonday.ToList())
                 {
-                    model.EventListSource.Add(item);
+                    model.EventListSourceMonday.Add(item);
                 }
 
-                EfirListOnMonday.ItemsSource = model.EventListSource;
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
