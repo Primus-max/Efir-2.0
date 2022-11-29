@@ -348,7 +348,7 @@
                                 Header="Четверг">
                                 <StackPanel >
                                     <ListView
-                                        x:Name="EventListOnThursday"
+                                        x:Name="EfirListOnThursday"
                                         Height="300"
 
                                         dd:DragDrop.IsDragSource="True"
@@ -375,7 +375,7 @@
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
                                                 </MenuItem>
-                                                <MenuItem Header="Удалить"/>
+                                                <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
                                         </ListView.ContextMenu>
                                         <ListView.View>

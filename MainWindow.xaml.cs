@@ -261,7 +261,7 @@ namespace Efir
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
                 EfirOfThursday.Add(new EfirOnThursday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EventListOnThursday.ItemsSource = EfirOfThursday;
+                EfirListOnThursday.ItemsSource = EfirOfThursday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
@@ -305,7 +305,8 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
-
+                var removableItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
+                EfirOfThursday.Remove(removableItem);
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
