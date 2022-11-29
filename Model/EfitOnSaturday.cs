@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Efir.Model
 {
-    public class EfitOnSaturday
+    public class EfirOnSaturday
     {
         public int Id { get; set; }
         public TimeSpan TimeToEfir { get; set; }
@@ -14,9 +14,9 @@ namespace Efir.Model
         public string? Description { get; set; }
         public string Option { get; set; }
 
-        public EfitOnSaturday() { }
+        public EfirOnSaturday() { }
 
-        public EfitOnSaturday(TimeSpan timeToEfir, string eventName, string? description, string option)
+        public EfirOnSaturday(TimeSpan timeToEfir, string eventName, string? description, string option)
         {
             this.TimeToEfir = timeToEfir;
             this.EventName = eventName;

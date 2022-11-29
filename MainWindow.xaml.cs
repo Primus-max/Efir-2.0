@@ -40,7 +40,7 @@ namespace Efir
         public ObservableCollection<EfirOnWednesday> EfirOfWednesday = new ObservableCollection<EfirOnWednesday>();
         public ObservableCollection<EfirOnThursday> EfirOfThursday = new ObservableCollection<EfirOnThursday>();
         public ObservableCollection<EfirOnFriday> EfirOfFriday = new ObservableCollection<EfirOnFriday>();
-        public ObservableCollection<EfitOnSaturday> EfirOfSaturday = new ObservableCollection<EfitOnSaturday>();
+        public ObservableCollection<EfirOnSaturday> EfirOfSaturday = new ObservableCollection<EfirOnSaturday>();
         public ObservableCollection<EfirOnSunday> EfirOfSunday = new ObservableCollection<EfirOnSunday>();
         #endregion
 
@@ -270,13 +270,13 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                EfirOfSaturday.Add(new EfitOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                EfirOfSaturday.Add(new EfirOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
                 EfirtListOnSaturday.ItemsSource = EfirOfSaturday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
                 EfirOfSunday.Add(new EfirOnSunday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EventListOnSunday.ItemsSource = EfirOfSunday;
+                EfirtListOnSunday.ItemsSource = EfirOfSunday;
             }
         }
 
@@ -315,12 +315,13 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                var removableItem = EfirtListOnSaturday.SelectedItem as EfitOnSaturday;
+                var removableItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
                 EfirOfSaturday.Remove(removableItem);
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
-
+                var removableItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
+                EfirOfSunday.Remove(removableItem);
             }
         }
         #endregion
