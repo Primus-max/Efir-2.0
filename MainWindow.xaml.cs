@@ -70,14 +70,14 @@ namespace Efir
             // гарантируем, что база данных создана
             db.Database.EnsureCreated();
             /* db.Serieses.Load();
-             db.Films.Load();
-             //db.Documentarieses.Load();
-             db.Educationals.Load();
-             //db.Entertainments.Load();
-             db.Preventions.Load();
-             db.TvShows.Load();
+            db.Films.Load();
+            //db.Documentarieses.Load();
+            db.Educationals.Load();
+            //db.Entertainments.Load();
+            db.Preventions.Load();
+            db.TvShows.Load();
 
-             db.OnMonday.Load();*/
+            db.OnMonday.Load();*/
 
             //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
             CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
@@ -133,6 +133,13 @@ namespace Efir
                 model.EventListSourceSaturday.Add(item);
             }
             EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
+
+            //Воскресение
+            foreach (var item in db.OnSunday.ToList())
+            {
+                model.EventListSourceSunday.Add(item);
+            }
+            EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             #endregion
         }
 
@@ -483,10 +490,8 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                EfirOfSaturday.Add(new EfirOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EfirtListOnSaturday.ItemsSource = EfirOfSaturday;
-
-
+                // EfirOfSaturday.Add(new EfirOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                // EfirtListOnSaturday.ItemsSource = EfirOfSaturday;
 
                 EfirOnSaturday efir = new EfirOnSaturday();
                 efir.EventName = eventName;
@@ -502,8 +507,20 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
-                EfirOfSunday.Add(new EfirOnSunday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EfirtListOnSunday.ItemsSource = EfirOfSunday;
+                // EfirOfSunday.Add(new EfirOnSunday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                // EfirtListOnSunday.ItemsSource = EfirOfSunday;
+
+                EfirOnSunday efir = new EfirOnSunday();
+                efir.EventName = eventName;
+                efir.TimeToEfir = new TimeSpan(0, 0, 0);
+
+                db.OnSunday.Add(efir);
+                db.SaveChanges();
+                foreach (var item in db.OnSunday.ToList())
+                {
+                    model.EventListSourceSunday.Add(item);
+                }
+                EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
         }
 
