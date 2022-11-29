@@ -77,6 +77,8 @@ namespace Efir
             db.Preventions.Load();
             db.TvShows.Load();
 
+            db.OnMonday.Load();
+
             //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
             CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
             //FilePathToFilmTextBox.Text = db?.Films.ToList()?[0].Path == null ? "" : db?.Films.ToList()[0].Path;
@@ -1376,10 +1378,6 @@ namespace Efir
             throw new NotImplementedException();
         }
 
-        private void TEST(object sender, RoutedEventArgs e)
-        {
-            EfirOnTuesday efirOnTuesday = new EfirOnTuesday();
 
-        }
     }
 }

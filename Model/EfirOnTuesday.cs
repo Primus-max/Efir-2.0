@@ -10,7 +10,7 @@ namespace Efir.Model
 {
     public class EfirOnTuesday
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public TimeSpan TimeToEfir { get; set; }
         public string EventName { get; set; }
         public string? Description { get; set; }
@@ -18,9 +18,8 @@ namespace Efir.Model
 
         public EfirOnTuesday() { }
 
-        public EfirOnTuesday(TimeSpan timeToEfir, string eventName, string? description, string option, string id)
+        public EfirOnTuesday(TimeSpan timeToEfir, string eventName, string? description, string option)
         {
-            this.Id = id;
             this.TimeToEfir = timeToEfir;
             this.EventName = eventName;
             this.Description = description;

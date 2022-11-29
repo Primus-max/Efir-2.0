@@ -18,6 +18,17 @@ namespace Efir.Data
         public DbSet<Entertainment> Entertainments { get; set; } = null!;
         public DbSet<Prevention> Preventions { get; set; } = null!;
         public DbSet<TvShow> TvShows { get; set; } = null!;
+
+        #region Модели событий по дням недели
+        public DbSet<EfirOnMonday> OnMonday { get; set; } = null!;
+        public DbSet<EfirOnTuesday> OnTuesday { get; set; } = null!;
+        public DbSet<EfirOnWednesday> OnWednesday { get; set; } = null!;
+        public DbSet<EfirOnThursday> OnThursday { get; set; } = null!;
+        public DbSet<EfirOnFriday> OnFriday { get; set; } = null!;
+        public DbSet<EfirOnSaturday> OnSaturday { get; set; } = null!;
+        public DbSet<EfirOnSunday> OnSunday { get; set; } = null!;
+        #endregion
+
         //public DbSet<SeriesCollection> SeriesCollections { get; set; } = null!;
         //public DbSet<DocumentariesCollection> DocumentariesCollections { get; set; } = null!;
         //public DbSet<EducationalCollection> EducationalCollections { get; set; } = null!;

@@ -191,7 +191,7 @@
                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0" LostFocus="TEST">
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
                                         <ListView.ContextMenu>
                                             <ContextMenu x:Name="AddEventFromContextMenu">
                                                 <MenuItem  Header="Добавить" >
