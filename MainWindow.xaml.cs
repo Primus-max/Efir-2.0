@@ -280,8 +280,6 @@ namespace Efir
         #region Профилактика
         private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
         {
-            // TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
-
             var menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
@@ -292,50 +290,11 @@ namespace Efir
         #region Телепередачи
         private void AddTvShowAtList_Click(object sender, RoutedEventArgs e)
         {
-            //TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
-
             var menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
-            /*Guid guid = Guid.NewGuid();
-            string RandomId = guid.ToString();*/
+
 
             AddEventByEventName(eventName);
-
-            /*if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
-            {
-            EfirOfMonday.Add(new EfirOnMonday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EfirListOnMonday.ItemsSource = EfirOfMonday;
-            }
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
-            {
-            EfirOfTuesday.Add(new EfirOnTuesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EventListOnTuesday.ItemsSource = EfirOfTuesday;
-            }
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
-            {
-            EfirOfWednesday.Add(new EfirOnWednesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EventListOnWednesday.ItemsSource = EfirOfWednesday;
-            }
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
-            {
-            EfirOfThursday.Add(new EfirOnThursday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EventListOnThursday.ItemsSource = EfirOfThursday;
-            }
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
-            {
-            EfirOfFriday.Add(new EfirOnFriday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EventListOnFriday.ItemsSource = EfirOfFriday;
-            }
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
-            {
-            EfirOfSaturday.Add(new EfitOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EventListOnSaturday.ItemsSource = EfirOfSaturday;
-            }
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
-            {
-            EfirOfSunday.Add(new EfirOnSunday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-            EventListOnSunday.ItemsSource = EfirOfSunday;
-            }*/
         }
 
 
@@ -398,8 +357,7 @@ namespace Efir
         {
             TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
             MainWindowViewModel model = new MainWindowViewModel();
-            /*var menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;*/
+
             /* Guid guid = Guid.NewGuid();
             string RandomId = guid.ToString();*/
 
@@ -421,9 +379,6 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
-                //EfirOfTuesday.Add(new EfirOnTuesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                //EfirListOnTuesday.ItemsSource = EfirOfTuesday;
-
                 EfirOnTuesday efir = new EfirOnTuesday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
@@ -438,9 +393,6 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
-                //EfirOfWednesday.Add(new EfirOnWednesday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                //EfirListOnWednesday.ItemsSource = EfirOfWednesday;
-
                 EfirOnWednesday efir = new EfirOnWednesday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
@@ -455,9 +407,6 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
-                //EfirOfThursday.Add(new EfirOnThursday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                //EfirListOnThursday.ItemsSource = EfirOfThursday;
-
                 EfirOnThursday efir = new EfirOnThursday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
@@ -472,9 +421,6 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
-                //EfirOfFriday.Add(new EfirOnFriday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                //EfirListOnFriday.ItemsSource = EfirOfFriday;
-
                 EfirOnFriday efir = new EfirOnFriday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
@@ -490,9 +436,6 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                // EfirOfSaturday.Add(new EfirOnSaturday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                // EfirtListOnSaturday.ItemsSource = EfirOfSaturday;
-
                 EfirOnSaturday efir = new EfirOnSaturday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
@@ -507,9 +450,6 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
-                // EfirOfSunday.Add(new EfirOnSunday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                // EfirtListOnSunday.ItemsSource = EfirOfSunday;
-
                 EfirOnSunday efir = new EfirOnSunday();
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
@@ -532,15 +472,13 @@ namespace Efir
         #region Удаление события с учетом дня недели
         private void RemoveEvent_Click(object sender, RoutedEventArgs e)
         {
-
             TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
+            MainWindowViewModel model = new MainWindowViewModel();
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                MainWindowViewModel model = new MainWindowViewModel();
-
                 var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
-                EfirOfMonday.Remove(selectedItem);
+                //EfirOfMonday.Remove(selectedItem);               
 
                 var itemInBase = db.OnMonday.ToList().Find(r => r.Id == selectedItem.Id);
                 db.OnMonday.Remove(itemInBase);
@@ -556,33 +494,93 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
-                var removableItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
-                EfirOfTuesday.Remove(removableItem);
+                var selectedItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
+
+                var itemInBase = db.OnTuesday.ToList().Find(r => r.Id == selectedItem?.Id);
+                db.OnTuesday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnTuesday.ToList())
+                {
+                    model.EventListSourceTuesday.Add(item);
+                }
+
+                EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
-                var removableItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
-                EfirOfWednesday.Remove(removableItem);
+                var selectedItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
+
+                var itemInBase = db.OnWednesday.ToList().Find(r => r.Id == selectedItem?.Id);
+                db.OnWednesday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnWednesday.ToList())
+                {
+                    model.EventListSourceWednesday.Add(item);
+                }
+
+                EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
-                var removableItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
-                EfirOfThursday.Remove(removableItem);
+                var selectedItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
+
+                var itemInBase = db.OnThursday.ToList().Find(r => r.Id == selectedItem?.Id);
+                db.OnThursday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnThursday.ToList())
+                {
+                    model.EventListSourceThursday.Add(item);
+                }
+
+                EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
-                var removableItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
-                EfirOfFriday.Remove(removableItem);
+                var selectedItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
+
+                var itemInBase = db.OnFriday.ToList().Find(r => r.Id == selectedItem?.Id);
+                db.OnFriday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnFriday.ToList())
+                {
+                    model.EventListSourceFriday.Add(item);
+                }
+
+                EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                var removableItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
-                EfirOfSaturday.Remove(removableItem);
+                var selectedItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
+
+                var itemInBase = db.OnSaturday.ToList().Find(r => r.Id == selectedItem?.Id);
+                db.OnSaturday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnSaturday.ToList())
+                {
+                    model.EventListSourceSaturday.Add(item);
+                }
+
+                EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
-                var removableItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
-                EfirOfSunday.Remove(removableItem);
+                var selectedItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
+
+                var itemInBase = db.OnSunday.ToList().Find(r => r.Id == selectedItem?.Id);
+                db.OnSunday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnSunday.ToList())
+                {
+                    model.EventListSourceSunday.Add(item);
+                }
+
+                EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
         }
         #endregion
@@ -1524,7 +1522,6 @@ namespace Efir
         {
             throw new NotImplementedException();
         }
-
 
     }
 }
