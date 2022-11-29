@@ -119,6 +119,13 @@ namespace Efir
                 model.EventListSourceThursday.Add(item);
             }
             EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
+
+            //Пятница
+            foreach (var item in db.OnFriday.ToList())
+            {
+                model.EventListSourceFriday.Add(item);
+            }
+            EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
             #endregion
         }
 
@@ -451,8 +458,21 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
-                EfirOfFriday.Add(new EfirOnFriday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
-                EfirListOnFriday.ItemsSource = EfirOfFriday;
+                //EfirOfFriday.Add(new EfirOnFriday { EventName = eventName, TimeToEfir = new TimeSpan(0, 0, 0) });
+                //EfirListOnFriday.ItemsSource = EfirOfFriday;
+
+                EfirOnFriday efir = new EfirOnFriday();
+                efir.EventName = eventName;
+                efir.TimeToEfir = new TimeSpan(0, 0, 0);
+
+                db.OnFriday.Add(efir);
+                db.SaveChanges();
+                foreach (var item in db.OnFriday.ToList())
+                {
+                    model.EventListSourceFriday.Add(item);
+                }
+                EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
+
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
