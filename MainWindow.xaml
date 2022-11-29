@@ -133,7 +133,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent" />
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -222,7 +223,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -308,7 +310,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -393,7 +396,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -478,7 +482,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -563,7 +568,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>
@@ -647,7 +653,8 @@
                                                                 Language="ru-RU"
                                                                 HorizontalAlignment="Left"
                                                                 HorizontalContentAlignment="Left"
-                                                                Is24Hours="True" />
+                                                                Is24Hours="True"
+                                                                LostFocus="ChangeTimeEvent"/>
                                                         </DataTemplate>
                                                     </GridViewColumn.CellTemplate>
                                                 </GridViewColumn>

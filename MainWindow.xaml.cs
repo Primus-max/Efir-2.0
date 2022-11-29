@@ -32,18 +32,6 @@ namespace Efir
         DayOfWeek dayOfWeek = new DayOfWeek();
 
         #region ПЕРЕМЕННЫЕ: блок эфир
-
-        #region Модели дней недели для хранения и добавления в базу
-        public ObservableCollection<DayOfWeek> EfirOfDayList = new ObservableCollection<DayOfWeek>();
-        public ObservableCollection<EfirOnMonday> EfirOfMonday = new ObservableCollection<EfirOnMonday>();
-        public ObservableCollection<EfirOnTuesday> EfirOfTuesday = new ObservableCollection<EfirOnTuesday>();
-        public ObservableCollection<EfirOnWednesday> EfirOfWednesday = new ObservableCollection<EfirOnWednesday>();
-        public ObservableCollection<EfirOnThursday> EfirOfThursday = new ObservableCollection<EfirOnThursday>();
-        public ObservableCollection<EfirOnFriday> EfirOfFriday = new ObservableCollection<EfirOnFriday>();
-        public ObservableCollection<EfirOnSaturday> EfirOfSaturday = new ObservableCollection<EfirOnSaturday>();
-        public ObservableCollection<EfirOnSunday> EfirOfSunday = new ObservableCollection<EfirOnSunday>();
-        #endregion
-
         #endregion
 
 
@@ -466,9 +454,6 @@ namespace Efir
 
         #endregion
 
-
-
-
         #region Удаление события с учетом дня недели
         private void RemoveEvent_Click(object sender, RoutedEventArgs e)
         {
@@ -573,6 +558,142 @@ namespace Efir
 
                 var itemInBase = db.OnSunday.ToList().Find(r => r.Id == selectedItem?.Id);
                 db.OnSunday.Remove(itemInBase);
+                db.SaveChanges();
+
+                foreach (var item in db.OnSunday.ToList())
+                {
+                    model.EventListSourceSunday.Add(item);
+                }
+
+                EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
+            }
+        }
+        #endregion
+
+        #region Изменение времени и запись в базу данных
+        private void ChangeTimeEvent(object sender, RoutedEventArgs e)
+        {
+            TimePicker? userTime = sender as TimePicker;
+
+            SetNewTimeEvent(userTime);
+        }
+
+
+        private void SetNewTimeEvent(TimePicker userTime)
+        {
+            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
+            MainWindowViewModel model = new MainWindowViewModel();
+
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
+            {
+                var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
+                var itemInBase = db.OnMonday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+                db.SaveChanges();
+
+                foreach (var item in db.OnMonday.ToList())
+                {
+                    model.EventListSourceMonday.Add(item);
+                }
+
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+            {
+                var selectedItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
+                var itemInBase = db.OnTuesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+                db.SaveChanges();
+
+                foreach (var item in db.OnTuesday.ToList())
+                {
+                    model.EventListSourceTuesday.Add(item);
+                }
+
+                EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
+            {
+                var selectedItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
+                var itemInBase = db.OnWednesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+                db.SaveChanges();
+
+                foreach (var item in db.OnWednesday.ToList())
+                {
+                    model.EventListSourceWednesday.Add(item);
+                }
+
+                EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
+            {
+                var selectedItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
+                var itemInBase = db.OnThursday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+                db.SaveChanges();
+
+                foreach (var item in db.OnThursday.ToList())
+                {
+                    model.EventListSourceThursday.Add(item);
+                }
+
+                EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
+            {
+                var selectedItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
+                var itemInBase = db.OnFriday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+                db.SaveChanges();
+
+                foreach (var item in db.OnFriday.ToList())
+                {
+                    model.EventListSourceFriday.Add(item);
+                }
+
+                EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
+            {
+                var selectedItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
+                var itemInBase = db.OnSaturday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+                db.SaveChanges();
+
+                foreach (var item in db.OnSaturday.ToList())
+                {
+                    model.EventListSourceSaturday.Add(item);
+                }
+
+                EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
+            }
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
+            {
+                var selectedItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
+                var itemInBase = db.OnSunday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
                 db.SaveChanges();
 
                 foreach (var item in db.OnSunday.ToList())
@@ -1522,6 +1643,40 @@ namespace Efir
         {
             throw new NotImplementedException();
         }
+
+        private void TESTER(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        {
+            TimePicker userTime = sender as TimePicker;
+            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
+            MainWindowViewModel model = new MainWindowViewModel();
+            DateTime dateTimeForConvert = new DateTime();
+            TimeSpan newTime = new TimeSpan();
+
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
+            {
+                var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
+                var itemInBase = db.OnMonday.ToList().Find(r => r.Id == selectedItem.Id);
+
+                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                itemInBase.TimeToEfir = convertedTime;
+
+
+                db.SaveChanges();
+
+                //TODO рефактор этой функции. сделать из нее полноценный рефреш
+                foreach (var item in db.OnMonday.ToList())
+                {
+                    model.EventListSourceMonday.Add(item);
+                }
+
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+            }
+        }
+
+
+
+
 
     }
 }
