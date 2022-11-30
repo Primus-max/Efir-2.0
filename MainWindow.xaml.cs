@@ -1135,8 +1135,12 @@ namespace Efir
                                 educational.Series += 1;
 
                                 //добавдяю сериал в базу
-                                db.Educationals.Add(educational);
-                                db.SaveChanges();
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    context.Educationals.Add(educational);
+                                    context.SaveChanges();
+                                }
+
                                 educational = new Educational();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
@@ -1281,8 +1285,12 @@ namespace Efir
                             lection.NumOfSeries = contentListMedia.Count();
                             lection.Series += countLection;
 
-                            db.Lections.Add(lection);
-                            db.SaveChanges();
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                context.Lections.Add(lection);
+                                context.SaveChanges();
+                            }
+
                             lection = new Lection();
                             searchOpt = false;
 
@@ -1319,8 +1327,12 @@ namespace Efir
                                 lection.NumOfSeries = contentListMedia.Count();
                                 lection.Series += countLection;
 
-                                db.Lections.Add(lection);
-                                db.SaveChanges();
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    context.Lections.Add(lection);
+                                    context.SaveChanges();
+                                }
+
                                 lection = new Lection();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
@@ -1373,8 +1385,11 @@ namespace Efir
                             prevention.NumOfSeries = contentListMedia.Count();
                             prevention.Series += counPrevention;
 
-                            db.Preventions.Add(prevention);
-                            db.SaveChanges();
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                context.Preventions.Add(prevention);
+                                context.SaveChanges();
+                            }
                             prevention = new Prevention();
                             searchOpt = false;
 
@@ -1411,8 +1426,12 @@ namespace Efir
                                 prevention.NumOfSeries = contentListMedia.Count();
                                 prevention.Series += counPrevention;
 
-                                db.Preventions.Add(prevention);
-                                db.SaveChanges();
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    context.Preventions.Add(prevention);
+                                    context.SaveChanges();
+                                }
+
                                 prevention = new Prevention();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
@@ -1477,8 +1496,12 @@ namespace Efir
                                 series.NumOfSeries = contentListMedia.Count();
                                 series.IsSeries += 1;
 
-                                db.Serieses.Add(series);
-                                db.SaveChanges();
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    context.Serieses.Add(series);
+                                    context.SaveChanges();
+                                }
+
                                 series = new Series();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
@@ -1543,8 +1566,11 @@ namespace Efir
                                 tvShow.NumOfSeries = filteredFileList.Count();
                                 tvShow.Series = countTvShow;
 
-                                db.TvShows.Add(tvShow);
-                                db.SaveChanges();
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    context.TvShows.Add(tvShow);
+                                    context.SaveChanges();
+                                }
                                 tvShow = new TvShow();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
@@ -1711,19 +1737,23 @@ namespace Efir
 
             MainWindowViewModel model = new MainWindowViewModel();
 
-            var listEventsMonday = db?.OnMonday.ToList();
-            var sortedListEventsByTime = listEventsMonday?.OrderBy(x => x.TimeToEfir);
-
-            if (sortedListEventsByTime == null) return;
-            foreach (var item in sortedListEventsByTime)
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceMonday.Add(item);
+                var listEventsMonday = context?.OnMonday.ToList();
+                var sortedListEventsByTime = listEventsMonday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTime == null) return;
+                foreach (var item in sortedListEventsByTime)
+                {
+                    model.EventListSourceMonday.Add(item);
+                }
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+
+
+                var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
+                var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
             }
-            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
-
-            var MinTimeEfir = db.OnMonday.ToList().Min(t => t.TimeToEfir);
-            var MaxTimeEfir = db.OnMonday.ToList().Max(t => t.TimeToEfir);
 
 
             for (int i = 0; i < model.EventListSourceMonday.Count; i++)
@@ -1761,19 +1791,20 @@ namespace Efir
             {
                 string properEventName = "";
 
-                //if (string.IsNullOrEmpty(properEventName)) 
-                List<Lection> lections = db.Lections.ToList();
-
-                for (int i = 0; i < lections.Count; i++)
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    /*int h = substractTimeWithinEvents.Hours * 60;
-                    int m = substractTimeWithinEvents.Minutes;
-                    int s = substractTimeWithinEvents.Seconds;*/
+                    List<Lection> lections = context.Lections.ToList();
 
-                    //int totalMinuteEvent = h + m;
+                    for (int i = 0; i < lections.Count; i++)
+                    {
+                        /*int h = substractTimeWithinEvents.Hours * 60;
+                        int m = substractTimeWithinEvents.Minutes;
+                        int s = substractTimeWithinEvents.Seconds;*/
+
+                        //int totalMinuteEvent = h + m;
+                    }
+
                 }
-
-
             }
             if (eventName == "ФИЛЬМЫ")
             {
@@ -1824,25 +1855,9 @@ namespace Efir
                         }
                     }
                 }
-
-            }
-            if (eventName == "СЕРИАЛЫ")
-            {
-
-            }
-            if (eventName == "ПРОФИЛАКТИКА")
-            {
-
-            }
-            if (eventName == "ПЕРЕРЫВ")
-            {
-
-            }
-            if (eventName == "НОВОСТИ")
-            {
-
             }
         }
-        #endregion
+
     }
+    #endregion
 }
