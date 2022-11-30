@@ -990,83 +990,11 @@ namespace Efir
 
         #endregion
 
-
         #region МЕТОДЫ
 
         #region добавление и сохранение контента в базу
 
-        // TODO для документалок сделать показ всех документалок а не колличество папок в отличии от сериалов
-        // добавление документалок
-        /*public async void AddDocumentariesAtDB(string pathToContent)
-        {
-        DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
-        Documentaries documentaries = new Documentaries();
-
-
-        //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-        if (firstDirectory.Exists)
-        {
-        try
-        {
-        DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-        if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с лекциями, " +
-        "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
-        "ознакомьтесь пожалуйста с правилами добавления контента. ");
-
-
-        for (int i = 0; i < listDirectories.Length; i++)
-          {
-          int countDoc = 0;
-
-          string directroryName = listDirectories[i].FullName;
-          DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-        List<Documentaries> documentaries1 = new List<Documentaries>();
-
-                IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                    IEnumerable<FileSystemInfo> filteredFileList =
-                        from file in allFileList
-                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                        select file;
-
-
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        MainWindowViewModel viewModel = new MainWindowViewModel();
-
-                        foreach (FileInfo item in filteredFileList)
-                        {
-                        countDoc += 1;
-
-                        documentaries.Name = listDirectories[i].Name;
-                        documentaries.Path = item.FullName;
-                        documentaries.Duration = DurationContent(pathToContent, item.ToString());
-                        documentaries.NumOfSeries = filteredFileList.Count();
-                        documentaries.Series = countDoc;
-
-
-                        // db.Documentarieses.Add(documentaries);
-                        // db.SaveChanges();
-                        documentaries1.Add(documentaries);
-                        documentaries = new Documentaries();
-
-
-
-                        viewModel.ValueProgressDownlaodingSeries += 1;
-
-                        ProgressDownLoadingContentDocumentaries.Value += viewModel.ValueProgressDownlaodingSeries;
-
-                        }
-                        CountOfDocumentalTextBlock.Text = Convert.ToString(listDirectories.Length);
-
-                        }
-                        }
-                        catch (Exception ex)
-                        {
-                        MessageBox.Show(ex.Message);
-                        }
-                        }
-                        await System.Threading.Tasks.Task.Yield();
-                        }*/
+        // TODO для документалок сделать показ всех документалок а не колличество папок в отличии от сериалов               
 
         // добавление образовательных
         public async void AddEducationalAtDB(string pathToContent)
@@ -1133,75 +1061,9 @@ namespace Efir
             await System.Threading.Tasks.Task.Yield();
         }
 
-        // добавление развлекательных
-        /* public async void AddEntertainmentAtDB(string pathToContent)
-        {
-        DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
-        Entertainment entertainment = new Entertainment();
-        //List<Educational> Ed = new List<Documentaries>();
-
-                //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
-                if (firstDirectory.Exists)
-                {
-                try
-                {
-                DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с образовательным, " +
-                "Скорее всего надо выбрать папку - Лекции, а не папку с одним сериалом " +
-                "ознакомьтесь пожалуйста с правилами добавления контента. ");
-
-                for (int i = 0; i < listDirectories.Length; i++)
-                  {
-                  string directroryName = listDirectories[i].FullName;
-                  DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-
-                IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                    IEnumerable<FileSystemInfo> filteredFileList =
-                        from file in allFileList
-                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                        select file;
-
-
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        MainWindowViewModel viewModel = new MainWindowViewModel();
-
-                        foreach (FileInfo item in filteredFileList)
-                        {
-                        if (filteredFileList != null)
-                        {
-                        entertainment.Name = listDirectories[i].Name;
-                        entertainment.Path = item.FullName;
-                        entertainment.Duration = DurationContent(pathToContent, item.ToString());
-                        entertainment.NumOfSeries = filteredFileList.Count();
-                        entertainment.Series += 1;
-
-                        //добавдяю сериал в базу
-                        db.Entertainments.Add(entertainment);
-                        db.SaveChanges();
-                        entertainment = new Entertainment();
-
-                        viewModel.ValueProgressDownlaodingSeries += 1;
-
-                        ProgressDownLoadingContentEntertainment.Value += viewModel.ValueProgressDownlaodingSeries;
-                        }
-                        }
-                        CountOfEntertainmentTextBlock.Text = Convert.ToString(listDirectories.Length);
-
-                        }
-                        }
-                        catch (Exception ex)
-                        {
-                        MessageBox.Show(ex.Message);
-                        }
-                        }
-                        await System.Threading.Tasks.Task.Yield();
-                        }*/
-
         // добавление фильмов
         public void AddFilmAtDB(string pathToContent)
         {
-
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
@@ -1212,6 +1074,7 @@ namespace Efir
             if (firstDirectory.Exists)
             {
                 int countFilm = 0;
+                int allSeries = 0;
                 try
                 {
                     bool searchOpt = true;
@@ -1226,7 +1089,6 @@ namespace Efir
                             film.Name = item.Name;
                             film.Path = item.FullName;
                             film.Duration = DurationContent(pathToContent, item.ToString());
-                            film.NumOfSeries = contentListMedia.Count();
                             film.Series += countFilm;
 
                             db.Films.Add(film);
@@ -1256,6 +1118,7 @@ namespace Efir
                         foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                         {
                             countFilm += 1;
+                            allSeries += 1;
 
                             if (contentListMedia != null)
                             {
@@ -1268,6 +1131,7 @@ namespace Efir
                                 db.Films.Add(film);
                                 db.SaveChanges();
                                 film = new Film();
+
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
@@ -1765,10 +1629,12 @@ namespace Efir
 
             for (int i = 0; i < model.EventListSourceMonday.Count; i++)
             {
-                if (model.EventListSourceMonday.Count == 0) return;
+                if (model.EventListSourceMonday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
                 if (i < model.EventListSourceMonday.Count - 1)
                 {
+                    if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ") continue;
+
                     var curItemTime = model.EventListSourceMonday[i];
                     var nextItemTime = model.EventListSourceMonday[i + 1];
 
@@ -1782,6 +1648,8 @@ namespace Efir
                     string eventName = model.EventListSourceMonday[i].EventName;
 
                     ChooseMedia(totalMinuteEvent, "ФИЛЬМЫ");
+
+
                 }
 
             }
@@ -1812,13 +1680,48 @@ namespace Efir
             }
             if (eventName == "ФИЛЬМЫ")
             {
-                string properEventName = "";
-                List<Film> films = db.Films.ToList();
-
-                for (int i = 0; i < films.Count; i++)
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    var iere = films[i];
+                    List<Film> films = context.Films.ToList();
+                    int h = 0;
+                    int m = 0;
+                    int s = 0;
+
+                    for (int i = 0; i < films.Count; i++)
+                    {
+                        #region Определение времени
+                        h = films[i].Duration.Hours * 60;
+                        m = films[i].Duration.Minutes;
+
+                        int curMinuteEvent = h + m;
+                        #endregion
+
+                        #region Опеределение дат
+
+                        int delayMonth = 30;
+                        int day = 0;
+
+                        DateTime lastRunedFilm = films[i].LastRun;
+                        TimeSpan differentWithinDate = DateTime.Now - lastRunedFilm;
+
+                        var sdfgasdg = differentWithinDate.Days;
+
+                        #endregion
+
+                        if (curMinuteEvent > totalMinute) continue;
+                        if (differentWithinDate.Days < delayMonth) continue;
+
+                        if (films[i].NumOfSeries > 1)
+                        {
+
+                        }
+                        {
+
+                        }
+
+                    }
                 }
+
             }
             if (eventName == "СЕРИАЛЫ")
             {
