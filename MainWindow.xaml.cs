@@ -85,19 +85,35 @@ namespace Efir
             MainWindowViewModel model = new MainWindowViewModel();
 
             //Понедельник  
-            var listEventsMonday = db?.OnMonday.ToList();
-            var sortedListEventsByTime = listEventsMonday?.OrderBy(x => x.TimeToEfir);
-
-            if (sortedListEventsByTime == null) return;
-            foreach (var item in sortedListEventsByTime)
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceMonday.Add(item);
+                var listEventsMonday = context?.OnMonday.ToList();
+                var sortedListEventsByTimeMonday = listEventsMonday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTimeMonday == null) return;
+                foreach (var item in sortedListEventsByTimeMonday)
+                {
+                    model.EventListSourceMonday.Add(item);
+                }
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
             }
-            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+
 
             // Вторник
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                var listEventsTuesday = context?.OnTuesday.ToList();
+                var sortedListEventsByTimeTuesday = listEventsTuesday?.OrderBy(x => x.TimeToEfir);
 
-            // if (listEventsMonday != null) SortedListEvent(listEventsTuesday);
+                if (sortedListEventsByTimeTuesday == null) return;
+                foreach (var item in sortedListEventsByTimeTuesday)
+                {
+                    model.EventListSourceTuesday.Add(item);
+                }
+                EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
+            }
+
+
 
 
             /*//Вторник
@@ -751,6 +767,15 @@ namespace Efir
             }
         }
         #endregion
+
+        #endregion
+
+        #region БЛОК ЛЕКЦИИ
+
+        public void GetLectionFromDoc()
+        {
+
+        }
 
         #endregion
 
@@ -1728,23 +1753,47 @@ namespace Efir
                     int m = substractTimeWithinEvents.Minutes;
                     int s = substractTimeWithinEvents.Seconds;
 
-                    int TotalMinuteEvent = h + m;
+                    int totalMinuteEvent = h + m;
+                    string eventName = model.EventListSourceMonday[i].EventName;
 
+                    ChooseMedia(totalMinuteEvent, "ФИЛЬМЫ");
                 }
 
             }
         }
 
+        #region ФОРМИРОВАНИЕ ЭФИРА НА НЕДЕЛЮ
+
         private void ChooseMedia(int totalMinute, string eventName)
         {
-
+            //TODO Сделать для лекция парсинг документа где они записаны, или сделать создание списка из наличия лекций. В настройках блока лекции обязательно сделать поля ручного заполнения и поля для настройки у кого и сколько лецкий должно быть в месяц, к примеру начальник - лекции
             if (eventName == "ЛЕКЦИИ")
             {
+                string properEventName = "";
+
+                //if (string.IsNullOrEmpty(properEventName)) 
+                List<Lection> lections = db.Lections.ToList();
+
+                for (int i = 0; i < lections.Count; i++)
+                {
+                    /*int h = substractTimeWithinEvents.Hours * 60;
+                    int m = substractTimeWithinEvents.Minutes;
+                    int s = substractTimeWithinEvents.Seconds;*/
+
+                    //int totalMinuteEvent = h + m;
+                }
+
 
             }
             if (eventName == "ФИЛЬМЫ")
             {
+                string properEventName = "";
+                List<Film> films = db.Films.ToList();
 
+                for (int i = 0; i < films.Count; i++)
+                {
+                    var iere = films[i];
+                }
             }
             if (eventName == "СЕРИАЛЫ")
             {
@@ -1763,5 +1812,6 @@ namespace Efir
 
             }
         }
+        #endregion
     }
 }

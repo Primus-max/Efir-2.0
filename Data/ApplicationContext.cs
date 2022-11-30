@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Efir.Data
 {
-    internal class ApplicationContext : DbContext
+    internal class ApplicationContext : DbContext, IDisposable
     {
         public DbSet<Series> Serieses { get; set; } = null!;
         public DbSet<Film> Films { get; set; } = null!;
@@ -37,6 +37,20 @@ namespace Efir.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=MediaDB.db");
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        private bool _Disposed;
+
+        protected virtual void Dispose(bool Disposig)
+        {
+            if (!Disposig || _Disposed) return;
+            _Disposed = true;
+            // Освобождение управляемых ресурсов
         }
     }
 }
