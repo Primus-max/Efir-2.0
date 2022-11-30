@@ -15,6 +15,7 @@ using System.Data.Entity;
 using System.Collections.ObjectModel;
 using DayOfWeek = Efir.Model.DayOfWeek;
 using System.Text.Json;
+using System.Windows.Documents;
 
 namespace Efir
 {
@@ -80,19 +81,15 @@ namespace Efir
             #endregion
 
             #region Установка источников данных для евентов по дням недели
+            //TODO Доделать сортировку отображаемых данных для всех дней
 
             //Понедельник  
-            MainWindowViewModel model = new MainWindowViewModel();
-            var listEvents = db.OnMonday.ToList();
-            var sortedListEventsByTime = listEvents.OrderBy(x => x.TimeToEfir);
+            List<EfirOnMonday>? listEvents = db?.OnMonday.ToList();
+            if (listEvents != null) SortedListEvent(listEvents);
 
-            foreach (var item in sortedListEventsByTime)
-            {
-                model.EventListSourceMonday.Add(item);
-            }
-            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
-            //Вторник
+
+            /*//Вторник
             foreach (var item in db.OnTuesday.ToList())
             {
                 model.EventListSourceTuesday.Add(item);
@@ -132,9 +129,26 @@ namespace Efir
             {
                 model.EventListSourceSunday.Add(item);
             }
-            EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
+            EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;*/
             #endregion
         }
+
+
+        #region метод сортировки списка по времени
+        private void SortedListEvent(List<EfirOnMonday> listEvents)
+        {
+            MainWindowViewModel model = new MainWindowViewModel();
+
+            var sortedListEventsByTime = listEvents.OrderBy(x => x.TimeToEfir);
+
+            foreach (var item in sortedListEventsByTime)
+            {
+                model.EventListSourceMonday.Add(item);
+            }
+            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+        }
+
+        #endregion
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
         // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
@@ -1689,7 +1703,14 @@ namespace Efir
                 var toRemove = db.OnMonday.Where(x => x.Id == item.Id);
                 db.OnMonday.RemoveRange(toRemove);
                 db.SaveChanges();
+
             }
+
+            DateTime a = new DateTime(2010, 05, 12, 13, 15, 00);
+            DateTime b = new DateTime(2010, 05, 12, 13, 45, 00);
+            var dsfgd = b.Subtract(a).TotalMinutes;
+
+
 
             // Заполняю базу
 
