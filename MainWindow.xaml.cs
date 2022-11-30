@@ -422,12 +422,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnMonday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnMonday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceMonday.Add(item);
+                    context.OnMonday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnMonday.ToList())
+                    {
+                        model.EventListSourceMonday.Add(item);
+                    }
                 }
+
                 EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
@@ -436,12 +440,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnTuesday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnTuesday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceTuesday.Add(item);
+                    context.OnTuesday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnTuesday.ToList())
+                    {
+                        model.EventListSourceTuesday.Add(item);
+                    }
                 }
+
                 EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
@@ -450,12 +458,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnWednesday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnWednesday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceWednesday.Add(item);
+                    context.OnWednesday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnWednesday.ToList())
+                    {
+                        model.EventListSourceWednesday.Add(item);
+                    }
                 }
+
                 EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
@@ -464,12 +476,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnThursday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnThursday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceThursday.Add(item);
+                    context.OnThursday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnThursday.ToList())
+                    {
+                        model.EventListSourceThursday.Add(item);
+                    }
                 }
+
                 EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
@@ -478,12 +494,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnFriday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnFriday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceFriday.Add(item);
+                    context.OnFriday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnFriday.ToList())
+                    {
+                        model.EventListSourceFriday.Add(item);
+                    }
                 }
+
                 EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
 
             }
@@ -493,12 +513,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnSaturday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnSaturday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceSaturday.Add(item);
+                    context.OnSaturday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnSaturday.ToList())
+                    {
+                        model.EventListSourceSaturday.Add(item);
+                    }
                 }
+
                 EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
@@ -507,12 +531,16 @@ namespace Efir
                 efir.EventName = eventName;
                 efir.TimeToEfir = new TimeSpan(0, 0, 0);
 
-                db.OnSunday.Add(efir);
-                db.SaveChanges();
-                foreach (var item in db.OnSunday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceSunday.Add(item);
+                    context.OnSunday.Add(efir);
+                    context.SaveChanges();
+                    foreach (var item in context.OnSunday.ToList())
+                    {
+                        model.EventListSourceSunday.Add(item);
+                    }
                 }
+
                 EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
         }
@@ -1652,8 +1680,6 @@ namespace Efir
                     string eventName = model.EventListSourceMonday[i].EventName;
 
                     ChooseMedia(totalMinuteEvent, "ФИЛЬМЫ");
-
-
                 }
 
             }
