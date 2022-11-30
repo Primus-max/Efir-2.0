@@ -67,9 +67,6 @@ namespace Efir
 
             db.OnMonday.Load();*/
 
-            //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
-            CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
-            //FilePathToFilmTextBox.Text = db?.Films.ToList()?[0].Path == null ? "" : db?.Films.ToList()[0].Path;
 
 
             // загружаем данные из БД
@@ -77,11 +74,19 @@ namespace Efir
             // и устанавливаем данные в качестве контекста
             //DataContext = db.Serieses.Local.ToObservableCollection();
 
-            #region Установка источников данных для листов
-            MainWindowViewModel model = new MainWindowViewModel();
+            #region Установка источников данных для отображения колличество контентов в категории медиа
+            //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
+            CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
+            #endregion
 
-            //Понедельник
-            foreach (var item in db.OnMonday.ToList())
+            #region Установка источников данных для евентов по дням недели
+
+            //Понедельник  
+            MainWindowViewModel model = new MainWindowViewModel();
+            var listEvents = db.OnMonday.ToList();
+            var sortedListEventsByTime = listEvents.OrderBy(x => x.TimeToEfir);
+
+            foreach (var item in sortedListEventsByTime)
             {
                 model.EventListSourceMonday.Add(item);
             }
@@ -363,7 +368,6 @@ namespace Efir
                     model.EventListSourceMonday.Add(item);
                 }
                 EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
-
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
@@ -586,12 +590,15 @@ namespace Efir
 
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
+                EfirOnMonday? selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
                 var itemInBase = db.OnMonday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnMonday.ToList())
@@ -603,12 +610,15 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
-                var selectedItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
+                EfirOnTuesday? selectedItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
                 var itemInBase = db.OnTuesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnTuesday.ToList())
@@ -620,12 +630,15 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
-                var selectedItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
+                EfirOnWednesday? selectedItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
                 var itemInBase = db.OnWednesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnWednesday.ToList())
@@ -637,12 +650,16 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
-                var selectedItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
+                EfirOnThursday? selectedItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
                 var itemInBase = db.OnThursday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnThursday.ToList())
@@ -654,12 +671,15 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
-                var selectedItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
+                EfirOnFriday? selectedItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
                 var itemInBase = db.OnFriday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnFriday.ToList())
@@ -671,12 +691,15 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
-                var selectedItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
+                EfirOnSaturday? selectedItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
                 var itemInBase = db.OnSaturday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnSaturday.ToList())
@@ -688,12 +711,15 @@ namespace Efir
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
-                var selectedItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
+                EfirOnSunday? selectedItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
                 var itemInBase = db.OnSunday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
+                if (userTime.SelectedTime == null) return;
                 var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
 
+                if (itemInBase == null) return;
                 itemInBase.TimeToEfir = convertedTime;
+
                 db.SaveChanges();
 
                 foreach (var item in db.OnSunday.ToList())
@@ -1644,38 +1670,38 @@ namespace Efir
             throw new NotImplementedException();
         }
 
-        private void TESTER(object sender, RoutedPropertyChangedEventArgs<DateTime?> e)
+        private void Testing(object sender, RoutedEventArgs e)
         {
-            TimePicker userTime = sender as TimePicker;
-            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
+            if (EfirListOnMonday.Items.Count == 0) return;
+
             MainWindowViewModel model = new MainWindowViewModel();
-            DateTime dateTimeForConvert = new DateTime();
-            TimeSpan newTime = new TimeSpan();
 
-            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
+            var MinTimeEfir = db.OnMonday.ToList().Min(t => t.TimeToEfir);
+            var MaxTimeEfir = db.OnMonday.ToList().Max(t => t.TimeToEfir);
+
+
+            var listEvents = db.OnMonday.ToList();
+            var sortedListEventsByTime = listEvents.OrderBy(x => x.TimeToEfir);
+
+            // Очищаю базу
+            foreach (var item in sortedListEventsByTime)
             {
-                var selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
-                var itemInBase = db.OnMonday.ToList().Find(r => r.Id == selectedItem.Id);
-
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                itemInBase.TimeToEfir = convertedTime;
-
-
+                var toRemove = db.OnMonday.Where(x => x.Id == item.Id);
+                db.OnMonday.RemoveRange(toRemove);
                 db.SaveChanges();
-
-                //TODO рефактор этой функции. сделать из нее полноценный рефреш
-                foreach (var item in db.OnMonday.ToList())
-                {
-                    model.EventListSourceMonday.Add(item);
-                }
-
-                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
             }
+
+            // Заполняю базу
+
+            foreach (var item in sortedListEventsByTime)
+            {
+                model.EventListSourceMonday.Add(item);
+                db.OnMonday.Add(item);
+                db.SaveChanges();
+            }
+            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+
         }
-
-
-
 
 
     }

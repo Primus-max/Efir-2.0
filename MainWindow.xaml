@@ -103,7 +103,8 @@
                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
-                                        ScrollViewer.VerticalScrollBarVisibility="Auto" BorderThickness="0,0,0,0">
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        BorderThickness="0,0,0,0" >
                                         <ListView.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
@@ -692,8 +693,7 @@
                             </TabItem>
                         </TabControl>
                         <Button Content="Создать Эфир"
-                                Margin="0 30 0 0"/>
-
+                                Margin="0 30 0 0" Click="Testing"/>
 
                     </StackPanel>
 
