@@ -1692,7 +1692,9 @@ namespace Efir
 
         private void Testing(object sender, RoutedEventArgs e)
         {
-            if (EfirListOnMonday.Items.Count == 0) return;
+            if (EfirListOnMonday.Items.Count == 0) MessageBox.Show("Надо создать список событий на день. " +
+                                                                   "Нажмите правой кнопкой на пустом пространстве программы и выберите " +
+                                                                   "из пункта Добавить один из подоходящих пунктов");
 
             MainWindowViewModel model = new MainWindowViewModel();
 
@@ -1721,7 +1723,7 @@ namespace Efir
                     var nextItemTime = model.EventListSourceMonday[i + 1];
 
                     var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
-                    // var totalMinuteWithinEvents;
+
                     int h = substractTimeWithinEvents.Hours * 60;
                     int m = substractTimeWithinEvents.Minutes;
                     int s = substractTimeWithinEvents.Seconds;
@@ -1733,6 +1735,33 @@ namespace Efir
             }
         }
 
+        private void ChooseMedia(int totalMinute, string eventName)
+        {
 
+            if (eventName == "ЛЕКЦИИ")
+            {
+
+            }
+            if (eventName == "ФИЛЬМЫ")
+            {
+
+            }
+            if (eventName == "СЕРИАЛЫ")
+            {
+
+            }
+            if (eventName == "ПРОФИЛАКТИКА")
+            {
+
+            }
+            if (eventName == "ПЕРЕРЫВ")
+            {
+
+            }
+            if (eventName == "НОВОСТИ")
+            {
+
+            }
+        }
     }
 }
