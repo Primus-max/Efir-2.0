@@ -1089,6 +1089,7 @@ namespace Efir
                             film.Path = item.FullName;
                             film.Duration = DurationContent(pathToContent, item.ToString());
                             film.Series += countFilm;
+                            film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-31).ToString("dd.MM.yy"));
 
                             using (ApplicationContext context = new ApplicationContext())
                             {
@@ -1100,8 +1101,6 @@ namespace Efir
                             searchOpt = false;
 
                             viewModel.ValueProgressDownlaodingSeries += 1;
-
-                            // ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                         }
                     }
 
@@ -1129,6 +1128,7 @@ namespace Efir
                                 film.Duration = DurationContent(pathToContent, item.ToString());
                                 film.NumOfSeries = contentListMedia.Count();
                                 film.Series += countFilm;
+                                film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-2).ToString("dd.MM.yy"));
 
                                 using (ApplicationContext context = new ApplicationContext())
                                 {
@@ -1143,7 +1143,6 @@ namespace Efir
                                 ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-
                         CountOfFilmTextBlock.Text = Convert.ToString(db.Films.Count());
                     }
                 }
@@ -1704,6 +1703,7 @@ namespace Efir
                         #region Опеределение дат
 
                         int delayMonth = 30;
+                        int weekDelay = 7;
                         int day = 0;
 
                         DateTime lastRunedFilm = films[i].LastRun;
@@ -1714,16 +1714,21 @@ namespace Efir
                         #endregion
 
                         if (curMinuteEvent > totalMinute) continue;
-                        if (differentWithinDate.Days < delayMonth) continue;
+
+
+                        if (differentWithinDate.Days < weekDelay && films[i].NumOfSeries > 1)
+                        {
+                            string filmName = films[i].Description;
+                        }
+                        else
+                        {
+                            continue;
+                        }
 
                         if (films[i].NumOfSeries > 1)
                         {
 
                         }
-                        {
-
-                        }
-
                     }
                 }
 
