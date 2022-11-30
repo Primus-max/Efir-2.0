@@ -1720,21 +1720,17 @@ namespace Efir
                     var curItemTime = model.EventListSourceMonday[i];
                     var nextItemTime = model.EventListSourceMonday[i + 1];
 
-                    var totalMinuteWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+                    var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+                    // var totalMinuteWithinEvents;
+                    int h = substractTimeWithinEvents.Hours * 60;
+                    int m = substractTimeWithinEvents.Minutes;
+                    int s = substractTimeWithinEvents.Seconds;
+
+                    int TotalMinuteEvent = h + m;
+
                 }
 
             }
-
-
-
-            DateTime a = new DateTime(2010, 05, 12, 13, 15, 00);
-            DateTime b = new DateTime(2010, 05, 12, 13, 45, 00);
-            var dsfgd = b.Subtract(a).TotalMinutes;
-
-
-
-
-
         }
 
 
