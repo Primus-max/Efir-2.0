@@ -82,11 +82,22 @@ namespace Efir
 
             #region Установка источников данных для евентов по дням недели
             //TODO Доделать сортировку отображаемых данных для всех дней
+            MainWindowViewModel model = new MainWindowViewModel();
 
             //Понедельник  
-            List<EfirOnMonday>? listEvents = db?.OnMonday.ToList();
-            if (listEvents != null) SortedListEvent(listEvents);
+            var listEventsMonday = db?.OnMonday.ToList();
+            var sortedListEventsByTime = listEventsMonday?.OrderBy(x => x.TimeToEfir);
 
+            if (sortedListEventsByTime == null) return;
+            foreach (var item in sortedListEventsByTime)
+            {
+                model.EventListSourceMonday.Add(item);
+            }
+            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+
+            // Вторник
+
+            // if (listEventsMonday != null) SortedListEvent(listEventsTuesday);
 
 
             /*//Вторник
@@ -134,21 +145,7 @@ namespace Efir
         }
 
 
-        #region метод сортировки списка по времени
-        private void SortedListEvent(List<EfirOnMonday> listEvents)
-        {
-            MainWindowViewModel model = new MainWindowViewModel();
 
-            var sortedListEventsByTime = listEvents.OrderBy(x => x.TimeToEfir);
-
-            foreach (var item in sortedListEventsByTime)
-            {
-                model.EventListSourceMonday.Add(item);
-            }
-            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
-        }
-
-        #endregion
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
         // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
@@ -281,6 +278,15 @@ namespace Efir
         #endregion
 
         #region БЛОК ЭФИР
+
+        //TODO добработать метод обновления и сортировки списка
+        #region метод сортировки списка по времени
+        private void SortedListEvent<T>(List<T> listEvents)
+        {
+
+        }
+
+        #endregion
 
         #region Добавление события с учетом дня недели
 
@@ -1690,21 +1696,36 @@ namespace Efir
 
             MainWindowViewModel model = new MainWindowViewModel();
 
+            var listEventsMonday = db?.OnMonday.ToList();
+            var sortedListEventsByTime = listEventsMonday?.OrderBy(x => x.TimeToEfir);
+
+            if (sortedListEventsByTime == null) return;
+            foreach (var item in sortedListEventsByTime)
+            {
+                model.EventListSourceMonday.Add(item);
+            }
+            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+
+
             var MinTimeEfir = db.OnMonday.ToList().Min(t => t.TimeToEfir);
             var MaxTimeEfir = db.OnMonday.ToList().Max(t => t.TimeToEfir);
 
 
-            var listEvents = db.OnMonday.ToList();
-            var sortedListEventsByTime = listEvents.OrderBy(x => x.TimeToEfir);
-
-            // Очищаю базу
-            foreach (var item in sortedListEventsByTime)
+            for (int i = 0; i < model.EventListSourceMonday.Count; i++)
             {
-                var toRemove = db.OnMonday.Where(x => x.Id == item.Id);
-                db.OnMonday.RemoveRange(toRemove);
-                db.SaveChanges();
+                if (model.EventListSourceMonday.Count == 0) return;
+
+                if (i < model.EventListSourceMonday.Count - 1)
+                {
+                    var curItemTime = model.EventListSourceMonday[i];
+                    var nextItemTime = model.EventListSourceMonday[i + 1];
+
+                    var totalMinuteWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+                }
 
             }
+
+
 
             DateTime a = new DateTime(2010, 05, 12, 13, 15, 00);
             DateTime b = new DateTime(2010, 05, 12, 13, 45, 00);
@@ -1712,15 +1733,7 @@ namespace Efir
 
 
 
-            // Заполняю базу
 
-            foreach (var item in sortedListEventsByTime)
-            {
-                model.EventListSourceMonday.Add(item);
-                db.OnMonday.Add(item);
-                db.SaveChanges();
-            }
-            EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
         }
 
