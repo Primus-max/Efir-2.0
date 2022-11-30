@@ -712,80 +712,100 @@ namespace Efir
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
                 EfirOnMonday? selectedItem = EfirListOnMonday.SelectedItem as EfirOnMonday;
-                var itemInBase = db.OnMonday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnMonday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceMonday.Add(item);
+                    var itemInBase = context.OnMonday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnMonday.ToList())
+                    {
+                        model.EventListSourceMonday.Add(item);
+                    }
                 }
+
 
                 EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
             {
                 EfirOnTuesday? selectedItem = EfirListOnTuesday.SelectedItem as EfirOnTuesday;
-                var itemInBase = db.OnTuesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnTuesday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceTuesday.Add(item);
+                    var itemInBase = context.OnTuesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnTuesday.ToList())
+                    {
+                        model.EventListSourceTuesday.Add(item);
+                    }
                 }
+
 
                 EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower())
             {
                 EfirOnWednesday? selectedItem = EfirListOnWednesday.SelectedItem as EfirOnWednesday;
-                var itemInBase = db.OnWednesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnWednesday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceWednesday.Add(item);
+                    var itemInBase = context.OnWednesday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnWednesday.ToList())
+                    {
+                        model.EventListSourceWednesday.Add(item);
+                    }
                 }
+
 
                 EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower())
             {
                 EfirOnThursday? selectedItem = EfirListOnThursday.SelectedItem as EfirOnThursday;
-                var itemInBase = db.OnThursday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnThursday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceThursday.Add(item);
+                    var itemInBase = context.OnThursday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnThursday.ToList())
+                    {
+                        model.EventListSourceThursday.Add(item);
+                    }
+
                 }
 
                 EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
@@ -793,60 +813,75 @@ namespace Efir
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower())
             {
                 EfirOnFriday? selectedItem = EfirListOnFriday.SelectedItem as EfirOnFriday;
-                var itemInBase = db.OnFriday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnFriday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceFriday.Add(item);
+                    var itemInBase = context.OnFriday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnFriday.ToList())
+                    {
+                        model.EventListSourceFriday.Add(item);
+                    }
                 }
+
 
                 EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower())
             {
                 EfirOnSaturday? selectedItem = EfirtListOnSaturday.SelectedItem as EfirOnSaturday;
-                var itemInBase = db.OnSaturday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnSaturday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceSaturday.Add(item);
+                    var itemInBase = context.OnSaturday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnSaturday.ToList())
+                    {
+                        model.EventListSourceSaturday.Add(item);
+                    }
                 }
+
 
                 EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
             }
             if (SelectedTab?.Header?.ToString()?.ToLower() == "Воскресение".ToLower())
             {
                 EfirOnSunday? selectedItem = EfirtListOnSunday.SelectedItem as EfirOnSunday;
-                var itemInBase = db.OnSunday.ToList().Find(match: r => r.Id == selectedItem?.Id);
 
-                if (userTime.SelectedTime == null) return;
-                var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
-
-                if (itemInBase == null) return;
-                itemInBase.TimeToEfir = convertedTime;
-
-                db.SaveChanges();
-
-                foreach (var item in db.OnSunday.ToList())
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    model.EventListSourceSunday.Add(item);
+                    var itemInBase = context.OnSunday.ToList().Find(match: r => r.Id == selectedItem?.Id);
+
+                    if (userTime.SelectedTime == null) return;
+                    var convertedTime = userTime.SelectedTime.Value.TimeOfDay;
+
+                    if (itemInBase == null) return;
+                    itemInBase.TimeToEfir = convertedTime;
+
+                    context.SaveChanges();
+
+                    foreach (var item in context.OnSunday.ToList())
+                    {
+                        model.EventListSourceSunday.Add(item);
+                    }
                 }
+
 
                 EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
