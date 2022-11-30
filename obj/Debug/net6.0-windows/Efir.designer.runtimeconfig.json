@@ -18,6 +18,7 @@
       "Z:\\Microsoft\\Xamarin\\NuGet"
     ],
     "configProperties": {
+      "System.Reflection.NullabilityInfoContext.IsSupported": true,
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
     }
   }
