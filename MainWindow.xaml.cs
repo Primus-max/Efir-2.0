@@ -1074,7 +1074,6 @@ namespace Efir
             if (firstDirectory.Exists)
             {
                 int countFilm = 0;
-                int allSeries = 0;
                 try
                 {
                     bool searchOpt = true;
@@ -1091,8 +1090,12 @@ namespace Efir
                             film.Duration = DurationContent(pathToContent, item.ToString());
                             film.Series += countFilm;
 
-                            db.Films.Add(film);
-                            db.SaveChanges();
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                context.Films.Add(film);
+                                context.SaveChanges();
+                            }
+
                             film = new Film();
                             searchOpt = false;
 
@@ -1118,7 +1121,6 @@ namespace Efir
                         foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                         {
                             countFilm += 1;
-                            allSeries += 1;
 
                             if (contentListMedia != null)
                             {
@@ -1128,10 +1130,13 @@ namespace Efir
                                 film.NumOfSeries = contentListMedia.Count();
                                 film.Series += countFilm;
 
-                                db.Films.Add(film);
-                                db.SaveChanges();
-                                film = new Film();
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    context.Films.Add(film);
+                                    context.SaveChanges();
+                                }
 
+                                film = new Film();
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
