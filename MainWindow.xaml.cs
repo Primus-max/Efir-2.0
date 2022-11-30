@@ -113,50 +113,75 @@ namespace Efir
                 EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
             }
 
-
-
-
-            /*//Вторник
-            foreach (var item in db.OnTuesday.ToList())
-            {
-                model.EventListSourceTuesday.Add(item);
-            }
-            EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
-
             //Среда
-            foreach (var item in db.OnWednesday.ToList())
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceWednesday.Add(item);
+                var listEventsWednesday = context?.OnWednesday.ToList();
+                var sortedListEventsByTimeWednesday = listEventsWednesday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTimeWednesday == null) return;
+                foreach (var item in sortedListEventsByTimeWednesday)
+                {
+                    model.EventListSourceWednesday.Add(item);
+                }
+                EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
             }
-            EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
 
             //четврег
-            foreach (var item in db.OnThursday.ToList())
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceThursday.Add(item);
+                var listEventsThursday = context?.OnThursday.ToList();
+                var sortedListEventsByTimeThursday = listEventsThursday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTimeThursday == null) return;
+                foreach (var item in sortedListEventsByTimeThursday)
+                {
+                    model.EventListSourceThursday.Add(item);
+                }
+                EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
             }
-            EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
 
             //Пятница
-            foreach (var item in db.OnFriday.ToList())
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceFriday.Add(item);
+                var listEventsFriday = context?.OnFriday.ToList();
+                var sortedListEventsByTimeFriday = listEventsFriday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTimeFriday == null) return;
+                foreach (var item in sortedListEventsByTimeFriday)
+                {
+                    model.EventListSourceFriday.Add(item);
+                }
+                EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
             }
-            EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
 
             //Суббота
-            foreach (var item in db.OnSaturday.ToList())
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceSaturday.Add(item);
+                var listEventsSaturday = context?.OnSaturday.ToList();
+                var sortedListEventsByTimeSaturday = listEventsSaturday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTimeSaturday == null) return;
+                foreach (var item in sortedListEventsByTimeSaturday)
+                {
+                    model.EventListSourceSaturday.Add(item);
+                }
+                EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
             }
-            EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
 
             //Воскресение
-            foreach (var item in db.OnSunday.ToList())
+            using (ApplicationContext context = new ApplicationContext())
             {
-                model.EventListSourceSunday.Add(item);
+                var listEventsSunday = context?.OnSunday.ToList();
+                var sortedListEventsByTimeSunday = listEventsSunday?.OrderBy(x => x.TimeToEfir);
+
+                if (sortedListEventsByTimeSunday == null) return;
+                foreach (var item in sortedListEventsByTimeSunday)
+                {
+                    model.EventListSourceSunday.Add(item);
+                }
+                EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
-            EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;*/
             #endregion
         }
 
