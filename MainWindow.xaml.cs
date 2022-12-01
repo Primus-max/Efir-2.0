@@ -1731,11 +1731,17 @@ namespace Efir
 
         private void Testing(object sender, RoutedEventArgs e)
         {
-            if (EfirListOnMonday.Items.Count == 0) MessageBox.Show("Надо создать список событий на день. " +
-                                                                   "Нажмите правой кнопкой на пустом пространстве программы и выберите " +
-                                                                   "из пункта Добавить один из подоходящих пунктов");
+            if (EfirListOnMonday.Items.Count == 0)
+            {
+                MessageBox.Show("Надо создать список событий на день. " +
+                                "Нажмите правой кнопкой на пустом пространстве программы и выберите " +
+                                "из пункта Добавить один из подоходящих пунктов");
+                return;
+
+            }
 
             MainWindowViewModel model = new MainWindowViewModel();
+            int TheRestTime = 0;
 
             using (ApplicationContext context = new ApplicationContext())
             {
@@ -1753,7 +1759,6 @@ namespace Efir
                 var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
                 var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
             }
-
 
 
             for (int i = 0; i < model.EventListSourceMonday.Count; i++)
@@ -1776,7 +1781,11 @@ namespace Efir
                     int totalMinuteEvent = h + m;
                     string eventName = model.EventListSourceMonday[i].EventName;
 
-                    ChooseMedia(totalMinuteEvent, "ФИЛЬМЫ");
+                    if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
+                        ChooseMedia(totalMinuteEvent, "ФИЛЬМЫ", ref TheRestTime);
+
+
+                    //if (TheRestTime > 0) MessageBox.Show($"Осталось минут{TheRestTime}");
                 }
 
             }
@@ -1784,13 +1793,15 @@ namespace Efir
 
         #region ФОРМИРОВАНИЕ ЭФИРА НА НЕДЕЛЮ
 
-        private void ChooseMedia(int totalMinute, string eventName)
+        private void ChooseMedia(int totalMinute, string eventName, ref int TheRestTime)
         {
             //TODO Сделать для лекция парсинг документа где они записаны, или сделать создание списка из наличия лекций. В настройках блока лекции обязательно сделать поля ручного заполнения и поля для настройки у кого и сколько лецкий должно быть в месяц, к примеру начальник - лекции
+            if (totalMinute < 0) MessageBox.Show("что-то пошло не так, проверьте указанное время всех событий");
+
+            int lastSeries = 0;
+
             if (eventName == "ЛЕКЦИИ")
             {
-                string properEventName = "";
-
                 using (ApplicationContext context = new ApplicationContext())
                 {
                     List<Lection> lections = context.Lections.ToList();
@@ -1811,10 +1822,17 @@ namespace Efir
                 using (ApplicationContext context = new ApplicationContext())
                 {
                     List<Film> films = context.Films.ToList();
+                    int decrease = 0;
+                    bool elseFilm = false;
+                    int datePossibleRun = 30; // возмжный показ, желательно не раньше этой даты.
+
                     int h = 0;
                     int m = 0;
                     int s = 0;
 
+
+
+                    // Testing:
                     for (int i = 0; i < films.Count; i++)
                     {
                         #region Определение времени
@@ -1826,9 +1844,9 @@ namespace Efir
 
                         #region Опеределение дат
 
-                        int delayMonth = 30;
-                        int weekDelay = 7;
-                        int day = 0;
+
+                        //int weekDelay = 7;
+                        //int day = 0;
 
                         DateTime lastRunedFilm = films[i].LastRun;
                         TimeSpan differentWithinDate = DateTime.Now - lastRunedFilm;
@@ -1837,25 +1855,68 @@ namespace Efir
 
                         #endregion
 
-                        if (curMinuteEvent > totalMinute) continue;
+                        if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                       
+                        if (differentWithinDate.Days < datePossibleRun) continue;// если фильм показывался меньше месяца назад, дальше
 
+                        // собираю объект понедельника для вывода в ворд и печати 
+                        PrintMonday print = new PrintMonday();
+                        EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+                        string[] splitName = films[i].Name.Split(".");
+                        string formattedName = splitName[0];
 
-                        if (differentWithinDate.Days < weekDelay && films[i].NumOfSeries > 1)
+                        // если фильмов в заданное время влазит больше одного, то записываю время с этим учетом
+                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                        if (startEvent != null)
+                            print.TimeToEfir = !elseFilm ? startEvent.TimeToEfir : startEvent.TimeToEfir + addedTime;
+                        print.EventName = formattedName;
+                        print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                        print.Description = "Фильм: ";
+
+                        //TODO НЕ забудь сделать определения дня недели по дню и по дате, чтобы знать от какого дня создавать
+                        // ставлю дату последнего показа фильма (пока ставлю дату создания эфира)
+                        films[i].LastRun = DateTime.Now;
+
+                        context.PrintMondays.Add(print);
+                        context.SaveChanges();
+                                                
+                        TheRestTime = totalMinute - curMinuteEvent;
+                        totalMinute = TheRestTime;
+                                                
+                        TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                        h = minTimeFilm.Hours * 60;
+                        m = minTimeFilm.Minutes;
+
+                        curMinuteEvent = h + m;
+
+                        if (TheRestTime > curMinuteEvent)
                         {
-                            string filmName = films[i].Description;
-                        }
-                        else
-                        {
+                            datePossibleRun -= 5;
+                            elseFilm = true;
                             continue;
                         }
 
-                        if (films[i].NumOfSeries > 1)
-                        {
 
-                        }
+                        // Надо: найти величину по которой будет понятно, есть ли еще подходящий контент или нет
+                        // 1. можно вычислить среднюю велиичину контента
+                        // 2. можно найти самый маленький контент 
+
+                        /*   if (TheRestTime > 15 && elseTime)
+                           {
+                               elseTime = false;
+                               filmFinded = false;
+                               goto Testing;
+                           }*/
+
                     }
                 }
             }
+        }
+
+        // функция поиска подходящего контента для заполнения оставшегося времени (поиск среди коротких роликов)
+        private void FIllTime()
+        {
+
         }
 
     }

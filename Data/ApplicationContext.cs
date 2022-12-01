@@ -29,6 +29,10 @@ namespace Efir.Data
         public DbSet<EfirOnSunday> OnSunday { get; set; } = null!;
         #endregion
 
+        #region Модели для сбора эфира на неделю по дням неделям (для печати)
+        public DbSet<PrintMonday> PrintMondays { get; set; } = null!;
+        #endregion
+
         //public DbSet<SeriesCollection> SeriesCollections { get; set; } = null!;
         //public DbSet<DocumentariesCollection> DocumentariesCollections { get; set; } = null!;
         //public DbSet<EducationalCollection> EducationalCollections { get; set; } = null!;
