@@ -404,6 +404,7 @@ namespace Efir
             AddEventByEventName(eventName);
         }
         #endregion
+
         /// <summary>
         /// Метод добавления события по дням недели
         /// </summary>
@@ -1488,13 +1489,17 @@ namespace Efir
                         MainWindowViewModel viewModel = new MainWindowViewModel();
                         foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                         {
+                            string[] splittedName = item.Name.Split(".");
+                            int parsedName = int.Parse(splittedName[0]);
+
                             if (contentListMedia != null)
                             {
                                 series.Name = listDirectories[i].Name;
                                 series.Path = item.FullName;
                                 series.Duration = DurationContent(pathToContent, item.ToString());
                                 series.NumOfSeries = contentListMedia.Count();
-                                series.IsSeries += 1;
+                                series.IsSeries = parsedName;
+                                series.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-15).ToString("dd.MM.yy"));
 
                                 using (ApplicationContext context = new ApplicationContext())
                                 {
@@ -1943,8 +1948,95 @@ namespace Efir
                         //TODO НЕ забудь сделать определения дня недели по дню и по дате, чтобы знать от какого дня создавать
                         // ставлю дату последнего показа фильма (пока ставлю дату создания эфира)
                         films[i].LastRun = DateTime.Now;
+                        var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
 
                         context.PrintMondays.Add(print);
+                        context.SaveChanges();
+
+                        TheRestTime = totalMinute - curMinuteEvent;
+                        totalMinute = TheRestTime;
+
+                        TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                        h = minTimeFilm.Hours * 60;
+                        m = minTimeFilm.Minutes;
+
+                        curMinuteEvent = h + m;
+
+                        if (TheRestTime > curMinuteEvent)
+                        {
+                            datePossibleRun -= 5;
+                            elseFilm = true;
+                            continue;
+                        }
+                    }
+                }
+            }
+            if (eventName == "СЕРИАЛЫ")
+            {
+                using (ApplicationContext context = new ApplicationContext())
+                {
+                    List<Series> series = context.Serieses.ToList();
+                    PrintSaturday print = new PrintSaturday();
+                    bool elseFilm = false;
+                    int datePossibleRun = 30; // возмжный показ, желательно не раньше этой даты.
+
+                    int h = 0;
+                    int m = 0;
+
+
+                    // Testing:
+                    for (int i = 0; i < series.Count; i++)
+                    {
+                        #region Определение времени
+                        h = series[i].Duration.Hours * 60;
+                        m = series[i].Duration.Minutes;
+
+                        int curMinuteEvent = h + m;
+                        #endregion
+
+                        #region Опеределение дат
+
+
+                        //int weekDelay = 7;
+                        //int day = 0;
+
+                        DateTime lastRunedFilm = series[i].LastRun;
+                        TimeSpan differentWithinDate = DateTime.Now - lastRunedFilm;
+
+                        var sdfgasdg = differentWithinDate.Days;
+
+                        #endregion
+
+                        //TODO  СДЕЛАТЬ ПРОВЕРКУ ДОБАВИЛСЯ ЛИ ХОТЬ ОДИН ФИЛЬМ, ЕСЛИ НЕТ, ТО УВЕДОМИТЬ ОБ ЭТОМ
+                        //! if (print == null) MessageBox.Show("В эфир не был добавлен не один из фильмов." + "Проверьте добавили фильмы в базу");
+
+                        if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                       
+                        if (differentWithinDate.Days < datePossibleRun) continue;// если фильм показывался меньше месяца назад, дальше
+
+                        // собираю объект понедельника для вывода в ворд и печати 
+
+                        EfirOnSaturday? startEvent = context.OnSaturday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                        string[] splitName = series[i].Name.Split(".");
+                        string formattedName = splitName[0];
+
+                        // если фильмов в заданное время влазит больше одного, то записываю время с этим учетом
+                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                        if (startEvent != null)
+                            print.TimeToEfir = !elseFilm ? startEvent.TimeToEfir : startEvent.TimeToEfir + addedTime;
+                        print.EventName = formattedName;
+                        print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
+                        print.Description = "Фильм: ";
+
+                        //TODO НЕ забудь сделать определения дня недели по дню и по дате, чтобы знать от какого дня создавать
+                        // ставлю дату последнего показа фильма (пока ставлю дату создания эфира)
+                        series[i].LastRun = DateTime.Now;
+                        var addingNumOfRun = context.Serieses.ToList().Find(f => f.Id == series[i].Id);
+                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                        context.PrintSaturdays.Add(print);
                         context.SaveChanges();
 
                         TheRestTime = totalMinute - curMinuteEvent;
