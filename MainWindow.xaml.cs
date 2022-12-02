@@ -1729,66 +1729,132 @@ namespace Efir
             throw new NotImplementedException();
         }
 
-        private void Testing(object sender, RoutedEventArgs e)
+
+        #region Cобираю эфир на понедельник
+        private void GenerateEfirOnManday()
         {
-            if (EfirListOnMonday.Items.Count == 0)
-            {
-                MessageBox.Show("Надо создать список событий на день. " +
-                                "Нажмите правой кнопкой на пустом пространстве программы и выберите " +
-                                "из пункта Добавить один из подоходящих пунктов");
-                return;
-
-            }
-
+            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
             MainWindowViewModel model = new MainWindowViewModel();
             int TheRestTime = 0;
 
-            using (ApplicationContext context = new ApplicationContext())
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
             {
-                var listEventsMonday = context?.OnMonday.ToList();
-                var sortedListEventsByTime = listEventsMonday?.OrderBy(x => x.TimeToEfir);
-
-                if (sortedListEventsByTime == null) return;
-                foreach (var item in sortedListEventsByTime)
+                // -------------------------------- WARNING!!! ---------------------------------//
+                if (EfirListOnMonday.Items.Count == 0)
                 {
-                    model.EventListSourceMonday.Add(item);
+                    MessageBox.Show("Надо создать список событий на день. " +
+                                    "Нажмите правой кнопкой на пустом пространстве программы и выберите " +
+                                    "из пункта Добавить один из подоходящих пунктов");
+                    return;
+
                 }
-                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
+                // -------------------------------- WARNING!!! ---------------------------------//
 
-
-                var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
-                var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
-            }
-
-
-            for (int i = 0; i < model.EventListSourceMonday.Count; i++)
-            {
-                if (model.EventListSourceMonday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
-
-                if (i < model.EventListSourceMonday.Count - 1)
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ") continue;
+                    var listEvents = context?.OnMonday.ToList();
+                    var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                    var curItemTime = model.EventListSourceMonday[i];
-                    var nextItemTime = model.EventListSourceMonday[i + 1];
+                    if (sortedListEventsByTime == null) return;
+                    foreach (var item in sortedListEventsByTime)
+                    {
+                        model.EventListSourceMonday.Add(item);
+                    }
+                    EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
-                    var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
-
-                    int h = substractTimeWithinEvents.Hours * 60;
-                    int m = substractTimeWithinEvents.Minutes;
-                    int s = substractTimeWithinEvents.Seconds;
-
-                    int totalMinuteEvent = h + m;
-                    string eventName = model.EventListSourceMonday[i].EventName;
-
-                    if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
-                        ChooseMedia(totalMinuteEvent, "ФИЛЬМЫ", ref TheRestTime);
-
-
-                    //if (TheRestTime > 0) MessageBox.Show($"Осталось минут{TheRestTime}");
+                    var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
+                    var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
                 }
 
+                for (int i = 0; i < model.EventListSourceMonday.Count; i++)
+                {
+                    if (model.EventListSourceMonday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
+
+                    if (i < model.EventListSourceMonday.Count - 1)
+                    {
+                        if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ") continue;
+
+                        var curItemTime = model.EventListSourceMonday[i];
+                        var nextItemTime = model.EventListSourceMonday[i + 1];
+
+                        var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+
+                        int h = substractTimeWithinEvents.Hours * 60;
+                        int m = substractTimeWithinEvents.Minutes;
+                        int s = substractTimeWithinEvents.Seconds;
+
+                        int totalMinuteEvent = h + m;
+                        string eventName = model.EventListSourceMonday[i].EventName;
+
+                        if (model.EventListSourceMonday[i].EventName == eventName)
+                            ChooseMedia(totalMinuteEvent, eventName, ref TheRestTime);
+                    }
+
+                }
             }
+
+            if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+            {
+                // -------------------------------- WARNING!!! ---------------------------------//
+                if (EfirListOnTuesday.Items.Count == 0)
+                {
+                    MessageBox.Show("Надо создать список событий на день. " +
+                                    "Нажмите правой кнопкой на пустом пространстве программы и выберите " +
+                                    "из пункта Добавить один из подоходящих пунктов");
+                    return;
+
+                }
+                // -------------------------------- WARNING!!! ---------------------------------//
+
+                using (ApplicationContext context = new ApplicationContext())
+                {
+                    var listEvents = context?.OnTuesday.ToList();
+                    var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
+
+                    if (sortedListEventsByTime == null) return;
+                    foreach (var item in sortedListEventsByTime)
+                    {
+                        model.EventListSourceTuesday.Add(item);
+                    }
+                    EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
+
+                    var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
+                    var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
+                }
+
+                for (int i = 0; i < model.EventListSourceTuesday.Count; i++)
+                {
+                    if (model.EventListSourceTuesday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
+
+                    if (i < model.EventListSourceTuesday.Count - 1)
+                    {
+                        if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
+
+                        var curItemTime = model.EventListSourceTuesday[i];
+                        var nextItemTime = model.EventListSourceTuesday[i + 1];
+
+                        var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+
+                        int h = substractTimeWithinEvents.Hours * 60;
+                        int m = substractTimeWithinEvents.Minutes;
+                        int s = substractTimeWithinEvents.Seconds;
+
+                        int totalMinuteEvent = h + m;
+                        string eventName = model.EventListSourceTuesday[i].EventName;
+
+                        if (model.EventListSourceTuesday[i].EventName == eventName)
+                            ChooseMedia(totalMinuteEvent, eventName, ref TheRestTime);
+                    }
+
+                }
+            }
+        }
+        #endregion
+
+
+        private void Testing(object sender, RoutedEventArgs e)
+        {
+            GenerateEfirOnManday();
         }
 
         #region ФОРМИРОВАНИЕ ЭФИРА НА НЕДЕЛЮ
@@ -1822,14 +1888,12 @@ namespace Efir
                 using (ApplicationContext context = new ApplicationContext())
                 {
                     List<Film> films = context.Films.ToList();
-                    int decrease = 0;
+                    PrintMonday print = new PrintMonday();
                     bool elseFilm = false;
                     int datePossibleRun = 30; // возмжный показ, желательно не раньше этой даты.
 
                     int h = 0;
                     int m = 0;
-                    int s = 0;
-
 
 
                     // Testing:
@@ -1855,11 +1919,14 @@ namespace Efir
 
                         #endregion
 
+                        //TODO  СДЕЛАТЬ ПРОВЕРКУ ДОБАВИЛСЯ ЛИ ХОТЬ ОДИН ФИЛЬМ, ЕСЛИ НЕТ, ТО УВЕДОМИТЬ ОБ ЭТОМ
+                        //! if (print == null) MessageBox.Show("В эфир не был добавлен не один из фильмов." + "Проверьте добавили фильмы в базу");
+
                         if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                       
                         if (differentWithinDate.Days < datePossibleRun) continue;// если фильм показывался меньше месяца назад, дальше
 
                         // собираю объект понедельника для вывода в ворд и печати 
-                        PrintMonday print = new PrintMonday();
+
                         EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
                         string[] splitName = films[i].Name.Split(".");
                         string formattedName = splitName[0];
@@ -1879,10 +1946,10 @@ namespace Efir
 
                         context.PrintMondays.Add(print);
                         context.SaveChanges();
-                                                
+
                         TheRestTime = totalMinute - curMinuteEvent;
                         totalMinute = TheRestTime;
-                                                
+
                         TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
                         h = minTimeFilm.Hours * 60;
                         m = minTimeFilm.Minutes;
@@ -1895,19 +1962,6 @@ namespace Efir
                             elseFilm = true;
                             continue;
                         }
-
-
-                        // Надо: найти величину по которой будет понятно, есть ли еще подходящий контент или нет
-                        // 1. можно вычислить среднюю велиичину контента
-                        // 2. можно найти самый маленький контент 
-
-                        /*   if (TheRestTime > 15 && elseTime)
-                           {
-                               elseTime = false;
-                               filmFinded = false;
-                               goto Testing;
-                           }*/
-
                     }
                 }
             }
