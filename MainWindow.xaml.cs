@@ -1835,8 +1835,13 @@ namespace Efir
                     {
                         if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
 
+                        // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
+                        // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
+                        // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
+                        // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                         var curItemTime = model.EventListSourceTuesday[i];
                         var nextItemTime = model.EventListSourceTuesday[i + 1];
+
 
                         var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
 
@@ -2002,7 +2007,10 @@ namespace Efir
                         //int weekDelay = 7;
                         //int day = 0;
 
-                        DateTime lastRunedFilm = series[i].LastRun;
+                        // получаю дату последнего показа сериала
+                        Series? seriesItem = context.Serieses?.ToList().Find(s => s.Name == series[i].Name && s.IsSeries == 1);                        
+
+                        DateTime lastRunedFilm = seriesItem.LastRun;
                         TimeSpan differentWithinDate = DateTime.Now - lastRunedFilm;
 
                         var sdfgasdg = differentWithinDate.Days;
@@ -2028,7 +2036,16 @@ namespace Efir
                             print.TimeToEfir = !elseFilm ? startEvent.TimeToEfir : startEvent.TimeToEfir + addedTime;
                         print.EventName = formattedName;
                         print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
-                        print.Description = "Фильм: ";
+                        print.Description = "Сериал: ";
+
+
+
+                        // ------------------------------ НАДО ! ------------------------------ //
+                        // Надо чтобы шла серия за серией, и потом сериалом за сериалом
+                        // Реализация:
+                        // 1. Сортирую массив по дате, выбираю последнюю по этой дате последнюю серию + 1
+                        // 
+                        // ------------------------------ НАДО ! ------------------------------ //
 
                         //TODO НЕ забудь сделать определения дня недели по дню и по дате, чтобы знать от какого дня создавать
                         // ставлю дату последнего показа фильма (пока ставлю дату создания эфира)
