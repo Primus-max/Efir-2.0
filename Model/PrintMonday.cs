@@ -8,7 +8,7 @@ namespace Efir.Model
 {
     internal class PrintMonday
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public int Series { get; set; }
         public TimeSpan TimeToEfir { get; set; }
         public string EventName { get; set; }

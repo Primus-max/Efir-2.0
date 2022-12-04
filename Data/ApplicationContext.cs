@@ -31,6 +31,7 @@ namespace Efir.Data
 
         #region Модели для сбора эфира на неделю по дням неделям (для печати)
         public DbSet<PrintMonday> PrintMondays { get; set; } = null!;
+        public DbSet<PrintTuesday> PrintTuesdays { get; set; }
         public DbSet<PrintSaturday> PrintSaturdays { get; set; } = null!;
         #endregion
 
