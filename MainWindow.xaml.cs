@@ -24,7 +24,11 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
-        //TODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках
+
+        //TODO  Добавить события Начало трансляции и Конец трансляции (обязательные поля)
+        //TODO Сделать заполнение событий по понедельнику, если другие не трогались(зафиксировать эвент, что менялись, значит кастом)
+
+        //xTODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках
         //TODO сделать в настройках программы возможность добавления флага для определения жанра, этот флаг будет отображаться в имении папки
         //TODO запуск программы по середине окна
         //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
@@ -331,10 +335,22 @@ namespace Efir
 
         #region Добавление события с учетом дня недели
 
+        #region Начало трансляции
+
+        private void AddStartEfirAtList_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem? menuItem = sender as MenuItem;
+            string eventName = (string)menuItem.Header;
+
+            AddEventByEventName(eventName);
+        }
+
+        #endregion
+
         #region Профилактика
         private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
@@ -344,7 +360,7 @@ namespace Efir
         #region Телепередачи
         private void AddTvShowAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
 
@@ -358,7 +374,7 @@ namespace Efir
         #region Сериалы
         private void AddSeriesAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
@@ -368,7 +384,7 @@ namespace Efir
         #region Новости
         private void AddNewsAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
@@ -378,7 +394,7 @@ namespace Efir
         #region Лекции
         private void AddLectionAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
@@ -388,7 +404,7 @@ namespace Efir
         #region Перерыв
         private void AddBreakAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
@@ -398,11 +414,24 @@ namespace Efir
         #region Фильмы
         private void AddFilmsAtList_Click(object sender, RoutedEventArgs e)
         {
-            var menuItem = sender as MenuItem;
+            MenuItem? menuItem = sender as MenuItem;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
         }
+        #endregion
+
+
+        #region Конец трансляции
+
+        private void AddEndEfirAtList_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem? menuItem = sender as MenuItem;
+            string eventName = (string)menuItem.Header;
+
+            AddEventByEventName(eventName);
+        }
+
         #endregion
 
         /// <summary>
@@ -2150,7 +2179,6 @@ namespace Efir
                             goto Testing;
                         }
                     }
-
                 }
             }
         }

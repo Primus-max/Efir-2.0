@@ -25,6 +25,11 @@ namespace Efir.ViewModels
 
         #region Список названий всех событий
 
+        private string _StartEfir = "НАЧАЛО ТРАНСЛЯЦИИ";
+        public string StartEfir
+        {
+            get => _StartEfir;
+        }
 
         private string _LectionEvent = "ЛЕКЦИИ";
         public string LectionEvent
@@ -62,6 +67,12 @@ namespace Efir.ViewModels
         public string News
         {
             get => _News;
+        }
+
+        private string _EndEfir = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+        public string EndEfir
+        {
+            get => _EndEfir;
         }
 
         #region Коллекции для отображения событий в дне
