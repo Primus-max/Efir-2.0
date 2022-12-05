@@ -143,30 +143,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
 
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
+                                                <!--<GridViewColumn
 
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -233,30 +233,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
                                                     x:Name="NameEfirOfDay"
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
                                                     x:Name="DescriptionEfirOfDay"
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
-                                                    x:Name="OptionEfirOfDay"
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                <!--<GridViewColumn
+                                                x:Name="OptionEfirOfDay"
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -320,30 +320,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
 
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
+                                                <!--<GridViewColumn
 
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -406,30 +406,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
 
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
+                                                <!--<GridViewColumn
 
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -492,30 +492,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
 
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
+                                                <!--<GridViewColumn
 
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -578,30 +578,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
 
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
+                                                <!--<GridViewColumn
 
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
@@ -663,30 +663,30 @@
                                                 </GridViewColumn>
                                                 <GridViewColumn
 
-                                                    Width="Auto"
+                                                    Width="270"
                                                     DisplayMemberBinding="{Binding EventName}"
                                                     Header="Событие" />
                                                 <GridViewColumn
 
                                                     DisplayMemberBinding="{Binding Description}"
                                                     Header="Уточнить" />
-                                                <GridViewColumn
+                                                <!--<GridViewColumn
 
-                                                    Header="Опции">
-                                                    <GridViewColumn.CellTemplate>
-                                                        <DataTemplate>
-                                                            <ComboBox
-                                                                Width="100">
-                                                                <ComboBoxItem
-                                                                    Content="Test" />
-                                                                <ComboBoxItem
-                                                                    Content="Test2" />
-                                                                <ComboBoxItem
-                                                                    Content="Test3" />
-                                                            </ComboBox>
-                                                        </DataTemplate>
-                                                    </GridViewColumn.CellTemplate>
-                                                </GridViewColumn>
+                                                Header="Опции">
+                                                <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                <ComboBox
+                                                Width="100">
+                                                <ComboBoxItem
+                                                Content="Test" />
+                                                <ComboBoxItem
+                                                Content="Test2" />
+                                                <ComboBoxItem
+                                                Content="Test3" />
+                                                </ComboBox>
+                                                </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                </GridViewColumn>-->
                                             </GridView>
                                         </ListView.View>
                                     </ListView>
