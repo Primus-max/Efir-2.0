@@ -1847,8 +1847,6 @@ namespace Efir
 
                                     for (int j = 0; j < films.Count; j++)
                                     {
-
-
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -1858,24 +1856,19 @@ namespace Efir
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше                                                                            
 
-                                        // var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
-                                        //PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
-                                        //TimeSpan? startEventMondayFilm = curItemTime.TimeToEfir;
-                                        //EfirOnMonday? startEventMondayFilm = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
-                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
 
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : curItemTime.TimeToEfir + addedTime;
-
-                                        /*if (startEventMondayFilm != null)
-                                            print.TimeToEfir = (lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime);*/
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
                                         print.Description = "Фильм: ";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
