@@ -1831,15 +1831,230 @@ namespace Efir
 
                                 //узнаю начала события
                                 // EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");                            
+                                //------------------------------------------поиск контента------------------------------------------//
+                                int totalMinute = totalMinuteEvent;
+                                if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
+                                {
+                                    //ChooseMedia(totalMinuteEvent, eventName, ref TheRestTime);
 
 
-                                if (model.EventListSourceMonday[i].EventName == eventName)
-                                    ChooseMedia(totalMinuteEvent, eventName, ref TheRestTime);
+                                    List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+                                //var lastRunnedFilmList = 
+                                //Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                //int indexElement = films.IndexOf(lastRunnedFilm);
+
+                                IfLengthIsOver:
+                                    for (int j = 0; j < films.Count; j++)
+                                    {
+                                        EfirOnMonday? startEventMondayFilm = new EfirOnMonday();
+                                        PrintMonday print = new PrintMonday();
+
+                                        #region Определение времени
+                                        hh = films[j].Duration.Hours * 60;
+                                        mm = films[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше                                                                            
+
+
+
+                                        string[] splitName = films[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        startEventMondayFilm = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
+                                        var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
+                                        PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
+                                        print.Description = "Фильм: ";
+                                        films[j].LastRun = DateTime.Now;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        context.PrintMondays.Add(print);
+                                        context.SaveChanges();
+
+                                        var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                        //lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                        //lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                        //indexElement = films.IndexOf(lastRunnedFilm);
+
+                                        //i = indexElement;
+                                        TheRestTime = totalMinuteEvent - curMinuteEvent;
+                                        totalMinuteEvent = TheRestTime;
+
+                                        TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                                        hh = minTimeFilm.Hours * 60;
+                                        mm = minTimeFilm.Minutes;
+
+                                        curMinuteEvent = hh + mm;
+
+
+                                        if (i == films.Count - 1 && curMinuteEvent > TheRestTime)
+                                        {
+                                            //   indexElement = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+
+                                    /*if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+                                    {
+                                        int h = 0;
+                                        int m = 0;
+
+                                        var lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                        Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                        int indexElement = films.IndexOf(lastRunnedFilm);
+
+                                    IfLengthIsOver:
+                                        for (int i = indexElement; i < films.Count; i++)
+                                        {
+                                            EfirOnTuesday? startEventMondayFilm = new EfirOnTuesday();
+                                            PrintTuesday print = new PrintTuesday();
+
+                                            #region Определение времени
+                                            h = films[i].Duration.Hours * 60;
+                                            m = films[i].Duration.Minutes;
+
+                                            int curMinuteEvent = h + m;
+                                            #endregion
+
+                                            if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                                                                            
+
+                                            string[] splitName = films[i].Name.Split(".");
+                                            string formattedName = splitName[0];
+
+                                            startEventMondayFilm = context.OnTuesday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
+                                            var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                            PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+                                            TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                            print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                            print.EventName = formattedName;
+                                            print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                                            print.Description = "Фильм: ";
+                                            films[i].LastRun = DateTime.Now;
+
+                                            Guid guid = Guid.NewGuid();
+                                            string RandomId = guid.ToString();
+
+                                            print.Id = RandomId;
+
+                                            context.PrintTuesdays.Add(print);
+                                            context.SaveChanges();
+
+                                            var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                            if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                            lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                            lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                            indexElement = films.IndexOf(lastRunnedFilm);
+
+                                            i = indexElement;
+                                            TheRestTime = totalMinute - curMinuteEvent;
+                                            totalMinute = TheRestTime;
+
+                                            TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                                            h = minTimeFilm.Hours * 60;
+                                            m = minTimeFilm.Minutes;
+
+                                            curMinuteEvent = h + m;
+
+
+                                            if (i == films.Count - 1)
+                                            {
+                                                indexElement = 0;
+                                                goto IfLengthIsOver;
+                                            }
+                                        }
+                                    }*/
+
+
+                                    /*if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower() && startEventTuesdayFilm != null)
+                                    {
+                                        PrintTuesday print = new PrintTuesday();
+
+                                        var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                        PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+
+                                        string[] splitName = films[i].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                                        print.Description = "Фильм: ";
+                                        films[i].LastRun = DateTime.Now;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+                                        context.PrintTuesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        films[i].LastRun = DateTime.Now;
+                                        var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                        lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                        lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                        indexElement = films.IndexOf(lastRunnedFilm);
+                                        i = indexElement;
+                                    }*/
+                                    // print.TimeToEfir = !elseFilm ? startEventTuesdaySeries.TimeToEfir : startEventTuesdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower() && startEventWednesdaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEventWednesdaySeries.TimeToEfir : startEventWednesdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower() && startEventThursdaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEventThursdaySeries.TimeToEfir : startEventThursdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower() && startEfirOnFridaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEfirOnFridaySeries.TimeToEfir : startEfirOnFridaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSaturdaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEfirSaturdaySeries.TimeToEfir : startEfirSaturdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSundaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEfirSundaySeries.TimeToEfir : startEfirSundaySeries.TimeToEfir + addedTime;*/
+
+
+
+
+
+                                    //TODO НЕ забудь сделать определения дня недели по дню и по дате, чтобы знать от какого дня создавать
+                                    // ставлю дату последнего показа фильма (пока ставлю дату создания эфира)
+
+
+
+                                }
+
                             }
 
                         }
+
                     }
                 }
+
 
                 if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
                 {
@@ -1857,37 +2072,251 @@ namespace Efir
 
                         var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
                         var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
-                    }
 
-                    for (int i = 0; i < model.EventListSourceTuesday.Count; i++)
-                    {
-                        if (model.EventListSourceTuesday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
-                        if (i < model.EventListSourceTuesday.Count - 1)
+                        for (int i = 0; i < model.EventListSourceTuesday.Count; i++)
                         {
-                            if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
+                            if (model.EventListSourceTuesday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
-                            // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                            // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                            // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                            // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
-                            var curItemTime = model.EventListSourceTuesday[i];
-                            var nextItemTime = model.EventListSourceTuesday[i + 1];
+                            if (i < model.EventListSourceTuesday.Count - 1)
+                            {
+                                if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
+
+                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
+                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
+                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
+                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
+                                var curItemTime = model.EventListSourceTuesday[i];
+                                var nextItemTime = model.EventListSourceTuesday[i + 1];
 
 
-                            var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+                                var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
 
-                            int h = substractTimeWithinEvents.Hours * 60;
-                            int m = substractTimeWithinEvents.Minutes;
-                            int s = substractTimeWithinEvents.Seconds;
+                                int h = substractTimeWithinEvents.Hours * 60;
+                                int m = substractTimeWithinEvents.Minutes;
+                                int s = substractTimeWithinEvents.Seconds;
 
-                            int totalMinuteEvent = h + m;
-                            string eventName = model.EventListSourceTuesday[i].EventName;
+                                int totalMinuteEvent = h + m;
+                                string eventName = model.EventListSourceTuesday[i].EventName;
 
-                            if (model.EventListSourceTuesday[i].EventName == eventName)
-                                ChooseMedia(totalMinuteEvent, eventName, ref TheRestTime);
+                                // if (model.EventListSourceTuesday[i].EventName == eventName) { }
+                                //ChooseMedia(totalMinuteEvent, eventName, ref TheRestTime);
+
+                                //------------------------------------------поиск контента------------------------------------------//
+                                int totalMinute = totalMinuteEvent;
+                                if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
+                                {
+                                    List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                //Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                //int indexElement = films.IndexOf(lastRunnedFilm);
+
+                                IfLengthIsOver:
+                                    for (int j = 0; j < films.Count; j++)
+                                    {
+                                        EfirOnTuesday? startEventMondayFilm = new EfirOnTuesday();
+                                        PrintTuesday print = new PrintTuesday();
+
+                                        #region Определение времени
+                                        hh = films[j].Duration.Hours * 60;
+                                        mm = films[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше                                                                            
+
+                                        string[] splitName = films[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        startEventMondayFilm = context.OnTuesday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
+                                        var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                        PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                        //if (lastShoewdTime?.TimeToEfir + addedTime > nextItemTime.TimeToEfir) return;
+                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+
+                                        print.EventName = formattedName;
+                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
+                                        print.Description = "Фильм: ";
+                                        films[j].LastRun = DateTime.Now;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        context.PrintTuesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                        //lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                        //lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                        //indexElement = films.IndexOf(lastRunnedFilm);
+                                        //i = indexElement;
+
+                                        TheRestTime = totalMinuteEvent - curMinuteEvent;
+                                        totalMinuteEvent = TheRestTime;
+
+                                        TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                                        hh = minTimeFilm.Hours * 60;
+                                        mm = minTimeFilm.Minutes;
+
+                                        curMinuteEvent = hh + mm;
+
+
+                                        if (i == films.Count - 1 && curMinuteEvent > TheRestTime)
+                                        {
+                                            //indexElement = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+
+                                    /*if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+                                    {
+                                        int h = 0;
+                                        int m = 0;
+
+                                        var lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                        Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                        int indexElement = films.IndexOf(lastRunnedFilm);
+
+                                    IfLengthIsOver:
+                                        for (int i = indexElement; i < films.Count; i++)
+                                        {
+                                            EfirOnTuesday? startEventMondayFilm = new EfirOnTuesday();
+                                            PrintTuesday print = new PrintTuesday();
+
+                                            #region Определение времени
+                                            h = films[i].Duration.Hours * 60;
+                                            m = films[i].Duration.Minutes;
+
+                                            int curMinuteEvent = h + m;
+                                            #endregion
+
+                                            if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                                                                            
+
+                                            string[] splitName = films[i].Name.Split(".");
+                                            string formattedName = splitName[0];
+
+                                            startEventMondayFilm = context.OnTuesday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
+                                            var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                            PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+                                            TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                            print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                            print.EventName = formattedName;
+                                            print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                                            print.Description = "Фильм: ";
+                                            films[i].LastRun = DateTime.Now;
+
+                                            Guid guid = Guid.NewGuid();
+                                            string RandomId = guid.ToString();
+
+                                            print.Id = RandomId;
+
+                                            context.PrintTuesdays.Add(print);
+                                            context.SaveChanges();
+
+                                            var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                            if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                            lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                            lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                            indexElement = films.IndexOf(lastRunnedFilm);
+
+                                            i = indexElement;
+                                            TheRestTime = totalMinute - curMinuteEvent;
+                                            totalMinute = TheRestTime;
+
+                                            TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                                            h = minTimeFilm.Hours * 60;
+                                            m = minTimeFilm.Minutes;
+
+                                            curMinuteEvent = h + m;
+
+
+                                            if (i == films.Count - 1)
+                                            {
+                                                indexElement = 0;
+                                                goto IfLengthIsOver;
+                                            }
+                                        }
+                                    }*/
+
+
+                                    /*if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower() && startEventTuesdayFilm != null)
+                                    {
+                                        PrintTuesday print = new PrintTuesday();
+
+                                        var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                        PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+
+                                        string[] splitName = films[i].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                                        print.Description = "Фильм: ";
+                                        films[i].LastRun = DateTime.Now;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+                                        context.PrintTuesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        films[i].LastRun = DateTime.Now;
+                                        var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                        lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                        lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                        indexElement = films.IndexOf(lastRunnedFilm);
+                                        i = indexElement;
+                                    }*/
+                                    // print.TimeToEfir = !elseFilm ? startEventTuesdaySeries.TimeToEfir : startEventTuesdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower() && startEventWednesdaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEventWednesdaySeries.TimeToEfir : startEventWednesdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower() && startEventThursdaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEventThursdaySeries.TimeToEfir : startEventThursdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower() && startEfirOnFridaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEfirOnFridaySeries.TimeToEfir : startEfirOnFridaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSaturdaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEfirSaturdaySeries.TimeToEfir : startEfirSaturdaySeries.TimeToEfir + addedTime;
+
+                                    //if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSundaySeries != null)
+                                    //    print.TimeToEfir = !elseFilm ? startEfirSundaySeries.TimeToEfir : startEfirSundaySeries.TimeToEfir + addedTime;*/
+
+
+
+
+
+                                    //TODO НЕ забудь сделать определения дня недели по дню и по дате, чтобы знать от какого дня создавать
+                                    // ставлю дату последнего показа фильма (пока ставлю дату создания эфира)
+
+
+
+                                }
+                            }
                         }
-
                     }
                 }
             }
@@ -2085,91 +2514,159 @@ namespace Efir
                 using (ApplicationContext context = new ApplicationContext())
                 {
                     List<Film> films = context.Films.ToList();
-
                     TabControl tabControl = TabOfDayWeek;
 
                     foreach (var tab in tabControl.Items)
                     {
                         TabItem? currentTabItem = tab as TabItem;
-                        bool elseFilm = false;
-                        int datePossibleRun = 30; // возмжный показ, желательно не раньше этой даты.
+                        //bool elseFilm = false;
+                        //int datePossibleRun = 30; // возмжный показ, желательно не раньше этой даты.
 
-                        int h = 0;
-                        int m = 0;
-
-                        var lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
-                        Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
-                        int indexElement = films.IndexOf(lastRunnedFilm);
-
-
-
-                    IfLengthIsOver:
-                        for (int i = indexElement; i < films.Count; i++)
+                        if (currentTabItem?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
                         {
-                            EfirOnMonday? startEventMondayFilm = new EfirOnMonday();
+                            int h = 0;
+                            int m = 0;
 
-                            #region Определение времени
-                            h = films[i].Duration.Hours * 60;
-                            m = films[i].Duration.Minutes;
+                            var lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                            Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                            int indexElement = films.IndexOf(lastRunnedFilm);
 
-                            int curMinuteEvent = h + m;
-                            #endregion
-
-                            if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                                         
-
-                            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
-
-                            PrintMonday print = new PrintMonday();
-                            TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-
-                            string[] splitName = films[i].Name.Split(".");
-                            string formattedName = splitName[0];
-
-                            startEventMondayFilm = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
-
-                            var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
-                            PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
-                            print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
-
-                            print.EventName = formattedName;
-                            print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
-                            print.Description = "Фильм: ";
-                            films[i].LastRun = DateTime.Now;
-
-                            Guid guid = Guid.NewGuid();
-                            string RandomId = guid.ToString();
-
-                            print.Id = RandomId;
-                            context.PrintMondays.Add(print);
-                            context.SaveChanges();
-
-                            var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
-                            if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
-
-                            lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
-                            lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
-                            indexElement = films.IndexOf(lastRunnedFilm);
-                            i = indexElement;
-                            TheRestTime = totalMinute - curMinuteEvent;
-                            totalMinute = TheRestTime;
-
-                            TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
-                            h = minTimeFilm.Hours * 60;
-                            m = minTimeFilm.Minutes;
-
-                            curMinuteEvent = h + m;
-
-                            if (TheRestTime > curMinuteEvent)
+                        IfLengthIsOver:
+                            for (int i = indexElement; i < films.Count; i++)
                             {
-                                elseFilm = true;
-                                continue;
-                            }
-                            if (i == films.Count - 1)
-                            {
-                                indexElement = 0;
-                                goto IfLengthIsOver;
+                                EfirOnMonday? startEventMondayFilm = new EfirOnMonday();
+                                PrintMonday print = new PrintMonday();
+
+                                #region Определение времени
+                                h = films[i].Duration.Hours * 60;
+                                m = films[i].Duration.Minutes;
+
+                                int curMinuteEvent = h + m;
+                                #endregion
+
+                                if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                                                                            
+
+                                string[] splitName = films[i].Name.Split(".");
+                                string formattedName = splitName[0];
+
+                                startEventMondayFilm = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
+                                var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
+                                PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
+                                TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                print.EventName = formattedName;
+                                print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                                print.Description = "Фильм: ";
+                                films[i].LastRun = DateTime.Now;
+
+                                Guid guid = Guid.NewGuid();
+                                string RandomId = guid.ToString();
+
+                                print.Id = RandomId;
+
+                                context.PrintMondays.Add(print);
+                                context.SaveChanges();
+
+                                var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                indexElement = films.IndexOf(lastRunnedFilm);
+
+                                i = indexElement;
+                                TheRestTime = totalMinute - curMinuteEvent;
+                                totalMinute = TheRestTime;
+
+                                TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                                h = minTimeFilm.Hours * 60;
+                                m = minTimeFilm.Minutes;
+
+                                curMinuteEvent = h + m;
+
+
+                                if (i == films.Count - 1)
+                                {
+                                    indexElement = 0;
+                                    goto IfLengthIsOver;
+                                }
                             }
                         }
+
+                        /*if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
+                        {
+                            int h = 0;
+                            int m = 0;
+
+                            var lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                            Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                            int indexElement = films.IndexOf(lastRunnedFilm);
+
+                        IfLengthIsOver:
+                            for (int i = indexElement; i < films.Count; i++)
+                            {
+                                EfirOnTuesday? startEventMondayFilm = new EfirOnTuesday();
+                                PrintTuesday print = new PrintTuesday();
+
+                                #region Определение времени
+                                h = films[i].Duration.Hours * 60;
+                                m = films[i].Duration.Minutes;
+
+                                int curMinuteEvent = h + m;
+                                #endregion
+
+                                if (curMinuteEvent > totalMinute) continue; // если время фильма больше необходимого, дальше                                                                            
+
+                                string[] splitName = films[i].Name.Split(".");
+                                string formattedName = splitName[0];
+
+                                startEventMondayFilm = context.OnTuesday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
+                                var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+                                TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                                print.EventName = formattedName;
+                                print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
+                                print.Description = "Фильм: ";
+                                films[i].LastRun = DateTime.Now;
+
+                                Guid guid = Guid.NewGuid();
+                                string RandomId = guid.ToString();
+
+                                print.Id = RandomId;
+
+                                context.PrintTuesdays.Add(print);
+                                context.SaveChanges();
+
+                                var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
+                                if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
+
+                                lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
+                                lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
+                                indexElement = films.IndexOf(lastRunnedFilm);
+
+                                i = indexElement;
+                                TheRestTime = totalMinute - curMinuteEvent;
+                                totalMinute = TheRestTime;
+
+                                TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
+                                h = minTimeFilm.Hours * 60;
+                                m = minTimeFilm.Minutes;
+
+                                curMinuteEvent = h + m;
+
+
+                                if (i == films.Count - 1)
+                                {
+                                    indexElement = 0;
+                                    goto IfLengthIsOver;
+                                }
+                            }
+                        }*/
 
 
                         /*if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower() && startEventTuesdayFilm != null)
@@ -2233,118 +2730,118 @@ namespace Efir
                     }
                 }
 
-                if (eventName == "СЕРИАЛЫ")
+
+            }
+            if (eventName == "СЕРИАЛЫ")
+            {
+                #region Переменные для определения веремени начала события
+                EfirOnMonday? startEventMondaySeries = new EfirOnMonday();
+                /* EfirOnTuesday? startEventTuesdaySeries = new EfirOnTuesday();
+                 EfirOnWednesday? startEventWednesdaySeries = new EfirOnWednesday();
+                 EfirOnThursday? startEventThursdaySeries = new EfirOnThursday();
+                 EfirOnFriday? startEfirOnFridaySeries = new EfirOnFriday();
+                 EfirOnSaturday? startEfirSaturdaySeries = new EfirOnSaturday();
+                 EfirOnSunday? startEfirSundaySeries = new EfirOnSunday();*/
+                #endregion
+
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    #region Переменные для определения веремени начала события
-                    EfirOnMonday? startEventMondaySeries = new EfirOnMonday();
-                    /* EfirOnTuesday? startEventTuesdaySeries = new EfirOnTuesday();
-                     EfirOnWednesday? startEventWednesdaySeries = new EfirOnWednesday();
-                     EfirOnThursday? startEventThursdaySeries = new EfirOnThursday();
-                     EfirOnFriday? startEfirOnFridaySeries = new EfirOnFriday();
-                     EfirOnSaturday? startEfirSaturdaySeries = new EfirOnSaturday();
-                     EfirOnSunday? startEfirSundaySeries = new EfirOnSunday();*/
-                    #endregion
+                    List<Series> series = context.Serieses.ToList();
+                    PrintMonday? print = new PrintMonday();
+                    bool elseFilm = false;
 
-                    using (ApplicationContext context = new ApplicationContext())
+
+                    int h = 0;
+                    int m = 0;
+
+
+                    var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                    Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
+                    int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+
+                IfLengthIsOver:
+                    for (int i = indexElement; i < series.Count; i++)
                     {
-                        List<Series> series = context.Serieses.ToList();
-                        PrintMonday? print = new PrintMonday();
-                        bool elseFilm = false;
+                        #region Определение времени
+                        h = series[i].Duration.Hours * 60;
+                        m = series[i].Duration.Minutes;
+
+                        int curMinuteEvent = h + m;
+                        #endregion
+
+                        if (curMinuteEvent > totalMinute) return;
 
 
-                        int h = 0;
-                        int m = 0;
+                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                        TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
+                        #region Соотношение события к дню недели для определения его начала по времени
+                        startEventMondaySeries = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                        /* startEventTuesdaySeries = context.OnTuesday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                         startEventWednesdaySeries = context.OnWednesday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                         startEventThursdaySeries = context.OnThursday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                         startEfirOnFridaySeries = context.OnFriday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                         startEfirSaturdaySeries = context.OnSaturday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+                         startEfirSundaySeries = context.OnSunday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");*/
 
-
-                        var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                        Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
-                        int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
-                    IfLengthIsOver:
-                        for (int i = indexElement; i < series.Count; i++)
+                        if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower() && startEventMondaySeries != null)
                         {
-                            #region Определение времени
-                            h = series[i].Duration.Hours * 60;
-                            m = series[i].Duration.Minutes;
+                            var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
+                            PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
 
-                            int curMinuteEvent = h + m;
-                            #endregion
+                            print.TimeToEfir = lastShoewdTime == null ? startEventMondaySeries.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+                        }
 
-                            if (curMinuteEvent > totalMinute) return;
+                        /*if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower() && startEventTuesdaySeries != null)
+                            print.TimeToEfir = !elseFilm ? startEventTuesdaySeries.TimeToEfir : startEventTuesdaySeries.TimeToEfir + addedTime;
 
+                        if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower() && startEventWednesdaySeries != null)
+                            print.TimeToEfir = !elseFilm ? startEventWednesdaySeries.TimeToEfir : startEventWednesdaySeries.TimeToEfir + addedTime;
 
-                            TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                            TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
-                            #region Соотношение события к дню недели для определения его начала по времени
-                            startEventMondaySeries = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-                            /* startEventTuesdaySeries = context.OnTuesday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-                             startEventWednesdaySeries = context.OnWednesday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-                             startEventThursdaySeries = context.OnThursday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-                             startEfirOnFridaySeries = context.OnFriday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-                             startEfirSaturdaySeries = context.OnSaturday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-                             startEfirSundaySeries = context.OnSunday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");*/
+                        if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower() && startEventThursdaySeries != null)
+                            print.TimeToEfir = !elseFilm ? startEventThursdaySeries.TimeToEfir : startEventThursdaySeries.TimeToEfir + addedTime;
 
-                            if (SelectedTab?.Header?.ToString()?.ToLower() == "Понедельник".ToLower() && startEventMondaySeries != null)
-                            {
-                                var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
-                                PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
+                        if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower() && startEfirOnFridaySeries != null)
+                            print.TimeToEfir = !elseFilm ? startEfirOnFridaySeries.TimeToEfir : startEfirOnFridaySeries.TimeToEfir + addedTime;
 
-                                print.TimeToEfir = lastShoewdTime == null ? startEventMondaySeries.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
-                            }
+                        if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSaturdaySeries != null)
+                            print.TimeToEfir = !elseFilm ? startEfirSaturdaySeries.TimeToEfir : startEfirSaturdaySeries.TimeToEfir + addedTime;
 
-                            /*if (SelectedTab?.Header?.ToString()?.ToLower() == "Вторник".ToLower() && startEventTuesdaySeries != null)
-                                print.TimeToEfir = !elseFilm ? startEventTuesdaySeries.TimeToEfir : startEventTuesdaySeries.TimeToEfir + addedTime;
+                        if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSundaySeries != null)
+                            print.TimeToEfir = !elseFilm ? startEfirSundaySeries.TimeToEfir : startEfirSundaySeries.TimeToEfir + addedTime;*/
+                        #endregion
 
-                            if (SelectedTab?.Header?.ToString()?.ToLower() == "Среда".ToLower() && startEventWednesdaySeries != null)
-                                print.TimeToEfir = !elseFilm ? startEventWednesdaySeries.TimeToEfir : startEventWednesdaySeries.TimeToEfir + addedTime;
+                        string[] splitName = series[i].Name.Split(".");
+                        string formattedName = splitName[0];
 
-                            if (SelectedTab?.Header?.ToString()?.ToLower() == "Четверг".ToLower() && startEventThursdaySeries != null)
-                                print.TimeToEfir = !elseFilm ? startEventThursdaySeries.TimeToEfir : startEventThursdaySeries.TimeToEfir + addedTime;
+                        Random randomId = new Random();
+                        randomId.Next(1, 1000);
 
-                            if (SelectedTab?.Header?.ToString()?.ToLower() == "Пятница".ToLower() && startEfirOnFridaySeries != null)
-                                print.TimeToEfir = !elseFilm ? startEfirOnFridaySeries.TimeToEfir : startEfirOnFridaySeries.TimeToEfir + addedTime;
+                        print.EventName = formattedName;
+                        print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
+                        print.Description = "Сериал: ";
+                        series[i].LastRun = DateTime.Now;
 
-                            if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSaturdaySeries != null)
-                                print.TimeToEfir = !elseFilm ? startEfirSaturdaySeries.TimeToEfir : startEfirSaturdaySeries.TimeToEfir + addedTime;
+                        Guid guid = Guid.NewGuid();
+                        string RandomId = guid.ToString();
 
-                            if (SelectedTab?.Header?.ToString()?.ToLower() == "Суббота".ToLower() && startEfirSundaySeries != null)
-                                print.TimeToEfir = !elseFilm ? startEfirSundaySeries.TimeToEfir : startEfirSundaySeries.TimeToEfir + addedTime;*/
-                            #endregion
+                        print.Id = RandomId;
 
-                            string[] splitName = series[i].Name.Split(".");
-                            string formattedName = splitName[0];
+                        //TODO здесь тоже надо опеределить в какой день записывать!
+                        context.PrintMondays.Add(print);
+                        context.SaveChanges();
 
-                            Random randomId = new Random();
-                            randomId.Next(1, 1000);
+                        TheRestTime = totalMinute - curMinuteEvent;
+                        totalMinute = TheRestTime;
+                        elseFilm = true;
 
-                            print.EventName = formattedName;
-                            print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
-                            print.Description = "Сериал: ";
-                            series[i].LastRun = DateTime.Now;
-
-                            Guid guid = Guid.NewGuid();
-                            string RandomId = guid.ToString();
-
-                            print.Id = RandomId;
-
-                            //TODO здесь тоже надо опеределить в какой день записывать!
-                            context.PrintMondays.Add(print);
-                            context.SaveChanges();
-
-                            TheRestTime = totalMinute - curMinuteEvent;
-                            totalMinute = TheRestTime;
-                            elseFilm = true;
-
-                            if (i == series.Count - 1)
-                            {
-                                indexElement = 0;
-                                goto IfLengthIsOver;
-                            }
+                        if (i == series.Count - 1)
+                        {
+                            indexElement = 0;
+                            goto IfLengthIsOver;
                         }
                     }
                 }
             }
-
             // функция поиска подходящего контента для заполнения оставшегося времени (поиск среди коротких роликов)
 
 
@@ -2352,4 +2849,5 @@ namespace Efir
         #endregion
     }
 }
+
 
