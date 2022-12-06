@@ -1903,8 +1903,8 @@ namespace Efir
                         }
                         EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
 
-                        var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
+                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
+                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
 
 
                         for (int i = 0; i < model.EventListSourceTuesday.Count; i++)
@@ -1932,7 +1932,7 @@ namespace Efir
 
                                 //------------------------------------------поиск контента------------------------------------------//
                                 int totalMinute = totalMinuteEvent;
-                                if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
+                                if (model.EventListSourceTuesday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
 
@@ -1967,6 +1967,7 @@ namespace Efir
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
                                         print.Description = "Фильм: ";
                                         films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -1976,8 +1977,101 @@ namespace Efir
                                         context.PrintTuesdays.Add(print);
                                         context.SaveChanges();
 
-                                        var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
-                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов                                        
+                                        TheRestTime = totalMinuteEvent - curMinuteEvent;
+                                        totalMinuteEvent = TheRestTime;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (currentTabItem?.Header?.ToString()?.ToLower() == "Среда".ToLower())
+                {
+                    using (ApplicationContext? context = new ApplicationContext())
+                    {
+                        var listEvents = context?.OnWednesday.ToList();
+                        var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
+
+                        if (sortedListEventsByTime == null) return;
+                        foreach (var item in sortedListEventsByTime)
+                        {
+                            model.EventListSourceWednesday.Add(item);
+                        }
+                        EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
+
+                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
+                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
+
+                        for (int i = 0; i < model.EventListSourceWednesday.Count; i++)
+                        {
+                            if (model.EventListSourceWednesday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
+
+                            if (i < model.EventListSourceWednesday.Count - 1)
+                            {
+                                if (model.EventListSourceWednesday[i].EventName == "ПЕРЕРЫВ") continue;
+
+                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
+                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
+                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
+                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
+                                var curItemTime = model.EventListSourceWednesday[i];
+                                var nextItemTime = model.EventListSourceWednesday[i + 1];
+
+                                var substractTimeWithinEvents = nextItemTime.TimeToEfir.Subtract(curItemTime.TimeToEfir);
+
+                                int h = substractTimeWithinEvents.Hours * 60;
+                                int m = substractTimeWithinEvents.Minutes;
+                                int s = substractTimeWithinEvents.Seconds;
+
+                                int totalMinuteEvent = h + m;
+
+                                //------------------------------------------поиск контента------------------------------------------//
+                                int totalMinute = totalMinuteEvent;
+                                if (model.EventListSourceWednesday[i].EventName == "ФИЛЬМЫ")
+                                {
+                                    List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+                                    for (int j = 0; j < films.Count; j++)
+                                    {
+                                        PrintWednesday print = new PrintWednesday();
+
+                                        #region Определение времени
+                                        hh = films[j].Duration.Hours * 60;
+                                        mm = films[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше                                                                            
+
+                                        var timeList = context.PrintWednesdays.ToList().OrderBy(s => s.TimeToEfir);
+                                        PrintWednesday? lastShoewdTime = timeList?.LastOrDefault();
+                                        TimeSpan? startEventMondayFilm = curItemTime.TimeToEfir;
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                        string[] splitName = films[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        if (startEventMondayFilm != null)
+                                            print.TimeToEfir = (TimeSpan)(lastShoewdTime == null ? startEventMondayFilm : lastShoewdTime.TimeToEfir + addedTime);
+                                        print.EventName = formattedName;
+                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
+                                        print.Description = "Фильм: ";
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        context.PrintWednesdays.Add(print);
+                                        context.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
