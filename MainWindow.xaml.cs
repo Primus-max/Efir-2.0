@@ -1790,6 +1790,8 @@ namespace Efir
                 }
                 // -------------------------------- WARNING!!! ---------------------------------//
 
+                #region ДОБАВЛЕНИЕ КОНТЕНТА ПО ДНЯМ НЕДЕЛИ
+
                 if (currentTabItem?.Header?.ToString()?.ToLower() == "Понедельник".ToLower())
                 {
 
@@ -1832,17 +1834,20 @@ namespace Efir
                                 //узнаю начала события
                                 // EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");                            
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ФИЛЬМЫ                                                                
                                 int totalMinute = totalMinuteEvent;
                                 if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
                                 {
+                                    PrintMonday print = new PrintMonday();
                                     List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
+                                    bool elseFilm = false;
 
                                     int hh = 0;
                                     int mm = 0;
 
                                     for (int j = 0; j < films.Count; j++)
                                     {
-                                        PrintMonday print = new PrintMonday();
+
 
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
@@ -1853,16 +1858,19 @@ namespace Efir
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше                                                                            
 
-                                        var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
-                                        PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
-                                        TimeSpan? startEventMondayFilm = curItemTime.TimeToEfir;
+                                        // var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
+                                        //PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
+                                        //TimeSpan? startEventMondayFilm = curItemTime.TimeToEfir;
+                                        //EfirOnMonday? startEventMondayFilm = context.OnMonday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
 
                                         string[] splitName = films[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
-                                        if (startEventMondayFilm != null)
-                                            print.TimeToEfir = (TimeSpan)(lastShoewdTime == null ? startEventMondayFilm : lastShoewdTime.TimeToEfir + addedTime);
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : curItemTime.TimeToEfir + addedTime;
+
+                                        /*if (startEventMondayFilm != null)
+                                            print.TimeToEfir = (lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime);*/
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
                                         print.Description = "Фильм: ";
@@ -1879,9 +1887,90 @@ namespace Efir
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
+                                        elseFilm = true;
                                     }
                                 }
+                                #endregion
 
+                                #region СЕРИАЛЫ
+                                /*if (eventName == "СЕРИАЛЫ")
+                                {
+                                    EfirOnMonday? startEventMondaySeries = new EfirOnMonday();
+
+
+                                    List<Series> series = context.Serieses.ToList();
+                                    PrintMonday? print = new PrintMonday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
+                                    int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+
+                                IfLengthIsOver:
+                                    for (int j = indexElement; j < series.Count; j++)
+                                    {
+                                        #region Определение времени
+                                        h = series[j].Duration.Hours * 60;
+                                        m = series[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) return;
+
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+
+                                        startEventMondaySeries = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+
+
+
+                                        var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
+                                        PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
+
+                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondaySeries.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
+
+
+
+
+                                        string[] splitName = series[i].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Random randomId = new Random();
+                                        randomId.Next(1, 1000);
+
+                                        print.EventName = formattedName;
+                                        print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
+                                        print.Description = "Сериал: ";
+                                        series[i].LastRun = DateTime.Now;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        //TODO здесь тоже надо опеределить в какой день записывать!
+                                        context.PrintMondays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (i == series.Count - 1)
+                                        {
+                                            indexElement = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }*/
+                                #endregion
                             }
 
                         }
@@ -2465,6 +2554,8 @@ namespace Efir
                         }
                     }
                 }
+
+                #endregion
             }
         }
         #endregion
