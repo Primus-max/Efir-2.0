@@ -1830,12 +1830,12 @@ namespace Efir
 
                                 int totalMinuteEvent = h + m;
                                 string eventName = model.EventListSourceMonday[i].EventName;
-
+                                int totalMinute = totalMinuteEvent;
                                 //узнаю начала события
                                 // EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");                            
                                 //------------------------------------------поиск контента------------------------------------------//
                                 #region ФИЛЬМЫ                                                                
-                                int totalMinute = totalMinuteEvent;
+
                                 if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintMonday print = new PrintMonday();
@@ -1868,7 +1868,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -1886,11 +1886,9 @@ namespace Efir
                                 #endregion
 
                                 #region СЕРИАЛЫ
-                                /*if (eventName == "СЕРИАЛЫ")
+                                //int totalMinute = totalMinuteEvent;
+                                if (eventName == "СЕРИАЛЫ")
                                 {
-                                    EfirOnMonday? startEventMondaySeries = new EfirOnMonday();
-
-
                                     List<Series> series = context.Serieses.ToList();
                                     PrintMonday? print = new PrintMonday();
                                     bool elseFilm = false;
@@ -1905,49 +1903,34 @@ namespace Efir
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
 
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < series.Count; j++)
+                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
-                                        h = series[j].Duration.Hours * 60;
-                                        m = series[j].Duration.Minutes;
+                                        hh = series[j].Duration.Hours * 60;
+                                        mm = series[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
-                                        if (curMinuteEvent > totalMinute) return;
-
+                                        if (curMinuteEvent > totalMinute) break;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-
-                                        startEventMondaySeries = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
-
-
-
-                                        var timeList = context.PrintMondays.ToList().OrderBy(s => s.TimeToEfir);
-                                        PrintMonday? lastShoewdTime = timeList?.LastOrDefault();
-
-                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondaySeries.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
-
-
-
-
-                                        string[] splitName = series[i].Name.Split(".");
+                                        string[] splitName = series[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
-                                        Random randomId = new Random();
-                                        randomId.Next(1, 1000);
-
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
+                                        print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
                                         print.Description = "Сериал: ";
-                                        series[i].LastRun = DateTime.Now;
+                                        series[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
                                         print.Id = RandomId;
 
-                                        //TODO здесь тоже надо опеределить в какой день записывать!
                                         context.PrintMondays.Add(print);
                                         context.SaveChanges();
 
@@ -1962,7 +1945,7 @@ namespace Efir
                                         }
                                     }
 
-                                }*/
+                                }
                                 #endregion
                             }
 
@@ -2048,7 +2031,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -2075,7 +2058,7 @@ namespace Efir
                         var listEvents = context?.OnWednesday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceWednesday.Add(item);
@@ -2144,7 +2127,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -2171,7 +2154,7 @@ namespace Efir
                         var listEvents = context?.OnThursday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceThursday.Add(item);
@@ -2238,7 +2221,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -2265,7 +2248,7 @@ namespace Efir
                         var listEvents = context?.OnFriday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceFriday.Add(item);
@@ -2332,7 +2315,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -2359,7 +2342,7 @@ namespace Efir
                         var listEvents = context?.OnSaturday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceSaturday.Add(item);
@@ -2426,7 +2409,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
@@ -2453,7 +2436,7 @@ namespace Efir
                         var listEvents = context?.OnSunday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceSunday.Add(item);
@@ -2520,7 +2503,7 @@ namespace Efir
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) return;
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
