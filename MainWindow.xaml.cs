@@ -1834,7 +1834,7 @@ namespace Efir
                                 //узнаю начала события
                                 // EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");                            
                                 //------------------------------------------поиск контента------------------------------------------//
-                                #region ФИЛЬМЫ                                                                
+                                #region ФИЛЬМЫ                                                               
 
                                 if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -1887,7 +1887,7 @@ namespace Efir
 
                                 #region СЕРИАЛЫ
                                 //int totalMinute = totalMinuteEvent;
-                                if (eventName == "СЕРИАЛЫ")
+                                if (model.EventListSourceMonday[i].EventName == "СЕРИАЛЫ")
                                 {
                                     List<Series> series = context.Serieses.ToList();
                                     PrintMonday? print = new PrintMonday();
@@ -1994,9 +1994,9 @@ namespace Efir
                                 int s = substractTimeWithinEvents.Seconds;
 
                                 int totalMinuteEvent = h + m;
-
-                                //------------------------------------------поиск контента------------------------------------------//
                                 int totalMinute = totalMinuteEvent;
+                                //------------------------------------------поиск контента------------------------------------------//
+                                #region ФИЛЬМЫ
                                 if (model.EventListSourceTuesday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintTuesday print = new PrintTuesday();
@@ -2046,6 +2046,70 @@ namespace Efir
                                         elseFilm = true;
                                     }
                                 }
+                                #endregion
+
+                                #region СЕРИАЛЫ
+                                //int totalMinute = totalMinuteEvent;
+                                if (model.EventListSourceMonday[i].EventName == "СЕРИАЛЫ")
+                                {
+                                    List<Series> series = context.Serieses.ToList();
+                                    PrintTuesday? print = new PrintTuesday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
+                                    int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+
+                                IfLengthIsOver:
+                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = series[j].Duration.Hours * 60;
+                                        mm = series[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) break;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = series[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
+                                        print.Description = "Сериал: ";
+                                        series[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        context.PrintTuesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (i == series.Count - 1)
+                                        {
+                                            indexElement = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
                             }
                         }
                     }
