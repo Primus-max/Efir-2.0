@@ -2058,7 +2058,7 @@ namespace Efir
 
                 if (currentTabItem?.Header?.ToString()?.ToLower() == "Вторник".ToLower())
                 {
-                    using (ApplicationContext context = new ApplicationContext())
+                    using (ApplicationContext? context = new ApplicationContext())
                     {
                         var listEvents = context?.OnTuesday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
@@ -2111,14 +2111,9 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-
-                                //Film? lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
-                                //int indexElement = films.IndexOf(lastRunnedFilm);
-
-                                IfLengthIsOver:
                                     for (int j = 0; j < films.Count; j++)
                                     {
-                                        EfirOnTuesday? startEventMondayFilm = new EfirOnTuesday();
+                                        //EfirOnTuesday? startEventMondayFilm = new EfirOnTuesday();
                                         PrintTuesday print = new PrintTuesday();
 
                                         #region Определение времени
@@ -2134,15 +2129,16 @@ namespace Efir
                                         string[] splitName = films[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
-                                        startEventMondayFilm = context.OnTuesday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+                                        //startEventMondayFilm = context.OnTuesday.ToList().Find(w => w.EventName == "ФИЛЬМЫ");
+
 
                                         var timeList = context.PrintTuesdays.ToList().OrderBy(s => s.TimeToEfir);
                                         PrintTuesday? lastShoewdTime = timeList?.LastOrDefault();
+                                        TimeSpan? startEventMondayFilm = curItemTime.TimeToEfir;
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
 
-                                        //if (lastShoewdTime?.TimeToEfir + addedTime > nextItemTime.TimeToEfir) return;
-                                        print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
-
+                                        if (startEventMondayFilm != null)
+                                            print.TimeToEfir = (TimeSpan)(lastShoewdTime == null ? startEventMondayFilm : lastShoewdTime.TimeToEfir + addedTime);
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
                                         print.Description = "Фильм: ";
@@ -2157,28 +2153,10 @@ namespace Efir
                                         context.SaveChanges();
 
                                         var addingNumOfRun = context.Films.ToList().Find(f => f.Id == films[i].Id);
-                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов
-
-                                        //lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
-                                        //lastRunnedFilm = lastRunnedFilmList.FirstOrDefault();
-                                        //indexElement = films.IndexOf(lastRunnedFilm);
-                                        //i = indexElement;
+                                        if (addingNumOfRun != null) addingNumOfRun.NumOfRun += 1; // плюсую к колличеству показов                                        
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
-
-                                        TimeSpan minTimeFilm = (TimeSpan)(context?.Films.ToList().Min(t => t.Duration));
-                                        hh = minTimeFilm.Hours * 60;
-                                        mm = minTimeFilm.Minutes;
-
-                                        curMinuteEvent = hh + mm;
-
-
-                                        if (i == films.Count - 1 && curMinuteEvent > TheRestTime)
-                                        {
-                                            //indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
                                     }
 
 
