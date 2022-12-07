@@ -2008,6 +2008,22 @@ namespace Efir
 
                                 }
                                 #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceMonday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintMonday? print = new PrintMonday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintMondays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
 
@@ -2232,6 +2248,22 @@ namespace Efir
 
                                 }
                                 #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceTuesday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintTuesday? print = new PrintTuesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintTuesdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -2453,6 +2485,22 @@ namespace Efir
 
                                 }
                                 #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceWednesday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintWednesday? print = new PrintWednesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintWednesdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -2670,6 +2718,22 @@ namespace Efir
                                         }
                                     }
 
+                                }
+                                #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceThursday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintThursday? print = new PrintThursday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintThursdays.Add(print);
+                                    context.SaveChanges();
                                 }
                                 #endregion
                             }
@@ -2890,6 +2954,22 @@ namespace Efir
 
                                 }
                                 #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceFriday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintFriday? print = new PrintFriday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintFridays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -3106,6 +3186,22 @@ namespace Efir
                                         }
                                     }
 
+                                }
+                                #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceSaturday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintSaturday? print = new PrintSaturday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintSaturdays.Add(print);
+                                    context.SaveChanges();
                                 }
                                 #endregion
                             }
@@ -3325,6 +3421,22 @@ namespace Efir
                                         }
                                     }
 
+                                }
+                                #endregion
+
+                                #region НОВОСТИ
+                                if (model.EventListSourceSunday[i].EventName == "НОВОСТИ")
+                                {
+                                    PrintSunday? print = new PrintSunday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "НОВОСТИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintSundays.Add(print);
+                                    context.SaveChanges();
                                 }
                                 #endregion
                             }
