@@ -206,32 +206,50 @@ namespace Efir
         public static void ParseBase()
         {
             MainWindowViewModel model = new MainWindowViewModel();
+            List<LectionGraph> lectionGraphs = new List<LectionGraph>();
             LectionGraph lection = new LectionGraph();
             var wordApp = new Word.Application();
             wordApp.Visible = false;
 
             try
             {
-                var wordBaza = wordApp.Documents.Open(model.PathToLectionDoc);
+                var wordBaza = wordApp.Documents.Open(@"Z:\Programming\ProjectC#\Efir\lection.docx");
                 var contentBaza = wordBaza.Content;
                 string stringBaza = contentBaza.Text;
                 string[] parsBaza = stringBaza.Split('\a');
 
 
-                for (int i = 0; i < parsBaza.Length; i++)
+                using (ApplicationContext context = new ApplicationContext())
                 {
-                    if (parsBaza[i].Contains("Лекция на тему"))
+                    for (int i = 0; i < parsBaza.Length; i++)
                     {
-                        lection.Name = parsBaza[i].Replace("\r", "");
-                        lection.Lecturer = parsBaza[i + 2].Replace("\r", "");
-                        lection.LectionDate = Convert.ToDateTime(parsBaza[i + 3].Replace("\r", ""));
+                        if (parsBaza[i].Contains("Лекция на тему"))
+                        {
+                            Guid guid = Guid.NewGuid();
+                            string RandomId = guid.ToString();
+
+                            lection.Id = RandomId;
+                            lection.Name = parsBaza[i].Replace("\r", "");
+                            lection.Lecturer = parsBaza[i + 2].Replace("\r", "");
+                            lection.LectionDate = Convert.ToDateTime(parsBaza[i + 3].Replace("\r", ""));
+                            lection.Path = @"Z:\Programming\ProjectC#\Efir\lection.docx";
+
+                            lectionGraphs.Add(lection);
+                            context.LectionGraphs.Add(lection);
+                            context.SaveChanges();
+
+                        }
+
                     }
+                    wordBaza.Close();
+                    wordApp.Quit();
 
+                    /*foreach (var item in lectionGraphs)
+                    {
+                        context.LectionGraphs.Add(item);
+                        context.SaveChanges();
+                    }*/
                 }
-
-
-                wordBaza.Close();
-                wordApp.Quit();
             }
             catch (Exception ex)
             {

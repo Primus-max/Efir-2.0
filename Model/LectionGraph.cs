@@ -8,7 +8,7 @@ namespace Efir.Model
 {
     internal class LectionGraph
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }            // Название лекции
         public string? Lecturer { get; set; }       // кто читает   
         public DateTime LectionDate { get; set; }   // дата для лекции
@@ -16,8 +16,9 @@ namespace Efir.Model
 
         public LectionGraph() { }
 
-        public LectionGraph(DateTime lectionDate, string name, string lecturer, string path)
+        public LectionGraph(DateTime lectionDate, string name, string lecturer, string path, string id)
         {
+            this.Id = id;
             this.Name = name;
             this.Lecturer = lecturer;
             this.LectionDate = lectionDate;
