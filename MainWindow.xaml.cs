@@ -221,6 +221,12 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
+                    // отчищаю модель в базу
+                    foreach (var item in context.LectionGraphs.ToList())
+                    {
+                        context.LectionGraphs.Remove(item);
+                    }
+
                     for (int i = 0; i < parsBaza.Length; i++)
                     {
                         if (parsBaza[i].Contains("Лекция на тему"))
@@ -243,12 +249,6 @@ namespace Efir
                     }
                     wordBaza.Close();
                     wordApp.Quit();
-
-                    /*foreach (var item in lectionGraphs)
-                    {
-                        context.LectionGraphs.Add(item);
-                        context.SaveChanges();
-                    }*/
                 }
             }
             catch (Exception ex)
