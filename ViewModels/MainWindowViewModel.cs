@@ -13,13 +13,18 @@ namespace Efir.ViewModels
     internal class MainWindowViewModel : BaseViewModel
     {
         private string _Title;
-        /// <summary>
-        /// Заголовок окна
-        /// </summary>
         public string Title
         {
             get => _Title;
             set => Set(ref _Title, value);
+        }
+
+        // путь для выбора вордовского документа с лекциями
+        private string _PathToLectionDoc;
+        public string PathToLectionDoc
+        {
+            get => _PathToLectionDoc;
+            set => Set(ref _PathToLectionDoc, value);
         }
 
 
@@ -131,7 +136,6 @@ namespace Efir.ViewModels
 
 
         #endregion
-
 
         #region БЛОК МЕДИА
 

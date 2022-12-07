@@ -267,3 +267,5 @@ Z:\Programming\ProjectC#\Efir — копия\obj\Debug\net6.0-windows\Efir.pdb
 Z:\Programming\ProjectC#\Efir — копия\obj\Debug\net6.0-windows\Efir.genruntimeconfig.cache
 Z:\Programming\ProjectC#\Efir — копия\obj\Debug\net6.0-windows\ref\Efir.dll
 Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\Interop.Microsoft.Office.Interop.Word.dll
+Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\DocumentFormat.OpenXml.dll
+Z:\Programming\ProjectC#\Efir\bin\Debug\net6.0-windows\~$ection.docx

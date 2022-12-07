@@ -729,17 +729,25 @@
                         <TextBlock
                             Margin="0,0,0,8"
                             Style="{StaticResource MaterialDesignHeadline5TextBlock}"
-                            Text="Создание списком лекций сотрудников на мессяц" />
-                        <TextBlock>
-                            <!--<Run
-                            Text="tab 2 content. Default look and behaviors." />
-                            <LineBreak />
-                            <LineBreak />
-                            <Run
-                            FontStyle="Italic">
-                            Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
-                            </Run>-->
-                        </TextBlock>
+                            Text="Добавить лекции" />
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0 100 0 100" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <TextBox
+                                x:Name="FilePathToLectionDocTextBox"
+                                Width="310"
+                                Padding="5 0 0 0"
+                                Margin="0 0 15 0"
+                                materialDesign:HintAssist.Hint="Путь к файлу"
+                                materialDesign:HintAssist.HelperText="{Binding LectionEvent}"
+                                materialDesign:HintAssist.HelperTextFontSize="14"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Foreground="#c5c5c5"
+                                VerticalAlignment="Center"/>
+                            <Button  Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                    Click="ParsingDoc_Click"/>
+                        </StackPanel>
+
                         <Button Content="Распарсить документ" Click="ParsingDoc_Click" ></Button>
                     </StackPanel>
                 </TabItem>

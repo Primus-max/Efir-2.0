@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[22.1.6, )"
             },
+            "DocumentFormat.OpenXml": {
+              "target": "Package",
+              "version": "[2.18.0, )"
+            },
             "MaterialDesignColors": {
               "target": "Package",
               "version": "[2.0.9, )"

@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "xjbF9vc8KY1ZtFd66IdymUR8uvTkBOX5rZ3SOYIW71KrK26Fec3uWOSYTlmTBEjnFLf9YKgi/fgJUUzYJYpOHw==",
+  "dgSpecHash": "mBg39ZdWlw8zvLMHvA6uQ/becWdMY9Qd4ARQmxaQ6he2r0pW8HxqA4yGPAPScwOXIgOUaYNE7nRXscECoqOYgQ==",
   "success": true,
   "projectFilePath": "Z:\\Programming\\ProjectC#\\Efir\\Efir.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\SKTV-1\\.nuget\\packages\\controlzex\\4.3.0\\controlzex.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\decisiondiagrams\\1.2.0\\decisiondiagrams.1.2.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\devexpress.data\\22.1.6\\devexpress.data.22.1.6.nupkg.sha512",
+    "C:\\Users\\SKTV-1\\.nuget\\packages\\documentformat.openxml\\2.18.0\\documentformat.openxml.2.18.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\entityframework\\6.4.4\\entityframework.6.4.4.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\gong-wpf-dragdrop\\3.2.0\\gong-wpf-dragdrop.3.2.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\mahapps.metro\\2.0.0\\mahapps.metro.2.0.0.nupkg.sha512",
@@ -65,6 +66,7 @@
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.dynamic.runtime\\4.3.0\\system.dynamic.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.io\\4.3.0\\system.io.4.3.0.nupkg.sha512",
+    "C:\\Users\\SKTV-1\\.nuget\\packages\\system.io.packaging\\4.7.0\\system.io.packaging.4.7.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.memory\\4.5.3\\system.memory.4.5.3.nupkg.sha512",
