@@ -1767,7 +1767,7 @@ namespace Efir
         }
 
 
-        #region Cобираю эфир на понедельник
+        #region ПОДБОР КОНТЕНТА
         private void GenerateEfir()
         {
             TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
@@ -1800,7 +1800,7 @@ namespace Efir
                         var listEvents = context?.OnMonday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceMonday.Add(item);
@@ -1885,8 +1885,7 @@ namespace Efir
                                 }
                                 #endregion
 
-                                #region СЕРИАЛЫ
-                                //int totalMinute = totalMinuteEvent;
+                                #region СЕРИАЛЫ                                
                                 if (model.EventListSourceMonday[i].EventName == "СЕРИАЛЫ")
                                 {
                                     List<Series> series = context.Serieses.ToList();
@@ -1912,7 +1911,7 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
-                                        if (curMinuteEvent > totalMinute) break;
+                                        if (curMinuteEvent > totalMinute) continue;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = series[j].Name.Split(".");
@@ -1947,8 +1946,69 @@ namespace Efir
 
                                 }
                                 #endregion
-                            }
 
+                                #region ПРОФИЛАКТИКА
+                                if (model.EventListSourceMonday[i].EventName == "ПРОФИЛАКТИКА")
+                                {
+                                    List<Prevention> preventions = context.Preventions.ToList();
+                                    PrintMonday? print = new PrintMonday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
+                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+
+                                IfLengthIsOver:
+                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = preventions[j].Duration.Hours * 60;
+                                        mm = preventions[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
+                                        print.Description = preventions[j].Description;
+                                        preventions[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        context.PrintMondays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == preventions.Count - 1)
+                                        {
+                                            indexElement = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+                            }
                         }
 
                     }
@@ -1961,7 +2021,7 @@ namespace Efir
                         var listEvents = context?.OnTuesday.ToList();
                         var sortedListEventsByTime = listEvents?.OrderBy(x => x.TimeToEfir);
 
-                        if (sortedListEventsByTime == null) return;
+                        if (sortedListEventsByTime == null) break;
                         foreach (var item in sortedListEventsByTime)
                         {
                             model.EventListSourceTuesday.Add(item);
@@ -2395,7 +2455,7 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
-                                        if (curMinuteEvent > totalMinute) break;
+                                        if (curMinuteEvent > totalMinute) continue;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = series[j].Name.Split(".");
@@ -2553,7 +2613,7 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
-                                        if (curMinuteEvent > totalMinute) break;
+                                        if (curMinuteEvent > totalMinute) continue;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = series[j].Name.Split(".");
@@ -2711,7 +2771,7 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
-                                        if (curMinuteEvent > totalMinute) break;
+                                        if (curMinuteEvent > totalMinute) continue;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = series[j].Name.Split(".");
@@ -2870,7 +2930,7 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
-                                        if (curMinuteEvent > totalMinute) break;
+                                        if (curMinuteEvent > totalMinute) continue;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = series[j].Name.Split(".");

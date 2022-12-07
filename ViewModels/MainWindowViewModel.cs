@@ -68,7 +68,6 @@ namespace Efir.ViewModels
         {
             get => _News;
         }
-
         private string _EndEfir = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
         public string EndEfir
         {
