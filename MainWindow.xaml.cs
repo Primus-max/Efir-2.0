@@ -4253,6 +4253,11 @@ namespace Efir
 
         }
         #endregion
+
+        private void ParsingDoc_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 

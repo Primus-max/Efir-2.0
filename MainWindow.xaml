@@ -740,6 +740,7 @@
                             Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...
                             </Run>-->
                         </TextBlock>
+                        <Button Content="Распарсить документ" Click="ParsingDoc_Click" ></Button>
                     </StackPanel>
                 </TabItem>
                 <TabItem
