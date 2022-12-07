@@ -2332,7 +2332,7 @@ namespace Efir
 
                                 #region СЕРИАЛЫ
                                 //int totalMinute = totalMinuteEvent;
-                                if (model.EventListSourceMonday[i].EventName == "СЕРИАЛЫ")
+                                if (model.EventListSourceWednesday[i].EventName == "СЕРИАЛЫ")
                                 {
                                     List<Series> series = context.Serieses.ToList();
                                     PrintWednesday? print = new PrintWednesday();
@@ -2384,6 +2384,66 @@ namespace Efir
                                         elseFilm = true;
 
                                         if (i == series.Count - 1)
+                                        {
+                                            indexElement = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+
+                                #region ПРОФИЛАКТИКА
+                                if (model.EventListSourceWednesday[i].EventName == "ПРОФИЛАКТИКА")
+                                {
+                                    List<Prevention> preventions = context.Preventions.ToList();
+                                    PrintWednesday? print = new PrintWednesday();
+                                    bool elseFilm = false;
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
+                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+
+                                IfLengthIsOver:
+                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = preventions[j].Duration.Hours * 60;
+                                        mm = preventions[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
+                                        print.Description = preventions[j].Description;
+                                        preventions[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.Id = RandomId;
+
+                                        context.PrintWednesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == preventions.Count - 1)
                                         {
                                             indexElement = 0;
                                             goto IfLengthIsOver;
