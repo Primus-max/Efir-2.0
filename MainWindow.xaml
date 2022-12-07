@@ -701,7 +701,8 @@
                             </TabItem>
                         </TabControl>
                         <Button Content="Создать Эфир"
-                                Margin="0 30 0 0" Click="Testing"/>
+                                Margin="0 30 0 0"
+                                Click="SaveEfir_Click"/>
 
                     </StackPanel>
 

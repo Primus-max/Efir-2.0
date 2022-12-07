@@ -65,8 +65,6 @@ namespace Efir
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
-
-            ParseBase();
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -199,6 +197,11 @@ namespace Efir
             #endregion
         }
 
+        #region ПАРСИНГ ДОКУМЕНТА С ГРАФИКОМ ЛЕКЦИЙ
+        private void ParsingDoc_Click(object sender, RoutedEventArgs e)
+        {
+            ParseBase();
+        }
 
         public static void ParseBase()
         {
@@ -217,7 +220,6 @@ namespace Efir
 
                 for (int i = 0; i < parsBaza.Length; i++)
                 {
-
                     if (parsBaza[i].Contains("Лекция на тему"))
                     {
                         lection.Name = parsBaza[i].Replace("\r", "");
@@ -236,6 +238,8 @@ namespace Efir
                 MessageBox.Show("Произошла ошибка " + ex.Message);
             }
         }
+        #endregion
+
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
         // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
@@ -1958,9 +1962,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
-
-                                // var sdfgsdfg = listSortedByDate.Count();
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -2232,7 +2234,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -2503,7 +2505,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -2770,7 +2772,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -3036,7 +3038,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -3302,7 +3304,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -3569,7 +3571,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -3734,7 +3736,165 @@ namespace Efir
         #endregion
 
 
-        private void Testing(object sender, RoutedEventArgs e)
+        /* private void SaveChangedEfirItem(object sender, SelectionChangedEventArgs e)
+         {
+             using (ApplicationContext context = new ApplicationContext())
+             {
+                 MainWindowViewModel model = new MainWindowViewModel();
+
+                 if (context.Films.Count() == 0 || context.Serieses.Count() == 0)
+                 {
+                     MessageBox.Show("Проверьте, указаны ли пути к контенту");
+                     return;
+                 }
+
+                 //TODO Переделать удаление значений в полях использую встроенные методы
+                 #region Перед созданием эфера отчищаю все модели в базе
+                 foreach (var item in context.PrintMondays.ToList())
+                 {
+                     context.PrintMondays.Remove(item);
+                 }
+                 foreach (var item in context.PrintTuesdays.ToList())
+                 {
+                     context.PrintTuesdays.Remove(item);
+                 }
+                 foreach (var item in context.PrintWednesdays.ToList())
+                 {
+                     context.PrintWednesdays.Remove(item);
+                 }
+                 foreach (var item in context.PrintThursdays.ToList())
+                 {
+                     context.PrintThursdays.Remove(item);
+                 }
+                 foreach (var item in context.PrintFridays.ToList())
+                 {
+                     context.PrintFridays.Remove(item);
+                 }
+                 foreach (var item in context.PrintSaturdays.ToList())
+                 {
+                     context.PrintSaturdays.Remove(item);
+                 }
+                 foreach (var item in context.PrintSundays.ToList())
+                 {
+                     context.PrintSundays.Remove(item);
+                 }
+                 context.SaveChanges();
+                 #endregion
+
+                 #region Отсальные дни заполнить по поенедельнику, если пустые
+
+                 if (context.OnTuesday.Count() == 0 && context.OnWednesday.Count() == 0
+                 && context.OnThursday.Count() == 0 && context.OnFriday.Count() == 0
+                 && context.OnSaturday.Count() == 0 && context.OnSunday.Count() == 0)
+                 {
+                     foreach (var itemEvent in context.OnMonday)
+                     {
+                         #region Перезапись для вторника
+                         EfirOnTuesday efirTuesday = new EfirOnTuesday();
+                         efirTuesday.TimeToEfir = itemEvent.TimeToEfir;
+                         efirTuesday.EventName = itemEvent.EventName;
+                         efirTuesday.Description = itemEvent.Description;
+                         efirTuesday.Option = itemEvent.Option;
+
+                         context.OnTuesday.Add(efirTuesday);
+                         context.SaveChanges();
+                         foreach (var item in context.OnTuesday.ToList())
+                         {
+                             model.EventListSourceTuesday.Add(item);
+                         }
+                         EfirListOnTuesday.ItemsSource = model.EventListSourceMonday;
+
+                         #endregion
+
+                         #region Перезапись для среды
+                         EfirOnWednesday efirWednesday = new EfirOnWednesday();
+                         efirWednesday.TimeToEfir = itemEvent.TimeToEfir;
+                         efirWednesday.EventName = itemEvent.EventName;
+                         efirWednesday.Description = itemEvent.Description;
+                         efirWednesday.Option = itemEvent.Option;
+
+                         context.OnWednesday.Add(efirWednesday);
+                         context.SaveChanges();
+                         foreach (var item in context.OnWednesday.ToList())
+                         {
+                             model.EventListSourceWednesday.Add(item);
+                         }
+                         EfirListOnWednesday.ItemsSource = model.EventListSourceMonday;
+                         #endregion
+
+                         #region Перезапись для четверга
+                         EfirOnThursday efirThursday = new EfirOnThursday();
+                         efirThursday.TimeToEfir = itemEvent.TimeToEfir;
+                         efirThursday.EventName = itemEvent.EventName;
+                         efirThursday.Description = itemEvent.Description;
+                         efirThursday.Option = itemEvent.Option;
+
+                         context.OnThursday.Add(efirThursday);
+                         context.SaveChanges();
+                         foreach (var item in context.OnThursday.ToList())
+                         {
+                             model.EventListSourceThursday.Add(item);
+                         }
+                         EfirListOnThursday.ItemsSource = model.EventListSourceMonday;
+                         #endregion
+
+                         #region Перезапись для пятницы
+                         EfirOnFriday efirFriday = new EfirOnFriday();
+                         efirFriday.TimeToEfir = itemEvent.TimeToEfir;
+                         efirFriday.EventName = itemEvent.EventName;
+                         efirFriday.Description = itemEvent.Description;
+                         efirFriday.Option = itemEvent.Option;
+
+                         context.OnFriday.Add(efirFriday);
+                         context.SaveChanges();
+                         foreach (var item in context.OnFriday.ToList())
+                         {
+                             model.EventListSourceFriday.Add(item);
+                         }
+                         EfirListOnFriday.ItemsSource = model.EventListSourceMonday;
+                         #endregion
+
+                         #region Перезапись для субботы
+                         EfirOnSaturday efirSaturday = new EfirOnSaturday();
+                         efirSaturday.TimeToEfir = itemEvent.TimeToEfir;
+                         efirSaturday.EventName = itemEvent.EventName;
+                         efirSaturday.Description = itemEvent.Description;
+                         efirSaturday.Option = itemEvent.Option;
+
+                         context.OnSaturday.Add(efirSaturday);
+                         context.SaveChanges();
+                         foreach (var item in context.OnSaturday.ToList())
+                         {
+                             model.EventListSourceSaturday.Add(item);
+                         }
+                         EfirtListOnSaturday.ItemsSource = model.EventListSourceMonday;
+                         #endregion
+
+                         #region Перезапись для воскресения
+                         EfirOnSunday efirSunday = new EfirOnSunday();
+                         efirSunday.TimeToEfir = itemEvent.TimeToEfir;
+                         efirSunday.EventName = itemEvent.EventName;
+                         efirSunday.Description = itemEvent.Description;
+                         efirSunday.Option = itemEvent.Option;
+
+                         context.OnSunday.Add(efirSunday);
+                         context.SaveChanges();
+                         foreach (var item in context.OnSunday.ToList())
+                         {
+                             model.EventListSourceSunday.Add(item);
+                         }
+                         EfirtListOnSunday.ItemsSource = model.EventListSourceMonday;
+                         #endregion
+
+
+                     }
+                 }
+                 #endregion
+
+             }
+         }*/
+
+        private void SaveEfir_Click(object sender, RoutedEventArgs e)
         {
             //TODO ОБЯЗАТЕЛЬНО СДЕЛАТЬ ПРОВЕРКУ ЕСТЬ ЛИ В БАЗЕ КОНТЕНТ!!!
             using (ApplicationContext context = new ApplicationContext())
@@ -3883,8 +4043,6 @@ namespace Efir
                         }
                         EfirtListOnSunday.ItemsSource = model.EventListSourceMonday;
                         #endregion
-
-
                     }
                 }
                 #endregion
@@ -4294,12 +4452,13 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
 
         }
+
+
+
+
         #endregion
 
-        private void ParsingDoc_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
     }
 }
 

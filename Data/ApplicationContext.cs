@@ -40,6 +40,8 @@ namespace Efir.Data
 
         #endregion
 
+        public DbSet<LectionGraph> LectionGraphs { get; set; } = null!;
+
         //public DbSet<SeriesCollection> SeriesCollections { get; set; } = null!;
         //public DbSet<DocumentariesCollection> DocumentariesCollections { get; set; } = null!;
         //public DbSet<EducationalCollection> EducationalCollections { get; set; } = null!;
