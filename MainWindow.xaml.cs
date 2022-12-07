@@ -16,6 +16,8 @@ using System.Collections.ObjectModel;
 using DayOfWeek = Efir.Model.DayOfWeek;
 using System.Text.Json;
 using System.Windows.Documents;
+using Word = Microsoft.Office.Interop.Word;
+
 
 namespace Efir
 {
@@ -60,6 +62,8 @@ namespace Efir
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+
+            ParseBase();
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -193,7 +197,35 @@ namespace Efir
         }
 
 
+        public static void ParseBase()
+        {
+            var wordApp = new Word.Application();
+            wordApp.Visible = false;
 
+            try
+            {
+                var wordBaza = wordApp.Documents.Open(@"Z:\Programming\ProjectC#\Efir\lection.docx");
+                var contentBaza = wordBaza.Content;
+                string stringBaza = contentBaza.Text;
+                string[] parsBaza = stringBaza.Split('\a');
+
+
+
+                for (int i = 0; i < parsBaza.Length; i++)
+                {
+                    var sdf = parsBaza[i];
+                }
+
+
+                wordBaza.Close();
+                // Выхожу (закрываю) из приложения
+                wordApp.Quit();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка " + ex.Message);
+            }
+        }
 
         #region ПОЛЕЗНЫЕ МЕТОДЫ И ПРОЧЕЕ
         // очень хороший способ получения длительности прямо из байтов, но надо найти информацию о том в каких байтах хранится эа инфа
