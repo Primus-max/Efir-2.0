@@ -206,6 +206,7 @@
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
+                                                    <MenuItem Header="{Binding EndEfir}" Click="AddEndEfirAtList_Click"/>
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click" />
                                             </ContextMenu>
@@ -294,6 +295,7 @@
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
+                                                    <MenuItem Header="{Binding EndEfir}" Click="AddEndEfirAtList_Click"/>
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
@@ -380,6 +382,7 @@
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
+                                                    <MenuItem Header="{Binding EndEfir}" Click="AddEndEfirAtList_Click"/>
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
@@ -466,6 +469,7 @@
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
+                                                    <MenuItem Header="{Binding EndEfir}" Click="AddEndEfirAtList_Click"/>
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
@@ -552,6 +556,7 @@
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
+                                                    <MenuItem Header="{Binding EndEfir}" Click="AddEndEfirAtList_Click"/>
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>
@@ -637,6 +642,7 @@
                                                     <MenuItem Header="{Binding News}" Click="AddNewsAtList_Click"/>
                                                     <MenuItem Header="{Binding LectionEvent}" Click="AddLectionAtList_Click"/>
                                                     <MenuItem Header="{Binding Break}" Click="AddBreakAtList_Click"/>
+                                                    <MenuItem Header="{Binding EndEfir}" Click="AddEndEfirAtList_Click"/>
                                                 </MenuItem>
                                                 <MenuItem Header="Удалить" Click="RemoveEvent_Click"/>
                                             </ContextMenu>

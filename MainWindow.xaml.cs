@@ -1808,8 +1808,8 @@ namespace Efir
                         }
                         EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
-                        var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
-                        var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
+                        //var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
+                        //var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
 
 
                         for (int i = 0; i < model.EventListSourceMonday.Count; i++)
@@ -1818,7 +1818,7 @@ namespace Efir
 
                             if (i < model.EventListSourceMonday.Count - 1)
                             {
-                                if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ") continue;
+                                //if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 var curItemTime = model.EventListSourceMonday[i];
                                 var nextItemTime = model.EventListSourceMonday[i + 1];
@@ -1835,6 +1835,22 @@ namespace Efir
                                 //узнаю начала события
                                 // EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");                            
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceMonday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintMonday? print = new PrintMonday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЛЕКЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintMondays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
                                 #region ФИЛЬМЫ   
                                 if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -1900,9 +1916,11 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
 
+                                // var sdfgsdfg = listSortedByDate.Count();
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -1937,9 +1955,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -2024,6 +2042,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintMonday? print = new PrintMonday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintMondays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceMonday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintMonday? print = new PrintMonday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintMondays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
 
@@ -2054,7 +2104,7 @@ namespace Efir
 
                             if (i < model.EventListSourceTuesday.Count - 1)
                             {
-                                if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
+                                // if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
                                 // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
@@ -2140,9 +2190,9 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -2177,9 +2227,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -2264,6 +2314,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintTuesday? print = new PrintTuesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintTuesdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceTuesday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintTuesday? print = new PrintTuesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintTuesdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -2292,7 +2374,7 @@ namespace Efir
 
                             if (i < model.EventListSourceWednesday.Count - 1)
                             {
-                                if (model.EventListSourceWednesday[i].EventName == "ПЕРЕРЫВ") continue;
+                                //if (model.EventListSourceWednesday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
                                 // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
@@ -2379,9 +2461,9 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -2416,9 +2498,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -2501,6 +2583,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceWednesday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintWednesday? print = new PrintWednesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintWednesdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceWednesday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintWednesday? print = new PrintWednesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintWednesdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -2529,7 +2643,7 @@ namespace Efir
 
                             if (i < model.EventListSourceThursday.Count - 1)
                             {
-                                if (model.EventListSourceThursday[i].EventName == "ПЕРЕРЫВ") continue;
+                                //if (model.EventListSourceThursday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
                                 // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
@@ -2614,9 +2728,9 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -2651,9 +2765,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -2736,6 +2850,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceThursday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintThursday? print = new PrintThursday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintThursdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceThursday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintThursday? print = new PrintThursday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintThursdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -2764,7 +2910,7 @@ namespace Efir
 
                             if (i < model.EventListSourceFriday.Count - 1)
                             {
-                                if (model.EventListSourceFriday[i].EventName == "ПЕРЕРЫВ") continue;
+                                //if (model.EventListSourceFriday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
                                 // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
@@ -2848,9 +2994,9 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -2885,9 +3031,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -2970,6 +3116,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceFriday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintFriday? print = new PrintFriday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintFridays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceFriday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintFriday? print = new PrintFriday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintFridays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -2998,7 +3176,7 @@ namespace Efir
 
                             if (i < model.EventListSourceSaturday.Count - 1)
                             {
-                                if (model.EventListSourceSaturday[i].EventName == "ПЕРЕРЫВ") continue;
+                                //if (model.EventListSourceSaturday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
                                 // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
@@ -3082,9 +3260,9 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -3119,9 +3297,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -3204,6 +3382,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceSaturday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintSaturday? print = new PrintSaturday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintSaturdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceSaturday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintSaturday? print = new PrintSaturday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintSaturdays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -3232,12 +3442,12 @@ namespace Efir
 
                             if (i < model.EventListSourceSunday.Count - 1)
                             {
-                                if (model.EventListSourceSunday[i].EventName == "ПЕРЕРЫВ") continue;
+                                //if (model.EventListSourceSunday[i].EventName == "ПЕРЕРЫВ") continue;
 
-                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
+                                // xTODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
+                                // xTODO Нужны начальные и конечные точки эфира(хотябы конечная)
+                                // xTODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
+                                // xTODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceSunday[i];
                                 var nextItemTime = model.EventListSourceSunday[i + 1];
 
@@ -3317,9 +3527,9 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию 
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement + 1);
                                 IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
                                         #region Определение времени
                                         hh = series[j].Duration.Hours * 60;
@@ -3354,9 +3564,9 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (i == series.Count - 1)
+                                        if (j == listSortedByDate.Count() - 1)
                                         {
-                                            indexElement = 0;
+                                            lastSeries = 0;
                                             goto IfLengthIsOver;
                                         }
                                     }
@@ -3439,6 +3649,38 @@ namespace Efir
                                     context.SaveChanges();
                                 }
                                 #endregion
+
+                                #region ПЕРЕРЫВ
+                                if (model.EventListSourceSunday[i].EventName == "ПЕРЕРЫВ")
+                                {
+                                    PrintSunday? print = new PrintSunday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    print.EventName = "ПЕРЕРЫВ";
+                                    print.Id = RandomId;
+
+                                    context.PrintSundays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
+
+                                #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
+                                if (model.EventListSourceSunday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                {
+                                    PrintSunday? print = new PrintSunday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    print.TimeToEfir = nextItemTime.TimeToEfir;
+                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.Id = RandomId;
+
+                                    context.PrintSundays.Add(print);
+                                    context.SaveChanges();
+                                }
+                                #endregion
                             }
                         }
                     }
@@ -3463,7 +3705,7 @@ namespace Efir
                     return;
                 }
 
-
+                //TODO Переделать удаление значений в полях использую встроенные методы
                 #region Перед созданием эфера отчищаю все модели в базе
                 foreach (var item in context.PrintMondays.ToList())
                 {
@@ -3496,9 +3738,8 @@ namespace Efir
                 context.SaveChanges();
                 #endregion
 
+                #region Отсальные дни заполнить по поенедельнику, если пустые
 
-
-                // Отсальные дни заполнить по поенедельнику, если пустые
                 if (context.OnTuesday.Count() == 0 && context.OnWednesday.Count() == 0
                     && context.OnThursday.Count() == 0 && context.OnFriday.Count() == 0
                     && context.OnSaturday.Count() == 0 && context.OnSunday.Count() == 0)
@@ -3600,8 +3841,11 @@ namespace Efir
                         }
                         EfirtListOnSunday.ItemsSource = model.EventListSourceMonday;
                         #endregion
+
+
                     }
                 }
+                #endregion
 
             }
 
