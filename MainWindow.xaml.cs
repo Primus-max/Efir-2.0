@@ -3462,6 +3462,42 @@ namespace Efir
                     MessageBox.Show("Проверьте, указаны ли пути к контенту");
                     return;
                 }
+
+
+                #region Перед созданием эфера отчищаю все модели в базе
+                foreach (var item in context.PrintMondays.ToList())
+                {
+                    context.PrintMondays.Remove(item);
+                }
+                foreach (var item in context.PrintTuesdays.ToList())
+                {
+                    context.PrintTuesdays.Remove(item);
+                }
+                foreach (var item in context.PrintWednesdays.ToList())
+                {
+                    context.PrintWednesdays.Remove(item);
+                }
+                foreach (var item in context.PrintThursdays.ToList())
+                {
+                    context.PrintThursdays.Remove(item);
+                }
+                foreach (var item in context.PrintFridays.ToList())
+                {
+                    context.PrintFridays.Remove(item);
+                }
+                foreach (var item in context.PrintSaturdays.ToList())
+                {
+                    context.PrintSaturdays.Remove(item);
+                }
+                foreach (var item in context.PrintSundays.ToList())
+                {
+                    context.PrintSundays.Remove(item);
+                }
+                context.SaveChanges();
+                #endregion
+
+
+
                 // Отсальные дни заполнить по поенедельнику, если пустые
                 if (context.OnTuesday.Count() == 0 && context.OnWednesday.Count() == 0
                     && context.OnThursday.Count() == 0 && context.OnFriday.Count() == 0
