@@ -142,6 +142,11 @@ namespace Efir
                     FilePathToTvShowTextBox.Text = context.TvShows.First().Path;
                     CountOfTvShowTextBlock.Text = context.TvShows.Count().ToString();
                 }
+
+                if (context.LectionGraphs.Count() != 0)
+                {
+                    FilePathToLectionDocTextBox.Text = context.LectionGraphs.First().Path;
+                }
             }
             #endregion
 
