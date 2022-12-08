@@ -17,6 +17,7 @@ using DayOfWeek = Efir.Model.DayOfWeek;
 using System.Text.Json;
 using System.Windows.Documents;
 using Word = Microsoft.Office.Interop.Word;
+using System.Globalization;
 
 /*using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;*/
@@ -1911,7 +1912,7 @@ namespace Efir
                                     for (int j = 0; j < 10; j++)
                                     {
 
-                                        if (DateTime.Now.AddDays(j).DayOfWeek != date.DayOfWeek) continue;
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
 
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
@@ -1927,8 +1928,8 @@ namespace Efir
                                         print.Id = RandomId;
                                     }
 
-                                    context.PrintMondays.Add(print);
-                                    context.SaveChanges();
+                                    context?.PrintMondays.Add(print);
+                                    context?.SaveChanges();
                                 }
                                 #endregion
 
@@ -2212,8 +2213,7 @@ namespace Efir
 
                                     for (int j = 0; j < 10; j++)
                                     {
-
-                                        if (DateTime.Now.AddDays(j).DayOfWeek != date.DayOfWeek) continue;
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
 
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
@@ -2505,6 +2505,39 @@ namespace Efir
                                 int totalMinute = totalMinuteEvent;
 
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceWednesday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintWednesday? print = new PrintWednesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    DateTime date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        print.Id = RandomId;
+                                    }
+
+                                    context?.PrintWednesdays.Add(print);
+                                    context?.SaveChanges();
+                                }
+                                #endregion
+
                                 #region ФИЛЬМЫ
                                 if (model.EventListSourceWednesday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -2774,6 +2807,40 @@ namespace Efir
                                 int totalMinute = totalMinuteEvent;
 
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceThursday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintThursday? print = new PrintThursday();
+
+
+                                    DateTime date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+                                        print.Id = RandomId;
+                                    }
+
+                                    context?.PrintThursdays.Add(print);
+                                    context?.SaveChanges();
+                                }
+                                #endregion
+
                                 #region ФИЛЬМЫ
                                 if (model.EventListSourceThursday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -3040,6 +3107,38 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceFriday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintFriday? print = new PrintFriday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    DateTime date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        print.Id = RandomId;
+                                    }
+
+                                    context?.PrintFridays.Add(print);
+                                    context?.SaveChanges();
+                                }
+                                #endregion
+
                                 #region ФИЛЬМЫ
                                 if (model.EventListSourceFriday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -3306,6 +3405,38 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceSaturday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintSaturday? print = new PrintSaturday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    DateTime date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        print.Id = RandomId;
+                                    }
+
+                                    context?.PrintSaturdays.Add(print);
+                                    context?.SaveChanges();
+                                }
+                                #endregion
+
                                 #region ФИЛЬМЫ
                                 if (model.EventListSourceSaturday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -3572,6 +3703,38 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
+
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceSunday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintSunday? print = new PrintSunday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    DateTime? date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+                                        if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        print.Id = RandomId;
+                                    }
+
+                                    context?.PrintSundays.Add(print);
+                                    context?.SaveChanges();
+                                }
+                                #endregion
 
                                 #region ФИЛЬМЫ
                                 if (model.EventListSourceSunday[i].EventName == "ФИЛЬМЫ")
@@ -3977,7 +4140,7 @@ namespace Efir
                 }
 
                 //TODO Переделать удаление значений в полях использую встроенные методы
-                #region Перед созданием эфера отчищаю все модели в базе
+                #region Перед созданием эфира отчищаю все модели в базе
                 foreach (var item in context.PrintMondays.ToList())
                 {
                     context.PrintMondays.Remove(item);
