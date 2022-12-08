@@ -101,11 +101,47 @@ namespace Efir
             {
                 //TODO Профиксить отображение путей, убрать лишнее
 
-                FilePathToLectionTextBox.Text = context.LectionGraphs.ToList()[0].Path;
-                FilePathToFilmTextBox.Text = context.Films.First().Path;
-                FilePathToSeriesTextBox.Text = context.Serieses.First().Path;
-                FilePathToPreventionTextBox.Text = context.Preventions.First().Path;
-                FilePathToTvShowTextBox.Text = context.TvShows.First().Path;
+                if (context.LectionGraphs.Count() != 0)
+                {
+                    FilePathToLectionTextBox.Text = context.LectionGraphs.ToList()[0].Path;
+                    CountOfLectionTextBlock.Text = context.LectionGraphs.Count().ToString();
+                }
+
+                if (context.Films.Count() != 0)
+                {
+                    FilePathToFilmTextBox.Text = context.Films.First().Path;
+                    CountOfFilmTextBlock.Text = context.Films.Count().ToString();
+                }
+
+                if (context.Serieses.Count() != 0)
+                {
+                    FilePathToSeriesTextBox.Text = context.Serieses.First().Path;
+                    CountOfSeriesTextBlock.Text = context.Serieses.Count().ToString();
+                }
+
+                if (context.Preventions.Count() != 0)
+                {
+                    FilePathToPreventionTextBox.Text = context.Preventions.First().Path;
+                    CountOfPreventionlTextBlock.Text = context.Preventions.Count().ToString();
+                }
+
+                if (context.TvShows.Count() != 0)
+                {
+                    FilePathToTvShowTextBox.Text = context.TvShows.First().Path;
+                    CountOfTvShowTextBlock.Text = context.TvShows.Count().ToString();
+                }
+
+
+                /*if (context.LectionGraphs.Count() != 0)
+                    CountOfLectionTextBlock.Text = context.LectionGraphs.Count().ToString();*/
+                /*if (context.Films.Count() != 0)
+                    CountOfFilmTextBlock.Text = context.Films.Count().ToString();*/
+                /*if (context.Serieses.Count() != 0)
+                    CountOfSeriesTextBlock.Text = context.Serieses.Count().ToString();*/
+                /* if (context.Preventions.Count() != 0)
+                     CountOfPreventionlTextBlock.Text = context.Preventions.Count().ToString();*/
+                /*if (context.TvShows.Count() != 0)
+                    CountOfTvShowTextBlock.Text = context.TvShows.Count().ToString();*/
             }
             #endregion
 
