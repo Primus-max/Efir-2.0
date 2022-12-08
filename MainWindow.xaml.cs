@@ -30,9 +30,11 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO Сделать удаление контента из базы если нажата кнопка выбора контента(отчистка моделей), чтобы не догружалось, а с нуля грузилось, хотя может есть сммысл оставить, чтобы просто догружалось
+        //TODO Профиксить отчистку всех моделей в базе, на занчение null  в одном из полей(бывает в одно из полей записывается NULL и при старте программы выкидывает ошибку, для пользователя это краш программы. удалять приходится в ручную из базы)
         //xTODO Сделать заполнение событий по понедельнику, если другие не трогались(зафиксировать эвент, что менялись, значит кастом)
-        //TODO Доделать поиск и добавление контента по дням неделям, но после того как сделаю пункт выше.
-        //TODO Сделать отчистку эфира по дням недели перед созданием нового эфира(просто обнуление)
+        //xTODO Доделать поиск и добавление контента по дням неделям, но после того как сделаю пункт выше.
+        //xTODO Сделать отчистку эфира по дням недели перед созданием нового эфира(просто обнуление)
         //TODO Сделать сохранение листа по евенту добавления item в list (если есть такой евент) сейчас сохраняется по кнопке - Создать
         //xTODO  Добавить события Начало трансляции и Конец трансляции (обязательные поля)
         //xTODO Добавить модели для создания эфира по остальным дням
@@ -40,8 +42,9 @@ namespace Efir
         //xTODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках
         //TODO сделать в настройках программы возможность добавления флага для определения жанра, этот флаг будет отображаться в имении папки
         //TODO запуск программы по середине окна
-        //TODO сделать чтобы коллчиство добавляемых элементов показывалось в рантайме а не по факту добавленного
+        //TODO сделать чтобы колличество добавляемых элементов показывалось в рантайме а не по факту добавленного
         //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет
+
         ApplicationContext db = new ApplicationContext();
         DayOfWeek dayOfWeek = new DayOfWeek();
 
@@ -91,6 +94,19 @@ namespace Efir
             #region Установка источников данных для отображения колличество контентов в категории медиа
             //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
             CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
+            #endregion
+
+            #region Установка данных для отображения путей контента и его колличества
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                //TODO Профиксить отображение путей, убрать лишнее
+
+                FilePathToLectionTextBox.Text = context.LectionGraphs.ToList()[0].Path;
+                FilePathToFilmTextBox.Text = context.Films.First().Path;
+                FilePathToSeriesTextBox.Text = context.Serieses.First().Path;
+                FilePathToPreventionTextBox.Text = context.Preventions.First().Path;
+                FilePathToTvShowTextBox.Text = context.TvShows.First().Path;
+            }
             #endregion
 
             #region Установка источников данных для евентов по дням недели
@@ -1917,7 +1933,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -2218,7 +2234,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -2522,7 +2538,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -2823,7 +2839,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -3123,7 +3139,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -3421,7 +3437,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -3720,7 +3736,7 @@ namespace Efir
                                         string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
                                         LectionGraph? properLection =
-                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
 
                                         print.TimeToEfir = curItemTime.TimeToEfir;
                                         if (properLection != null)
@@ -3968,162 +3984,162 @@ namespace Efir
 
 
         /* private void SaveChangedEfirItem(object sender, SelectionChangedEventArgs e)
-         {
-             using (ApplicationContext context = new ApplicationContext())
-             {
-                 MainWindowViewModel model = new MainWindowViewModel();
+        {
+        using (ApplicationContext context = new ApplicationContext())
+        {
+        MainWindowViewModel model = new MainWindowViewModel();
 
-                 if (context.Films.Count() == 0 || context.Serieses.Count() == 0)
-                 {
-                     MessageBox.Show("Проверьте, указаны ли пути к контенту");
-                     return;
-                 }
+        if (context.Films.Count() == 0 || context.Serieses.Count() == 0)
+        {
+        MessageBox.Show("Проверьте, указаны ли пути к контенту");
+        return;
+        }
 
-                 //TODO Переделать удаление значений в полях использую встроенные методы
-                 #region Перед созданием эфера отчищаю все модели в базе
-                 foreach (var item in context.PrintMondays.ToList())
-                 {
-                     context.PrintMondays.Remove(item);
-                 }
-                 foreach (var item in context.PrintTuesdays.ToList())
-                 {
-                     context.PrintTuesdays.Remove(item);
-                 }
-                 foreach (var item in context.PrintWednesdays.ToList())
-                 {
-                     context.PrintWednesdays.Remove(item);
-                 }
-                 foreach (var item in context.PrintThursdays.ToList())
-                 {
-                     context.PrintThursdays.Remove(item);
-                 }
-                 foreach (var item in context.PrintFridays.ToList())
-                 {
-                     context.PrintFridays.Remove(item);
-                 }
-                 foreach (var item in context.PrintSaturdays.ToList())
-                 {
-                     context.PrintSaturdays.Remove(item);
-                 }
-                 foreach (var item in context.PrintSundays.ToList())
-                 {
-                     context.PrintSundays.Remove(item);
-                 }
-                 context.SaveChanges();
-                 #endregion
+        //TODO Переделать удаление значений в полях использую встроенные методы
+        #region Перед созданием эфера отчищаю все модели в базе
+        foreach (var item in context.PrintMondays.ToList())
+        {
+        context.PrintMondays.Remove(item);
+        }
+        foreach (var item in context.PrintTuesdays.ToList())
+        {
+        context.PrintTuesdays.Remove(item);
+        }
+        foreach (var item in context.PrintWednesdays.ToList())
+        {
+        context.PrintWednesdays.Remove(item);
+        }
+        foreach (var item in context.PrintThursdays.ToList())
+        {
+        context.PrintThursdays.Remove(item);
+        }
+        foreach (var item in context.PrintFridays.ToList())
+        {
+        context.PrintFridays.Remove(item);
+        }
+        foreach (var item in context.PrintSaturdays.ToList())
+        {
+        context.PrintSaturdays.Remove(item);
+        }
+        foreach (var item in context.PrintSundays.ToList())
+        {
+        context.PrintSundays.Remove(item);
+        }
+        context.SaveChanges();
+        #endregion
 
-                 #region Отсальные дни заполнить по поенедельнику, если пустые
+        #region Отсальные дни заполнить по поенедельнику, если пустые
 
-                 if (context.OnTuesday.Count() == 0 && context.OnWednesday.Count() == 0
-                 && context.OnThursday.Count() == 0 && context.OnFriday.Count() == 0
-                 && context.OnSaturday.Count() == 0 && context.OnSunday.Count() == 0)
-                 {
-                     foreach (var itemEvent in context.OnMonday)
-                     {
-                         #region Перезапись для вторника
-                         EfirOnTuesday efirTuesday = new EfirOnTuesday();
-                         efirTuesday.TimeToEfir = itemEvent.TimeToEfir;
-                         efirTuesday.EventName = itemEvent.EventName;
-                         efirTuesday.Description = itemEvent.Description;
-                         efirTuesday.Option = itemEvent.Option;
+        if (context.OnTuesday.Count() == 0 && context.OnWednesday.Count() == 0
+        && context.OnThursday.Count() == 0 && context.OnFriday.Count() == 0
+        && context.OnSaturday.Count() == 0 && context.OnSunday.Count() == 0)
+        {
+        foreach (var itemEvent in context.OnMonday)
+        {
+        #region Перезапись для вторника
+        EfirOnTuesday efirTuesday = new EfirOnTuesday();
+        efirTuesday.TimeToEfir = itemEvent.TimeToEfir;
+        efirTuesday.EventName = itemEvent.EventName;
+        efirTuesday.Description = itemEvent.Description;
+        efirTuesday.Option = itemEvent.Option;
 
-                         context.OnTuesday.Add(efirTuesday);
-                         context.SaveChanges();
-                         foreach (var item in context.OnTuesday.ToList())
-                         {
-                             model.EventListSourceTuesday.Add(item);
-                         }
-                         EfirListOnTuesday.ItemsSource = model.EventListSourceMonday;
+        context.OnTuesday.Add(efirTuesday);
+        context.SaveChanges();
+        foreach (var item in context.OnTuesday.ToList())
+        {
+        model.EventListSourceTuesday.Add(item);
+        }
+        EfirListOnTuesday.ItemsSource = model.EventListSourceMonday;
 
-                         #endregion
+        #endregion
 
-                         #region Перезапись для среды
-                         EfirOnWednesday efirWednesday = new EfirOnWednesday();
-                         efirWednesday.TimeToEfir = itemEvent.TimeToEfir;
-                         efirWednesday.EventName = itemEvent.EventName;
-                         efirWednesday.Description = itemEvent.Description;
-                         efirWednesday.Option = itemEvent.Option;
+        #region Перезапись для среды
+        EfirOnWednesday efirWednesday = new EfirOnWednesday();
+        efirWednesday.TimeToEfir = itemEvent.TimeToEfir;
+        efirWednesday.EventName = itemEvent.EventName;
+        efirWednesday.Description = itemEvent.Description;
+        efirWednesday.Option = itemEvent.Option;
 
-                         context.OnWednesday.Add(efirWednesday);
-                         context.SaveChanges();
-                         foreach (var item in context.OnWednesday.ToList())
-                         {
-                             model.EventListSourceWednesday.Add(item);
-                         }
-                         EfirListOnWednesday.ItemsSource = model.EventListSourceMonday;
-                         #endregion
+        context.OnWednesday.Add(efirWednesday);
+        context.SaveChanges();
+        foreach (var item in context.OnWednesday.ToList())
+        {
+        model.EventListSourceWednesday.Add(item);
+        }
+        EfirListOnWednesday.ItemsSource = model.EventListSourceMonday;
+        #endregion
 
-                         #region Перезапись для четверга
-                         EfirOnThursday efirThursday = new EfirOnThursday();
-                         efirThursday.TimeToEfir = itemEvent.TimeToEfir;
-                         efirThursday.EventName = itemEvent.EventName;
-                         efirThursday.Description = itemEvent.Description;
-                         efirThursday.Option = itemEvent.Option;
+        #region Перезапись для четверга
+        EfirOnThursday efirThursday = new EfirOnThursday();
+        efirThursday.TimeToEfir = itemEvent.TimeToEfir;
+        efirThursday.EventName = itemEvent.EventName;
+        efirThursday.Description = itemEvent.Description;
+        efirThursday.Option = itemEvent.Option;
 
-                         context.OnThursday.Add(efirThursday);
-                         context.SaveChanges();
-                         foreach (var item in context.OnThursday.ToList())
-                         {
-                             model.EventListSourceThursday.Add(item);
-                         }
-                         EfirListOnThursday.ItemsSource = model.EventListSourceMonday;
-                         #endregion
+        context.OnThursday.Add(efirThursday);
+        context.SaveChanges();
+        foreach (var item in context.OnThursday.ToList())
+        {
+        model.EventListSourceThursday.Add(item);
+        }
+        EfirListOnThursday.ItemsSource = model.EventListSourceMonday;
+        #endregion
 
-                         #region Перезапись для пятницы
-                         EfirOnFriday efirFriday = new EfirOnFriday();
-                         efirFriday.TimeToEfir = itemEvent.TimeToEfir;
-                         efirFriday.EventName = itemEvent.EventName;
-                         efirFriday.Description = itemEvent.Description;
-                         efirFriday.Option = itemEvent.Option;
+        #region Перезапись для пятницы
+        EfirOnFriday efirFriday = new EfirOnFriday();
+        efirFriday.TimeToEfir = itemEvent.TimeToEfir;
+        efirFriday.EventName = itemEvent.EventName;
+        efirFriday.Description = itemEvent.Description;
+        efirFriday.Option = itemEvent.Option;
 
-                         context.OnFriday.Add(efirFriday);
-                         context.SaveChanges();
-                         foreach (var item in context.OnFriday.ToList())
-                         {
-                             model.EventListSourceFriday.Add(item);
-                         }
-                         EfirListOnFriday.ItemsSource = model.EventListSourceMonday;
-                         #endregion
+        context.OnFriday.Add(efirFriday);
+        context.SaveChanges();
+        foreach (var item in context.OnFriday.ToList())
+        {
+        model.EventListSourceFriday.Add(item);
+        }
+        EfirListOnFriday.ItemsSource = model.EventListSourceMonday;
+        #endregion
 
-                         #region Перезапись для субботы
-                         EfirOnSaturday efirSaturday = new EfirOnSaturday();
-                         efirSaturday.TimeToEfir = itemEvent.TimeToEfir;
-                         efirSaturday.EventName = itemEvent.EventName;
-                         efirSaturday.Description = itemEvent.Description;
-                         efirSaturday.Option = itemEvent.Option;
+        #region Перезапись для субботы
+        EfirOnSaturday efirSaturday = new EfirOnSaturday();
+        efirSaturday.TimeToEfir = itemEvent.TimeToEfir;
+        efirSaturday.EventName = itemEvent.EventName;
+        efirSaturday.Description = itemEvent.Description;
+        efirSaturday.Option = itemEvent.Option;
 
-                         context.OnSaturday.Add(efirSaturday);
-                         context.SaveChanges();
-                         foreach (var item in context.OnSaturday.ToList())
-                         {
-                             model.EventListSourceSaturday.Add(item);
-                         }
-                         EfirtListOnSaturday.ItemsSource = model.EventListSourceMonday;
-                         #endregion
+        context.OnSaturday.Add(efirSaturday);
+        context.SaveChanges();
+        foreach (var item in context.OnSaturday.ToList())
+        {
+        model.EventListSourceSaturday.Add(item);
+        }
+        EfirtListOnSaturday.ItemsSource = model.EventListSourceMonday;
+        #endregion
 
-                         #region Перезапись для воскресения
-                         EfirOnSunday efirSunday = new EfirOnSunday();
-                         efirSunday.TimeToEfir = itemEvent.TimeToEfir;
-                         efirSunday.EventName = itemEvent.EventName;
-                         efirSunday.Description = itemEvent.Description;
-                         efirSunday.Option = itemEvent.Option;
+        #region Перезапись для воскресения
+        EfirOnSunday efirSunday = new EfirOnSunday();
+        efirSunday.TimeToEfir = itemEvent.TimeToEfir;
+        efirSunday.EventName = itemEvent.EventName;
+        efirSunday.Description = itemEvent.Description;
+        efirSunday.Option = itemEvent.Option;
 
-                         context.OnSunday.Add(efirSunday);
-                         context.SaveChanges();
-                         foreach (var item in context.OnSunday.ToList())
-                         {
-                             model.EventListSourceSunday.Add(item);
-                         }
-                         EfirtListOnSunday.ItemsSource = model.EventListSourceMonday;
-                         #endregion
+        context.OnSunday.Add(efirSunday);
+        context.SaveChanges();
+        foreach (var item in context.OnSunday.ToList())
+        {
+        model.EventListSourceSunday.Add(item);
+        }
+        EfirtListOnSunday.ItemsSource = model.EventListSourceMonday;
+        #endregion
 
 
-                     }
-                 }
-                 #endregion
+        }
+        }
+        #endregion
 
-             }
-         }*/
+        }
+        }*/
 
         // добавляю и сохраняю сетку вещания
         private void SaveEfir_Click(object sender, RoutedEventArgs e)
