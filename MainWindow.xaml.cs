@@ -463,13 +463,13 @@ namespace Efir
 
         #region Начало трансляции
 
-        private void AddStartEfirAtList_Click(object sender, RoutedEventArgs e)
+        /*private void AddStartEfirAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
+        MenuItem? menuItem = sender as MenuItem;
+        string eventName = (string)menuItem.Header;
 
-            AddEventByEventName(eventName);
-        }
+        AddEventByEventName(eventName);
+        }*/
 
         #endregion
 
@@ -4024,6 +4024,12 @@ namespace Efir
         }
         #endregion
 
+        #region КОПИРОВАНИЕ КОНТЕНТА В КОНЕЧНЫЕ ПАПКИ
+
+
+
+        #endregion
+
 
         /* private void SaveChangedEfirItem(object sender, SelectionChangedEventArgs e)
         {
@@ -4183,7 +4189,7 @@ namespace Efir
         }
         }*/
 
-        // добавляю и сохраняю сетку вещания
+        // добавляю и сохраняю макет эфира
         private void SaveEfir_Click(object sender, RoutedEventArgs e)
         {
             //TODO ОБЯЗАТЕЛЬНО СДЕЛАТЬ ПРОВЕРКУ ЕСТЬ ЛИ В БАЗЕ КОНТЕНТ!!!
@@ -4338,8 +4344,6 @@ namespace Efir
                 #endregion
 
             }
-
-            GenerateEfir();
         }
 
         #region ФОРМИРОВАНИЕ ЭФИРА НА НЕДЕЛЮ
@@ -4746,9 +4750,103 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
 
 
+
         #endregion
 
+        //Создание эфира
+        private void CreateEfir_Click(object sender, RoutedEventArgs e)
+        {
+            //GenerateEfir();
+            SaveEfirAtDoc();
+        }
+        // метод создание эфира
+        private void CreateEfir()
+        {
 
+        }
+
+        private void SaveEfirAtDoc()
+        {
+            EfirTable efirTable = new EfirTable();
+            efirTable.Show();
+
+            string targetPath = @"C:\Users\SKTV-1\Desktop\Эфир\efir.doc";
+
+            var wordApp = new Word.Application();
+            wordApp.Visible = false;
+
+            try
+            {
+                // var wordBaza = wordApp.Documents.Open(targetPath);
+                /*var contentBaza = wordBaza.Content;
+                string stringBaza = contentBaza.Text;
+                string[] parsBaza = stringBaza.Split('\a');
+
+                var dfgdfgdf = wordBaza.HTMLDivisions;
+                var paragra = wordBaza.ListParagraphs;
+                var lists = wordBaza.Lists;
+                var templs = wordBaza.ListTemplates;
+                var para2 = wordBaza.Paragraphs;
+                var reamg = wordBaza.Range();
+                var tablesss = wordBaza.Tables;*/
+
+
+                /*using (ApplicationContext context = new ApplicationContext())
+                {
+                // отчищаю модель в базу
+                foreach (var item in context.LectionGraphs.ToList())
+                {
+                context.LectionGraphs.Remove(item);
+                }
+
+                for (int i = 0; i < parsBaza.Length; i++)
+                  {
+                  if (parsBaza[i].Contains("Лекция на тему"))
+                  {
+                  Guid guid = Guid.NewGuid();
+                  string RandomId = guid.ToString();
+
+                  lection.Id = RandomId;
+                  lection.Name = parsBaza[i].Replace("\r", "");
+                  lection.Lecturer = parsBaza[i + 2].Replace("\r", "");
+                  lection.LectionDate = Convert.ToDateTime(parsBaza[i + 3].Replace("\r", ""));
+                  lection.Path = @"Z:\Programming\ProjectC#\Efir\lection.docx";
+
+                  lectionGraphs.Add(lection);
+                  context.LectionGraphs.Add(lection);
+                  context.SaveChanges();
+
+                  }
+
+                  }
+                  wordBaza.Close();
+                  wordApp.Quit();
+                  }*/
+
+                using (ApplicationContext context = new ApplicationContext())
+                {
+                    var query =
+                    from product in context.PrintMondays
+                    select new { product.EventName, product.TimeToEfir, product.Description, product.Id };
+
+
+                    EfirTable efir = new EfirTable();
+                    efir.GridTest.ItemsSource = null;
+                    efir.GridTest.ItemsSource = query.ToList();
+                }
+
+
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка " + ex.Message);
+            }
+
+        }
     }
 }
 

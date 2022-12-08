@@ -10,12 +10,18 @@
     <Compile Update="EfirDay.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="EfirTable.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="WinProgress.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="EfirDay.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="EfirTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">

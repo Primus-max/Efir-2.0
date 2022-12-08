@@ -27,6 +27,12 @@ namespace Efir.ViewModels
             set => Set(ref _PathToLectionDoc, value);
         }
 
+        private string _PathToSaveEfir;
+        public string PathToSaveEfir
+        {
+            get => _PathToSaveEfir;
+            set => Set(ref _PathToSaveEfir, value);
+        }
 
         #region Список названий всех событий
 

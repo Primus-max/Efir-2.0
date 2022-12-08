@@ -21,7 +21,7 @@
     Title="Программа телепередач Эфир-1.0"
     Height="520"
     Width="810"
-    Loaded="MainWindow_Loaded" >
+    Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -68,7 +68,7 @@
                                 Kind="CalendarMultiselectOutline" />
                             <TextBlock
                                 HorizontalAlignment="Center"
-                                Text="Эфир" />
+                                Text="Макет" />
                         </StackPanel>
                     </TabItem.Header>
                     <StackPanel
@@ -108,7 +108,6 @@
                                         <ListView.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
-                                                    <MenuItem Header="{Binding StartEfir}" Click="AddStartEfirAtList_Click" />
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
@@ -700,7 +699,7 @@
 
                             </TabItem>
                         </TabControl>
-                        <Button Content="Создать Эфир"
+                        <Button Content="Сохранить макет"
                                 Margin="0 30 0 0"
                                 Click="SaveEfir_Click"/>
 
@@ -1101,6 +1100,38 @@
 
                     </StackPanel>
                 </TabItem>
+                <!--________________________________________________________________________________________-->
+                <TabItem
+                    Width="100">
+                    <TabItem.Header>
+                        <StackPanel
+                            Width="auto"
+                            Height="auto">
+                            <materialDesign:PackIcon
+                                Width="30"
+                                Height="30"
+                                HorizontalAlignment="Center"
+                                Kind="YoutubeTv"
+                                Foreground="Red"/>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                Text="Эфир" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Width="200"
+                                Height="200" Click="CreateEfir_Click" >
+                            <materialDesign:PackIcon
+                                Width="170"
+                                Height="170"
+                                HorizontalAlignment="Center"
+                                Kind="Atlassian"/>
+                        </Button>
+                        <TextBlock Text="СОЗДАТЬ ПРОГРАММУ ТЕЛЕПЕРЕДАЧ НА НЕДЕЛЮ"
+                                   Margin="0 70 0 0"/>
+                    </StackPanel>
+                </TabItem>
+                <!--________________________________________________________________________________________-->
             </TabControl>
         </materialDesign:Card>
     </Grid>
