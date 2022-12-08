@@ -115,8 +115,20 @@ namespace Efir
 
                 if (context.Serieses.Count() != 0)
                 {
+                    string seriesName = "";
+                    int seriesCount = 0;
+                    foreach (var item in context.Serieses.ToList())
+                    {
+
+                        if (seriesName != item.Name)
+                        {
+                            seriesCount += 1;
+                        }
+                        seriesName = item.Name;
+                    }
+
                     FilePathToSeriesTextBox.Text = context.Serieses.First().Path;
-                    CountOfSeriesTextBlock.Text = context.Serieses.Count().ToString();
+                    CountOfSeriesTextBlock.Text = seriesCount.ToString();
                 }
 
                 if (context.Preventions.Count() != 0)
@@ -130,23 +142,12 @@ namespace Efir
                     FilePathToTvShowTextBox.Text = context.TvShows.First().Path;
                     CountOfTvShowTextBlock.Text = context.TvShows.Count().ToString();
                 }
-
-
-                /*if (context.LectionGraphs.Count() != 0)
-                    CountOfLectionTextBlock.Text = context.LectionGraphs.Count().ToString();*/
-                /*if (context.Films.Count() != 0)
-                    CountOfFilmTextBlock.Text = context.Films.Count().ToString();*/
-                /*if (context.Serieses.Count() != 0)
-                    CountOfSeriesTextBlock.Text = context.Serieses.Count().ToString();*/
-                /* if (context.Preventions.Count() != 0)
-                     CountOfPreventionlTextBlock.Text = context.Preventions.Count().ToString();*/
-                /*if (context.TvShows.Count() != 0)
-                    CountOfTvShowTextBlock.Text = context.TvShows.Count().ToString();*/
             }
             #endregion
 
             #region Установка источников данных для евентов по дням недели
             //TODO Доделать сортировку отображаемых данных для всех дней
+            //TODO Убрать вызов объекта из общего в каждый юзинг
             MainWindowViewModel model = new MainWindowViewModel();
 
             //Понедельник
