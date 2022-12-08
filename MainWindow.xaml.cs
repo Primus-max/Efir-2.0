@@ -1906,9 +1906,26 @@ namespace Efir
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
-                                    print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЛЕКЦИИ";
-                                    print.Id = RandomId;
+                                    DateTime date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+
+                                        if (DateTime.Now.AddDays(j).DayOfWeek != date.DayOfWeek) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        print.Id = RandomId;
+                                    }
 
                                     context.PrintMondays.Add(print);
                                     context.SaveChanges();
@@ -2184,6 +2201,39 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
+                                #region ЛЕКЦИИ
+                                if (model.EventListSourceTuesday[i].EventName == "ЛЕКЦИИ")
+                                {
+                                    PrintTuesday? print = new PrintTuesday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+
+                                    DateTime date = new DateTime();
+
+                                    for (int j = 0; j < 10; j++)
+                                    {
+
+                                        if (DateTime.Now.AddDays(j).DayOfWeek != date.DayOfWeek) continue;
+
+                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+
+                                        LectionGraph? properLection =
+                                            context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+
+                                        print.TimeToEfir = curItemTime.TimeToEfir;
+                                        if (properLection != null)
+                                        {
+                                            print.EventName = properLection.Name;
+                                            print.Description = properLection.Lecturer;
+                                        }
+                                        print.Id = RandomId;
+                                    }
+
+                                    context?.PrintTuesdays.Add(print);
+                                    context?.SaveChanges();
+                                }
+                                #endregion
+
                                 #region ФИЛЬМЫ
                                 if (model.EventListSourceTuesday[i].EventName == "ФИЛЬМЫ")
                                 {
@@ -3912,6 +3962,7 @@ namespace Efir
              }
          }*/
 
+        // добавляю и сохраняю сетку вещания
         private void SaveEfir_Click(object sender, RoutedEventArgs e)
         {
             //TODO ОБЯЗАТЕЛЬНО СДЕЛАТЬ ПРОВЕРКУ ЕСТЬ ЛИ В БАЗЕ КОНТЕНТ!!!
