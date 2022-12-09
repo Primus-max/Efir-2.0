@@ -11,14 +11,34 @@
         WindowStartupLocation="CenterScreen"
         >
     <Grid >
-        <StackPanel>
-            <Border Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Center">
-                <TextBlock Text="Понедельник 12.12.22"/>
-            </Border>
-            <Grid>
-                <DataGrid x:Name="GridTest" Margin="0,42,0,0"  />
-            </Grid>
-        </StackPanel>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="90*"/>
+                <ColumnDefinition Width="90*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60*"/>
+                <RowDefinition Height="60*"/>
+            </Grid.RowDefinitions>
+            <StackPanel CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Border Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                    <TextBlock Text="Понедельник 12.12.22"/>
+                </Border>
+                <Grid>
+                    <DataGrid x:Name="GridTest"  />
+                </Grid>
+            </StackPanel>
+
+            <StackPanel Grid.Row="0" Grid.Column="1" CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Border Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                    <TextBlock Text="Понедельник 12.12.22"/>
+                </Border>
+                <Grid>
+                    <DataGrid x:Name="MeshTuesday"  />
+                </Grid>
+            </StackPanel>
+        </Grid>
+
 
     </Grid>
 </Window>

@@ -18,9 +18,11 @@ using System.Text.Json;
 using System.Windows.Documents;
 using Word = Microsoft.Office.Interop.Word;
 using System.Globalization;
+using System.Reflection;
 
-/*using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;*/
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 
 namespace Efir
@@ -4765,63 +4767,21 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
         }
 
+
         private void SaveEfirAtDoc()
         {
-            EfirTable efirTable = new EfirTable();
-            efirTable.Show();
+            // EfirTable efirTable = new EfirTable();
+            // efirTable.Show();
 
-            string targetPath = @"C:\Users\SKTV-1\Desktop\Эфир\efir.doc";
+            string targetPath = @"C:\Users\SKTV-1\Desktop\Эфир\01.docx";
 
-            var wordApp = new Word.Application();
-            wordApp.Visible = false;
+            WordprocessingDocument wordprocessingDocument =
+      WordprocessingDocument.Open(targetPath, true);
 
             try
             {
-                // var wordBaza = wordApp.Documents.Open(targetPath);
-                /*var contentBaza = wordBaza.Content;
-                string stringBaza = contentBaza.Text;
-                string[] parsBaza = stringBaza.Split('\a');
-
-                var dfgdfgdf = wordBaza.HTMLDivisions;
-                var paragra = wordBaza.ListParagraphs;
-                var lists = wordBaza.Lists;
-                var templs = wordBaza.ListTemplates;
-                var para2 = wordBaza.Paragraphs;
-                var reamg = wordBaza.Range();
-                var tablesss = wordBaza.Tables;*/
 
 
-                /*using (ApplicationContext context = new ApplicationContext())
-                {
-                // отчищаю модель в базу
-                foreach (var item in context.LectionGraphs.ToList())
-                {
-                context.LectionGraphs.Remove(item);
-                }
-
-                for (int i = 0; i < parsBaza.Length; i++)
-                  {
-                  if (parsBaza[i].Contains("Лекция на тему"))
-                  {
-                  Guid guid = Guid.NewGuid();
-                  string RandomId = guid.ToString();
-
-                  lection.Id = RandomId;
-                  lection.Name = parsBaza[i].Replace("\r", "");
-                  lection.Lecturer = parsBaza[i + 2].Replace("\r", "");
-                  lection.LectionDate = Convert.ToDateTime(parsBaza[i + 3].Replace("\r", ""));
-                  lection.Path = @"Z:\Programming\ProjectC#\Efir\lection.docx";
-
-                  lectionGraphs.Add(lection);
-                  context.LectionGraphs.Add(lection);
-                  context.SaveChanges();
-
-                  }
-
-                  }
-                  wordBaza.Close();
-                  wordApp.Quit();
-                  }*/
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
