@@ -36,63 +36,63 @@ namespace Efir
 
                 GridTest.ItemsSource = null;
                 GridTest.ItemsSource = query.ToList();
+                GridTest.HeadersVisibility = DataGridHeadersVisibility.None;
+
+                var query2 =
+                  from product in context.PrintTuesdays
+                  select new { Time = product.TimeToEfir, Desc = product.Description == null ? product.EventName : product.Description, Name = product.EventName, Series = product.Series.ToString() == "0" ? "" : product.Series.ToString() + " серия" };
 
 
-                //GridTest.HeadersVisibility = DataGridHeadersVisibility.None;
-
-                /*var query2 =
-                 from product in context.PrintTuesdays
-                 select new { Time = product.TimeToEfir, Desc = product.Description == null ? product.EventName : product.Description, Name = product.EventName, Series = product.Series.ToString() == "0" ? "" : product.Series.ToString() + " серия" };
-
-
-                GridTest2.ItemsSource = null;
-                GridTest2.ItemsSource = query.ToList();
-                GridTest2.HeadersVisibility = DataGridHeadersVisibility.None;*/
+                TuesdeyMesh.ItemsSource = null;
+                TuesdeyMesh.ItemsSource = query.ToList();
+                TuesdeyMesh.HeadersVisibility = DataGridHeadersVisibility.None;
 
 
             }
-            Teset();
+            // Teset();
 
         }
 
-        private void Teset()
-        {
 
 
-            var asdf = GridTest.Items;
-            var sdfgsdfg = GridTest.Columns;
+        /*  private void Teset()
+          {
 
-            GridTest.SelectAllCells();
-            GridTest.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
-            ApplicationCommands.Copy.Execute(null, GridTest);
-            GridTest.UnselectAllCells();
-            var result = (string)Clipboard.GetData(GridTest.ToString());
 
-            dynamic wordApp = null;
-            try
-            {
+              var asdf = GridTest.Items;
+              var sdfgsdfg = GridTest.Columns;
 
-                var sw = new StreamWriter("test.doc");
-                sw.WriteLine(result);
-                sw.Close();
-                //var proc = Process.Start("export.doc");
-                Type? wordType = Type.GetTypeFromProgID("Word.Application");
-                wordApp = Activator.CreateInstance(wordType);
-                wordApp?.Documents.Add(System.AppDomain.CurrentDomain.BaseDirectory + "test.doc");
+              GridTest.SelectAllCells();
+              GridTest.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+              ApplicationCommands.Copy.Execute(null, GridTest);
+              GridTest.UnselectAllCells();
+              var result = (string)Clipboard.GetData(GridTest.ToString());
 
-                wordApp.ActiveDocument.Range.ConvertToTable(1, GridTest.Items.Count, GridTest.Columns.Count);
-                wordApp.Visible = true;
-            }
-            catch (Exception ex)
-            {
-                if (wordApp != null)
-                {
-                    wordApp.Quit();
-                }
-                // ignored
-            }
-        }
+              dynamic wordApp = null;
+              try
+              {
 
+                  var sw = new StreamWriter("test.doc");
+                  sw.WriteLine(result);
+                  sw.Close();
+                  //var proc = Process.Start("export.doc");
+                  Type? wordType = Type.GetTypeFromProgID("Word.Application");
+                  wordApp = Activator.CreateInstance(wordType);
+                  wordApp?.Documents.Add(System.AppDomain.CurrentDomain.BaseDirectory + "test.doc");
+
+                  wordApp.ActiveDocument.Range.ConvertToTable(1, GridTest.Items.Count, GridTest.Columns.Count);
+                  wordApp.Visible = true;
+              }
+              catch (Exception ex)
+              {
+                  if (wordApp != null)
+                  {
+                      wordApp.Quit();
+                  }
+                  // ignored
+              }
+          }
+  */
 
         /* public void Export_Data_To_Word(DataGrid DGV, string filename)
          {

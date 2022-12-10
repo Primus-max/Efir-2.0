@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mBg39ZdWlw8zvLMHvA6uQ/becWdMY9Qd4ARQmxaQ6he2r0pW8HxqA4yGPAPScwOXIgOUaYNE7nRXscECoqOYgQ==",
+  "dgSpecHash": "qMoSFq7nAQVwtfbXQRZVWrq+MXRQ1Fm1lvMFuiDM8FQTcWqigz9iGGtkJICqK9XJtWMGMaVqz7HKYwUC3qy7Pw==",
   "success": true,
   "projectFilePath": "Z:\\Programming\\ProjectC#\\Efir\\Efir.csproj",
   "expectedPackageFiles": [
@@ -93,6 +93,7 @@
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.threading\\4.3.0\\system.threading.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.threading.tasks\\4.3.0\\system.threading.tasks.4.3.0.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512",
+    "C:\\Users\\SKTV-1\\.nuget\\packages\\windowsbase_core.stw\\4.0.30319.1\\windowsbase_core.stw.4.0.30319.1.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\xffmpeg.net\\7.1.3\\xffmpeg.net.7.1.3.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\zenlib\\3.1.1\\zenlib.3.1.1.nupkg.sha512",
     "C:\\Users\\SKTV-1\\.nuget\\packages\\zlib.portable.signed\\1.11.0\\zlib.portable.signed.1.11.0.nupkg.sha512"
@@ -114,6 +115,16 @@
       "warningLevel": 1,
       "message": "Package 'Microsoft.WindowsAPICodePack-Shell 1.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.WindowsAPICodePack-Shell",
+      "targetGraphs": [
+        "net6.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'WindowsBase_Core.STW 4.0.30319.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "WindowsBase_Core.STW",
       "targetGraphs": [
         "net6.0-windows7.0"
       ]

@@ -1434,6 +1434,15 @@
           }
         }
       },
+      "WindowsBase_Core.STW/4.0.30319.1": {
+        "type": "package",
+        "compile": {
+          "lib/net40/WindowsBase.dll": {}
+        },
+        "runtime": {
+          "lib/net40/WindowsBase.dll": {}
+        }
+      },
       "xFFmpeg.NET/7.1.3": {
         "type": "package",
         "compile": {
@@ -4919,6 +4928,19 @@
         "version.txt"
       ]
     },
+    "WindowsBase_Core.STW/4.0.30319.1": {
+      "sha512": "rgGmwj3FnBLXW/5ldOYmOV8DhB+JJGTEM1ovvJ7zeTLMrw456hZCmNo2OdFvtVzAZ4l4SpuBR8AhvbHqbz8pXQ==",
+      "type": "package",
+      "path": "windowsbase_core.stw/4.0.30319.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/WindowsBase.dll",
+        "nuget.exe",
+        "windowsbase_core.stw.4.0.30319.1.nupkg.sha512",
+        "windowsbase_core.stw.nuspec"
+      ]
+    },
     "xFFmpeg.NET/7.1.3": {
       "sha512": "eeS81EmxXxv/0WeArWJp/myjCcLk84ctzmriAXc8vo0iOqVow4eJ3PxR6iPt8/Toi2g2wiEmkRZAWKlEsJd81A==",
       "type": "package",
@@ -4975,6 +4997,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 7.0.0",
       "Microsoft.WindowsAPICodePack-Shell >= 1.1.0",
       "System.Data.SQLite >= 1.0.116",
+      "WindowsBase_Core.STW >= 4.0.30319.1",
       "ZenLib >= 3.1.1",
       "Zlib.Portable.Signed >= 1.11.0",
       "gong-wpf-dragdrop >= 3.2.0",
@@ -5068,6 +5091,10 @@
             "target": "Package",
             "version": "[1.0.116, )"
           },
+          "WindowsBase_Core.STW": {
+            "target": "Package",
+            "version": "[4.0.30319.1, )"
+          },
           "ZenLib": {
             "target": "Package",
             "version": "[3.1.1, )"
@@ -5124,6 +5151,16 @@
       "warningLevel": 1,
       "message": "Package 'Microsoft.WindowsAPICodePack-Shell 1.1.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.WindowsAPICodePack-Shell",
+      "targetGraphs": [
+        "net6.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'WindowsBase_Core.STW 4.0.30319.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net6.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "WindowsBase_Core.STW",
       "targetGraphs": [
         "net6.0-windows7.0"
       ]

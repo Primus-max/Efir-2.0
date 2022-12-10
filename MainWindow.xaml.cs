@@ -25,6 +25,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 
+
 namespace Efir
 {
     /// <summary>
@@ -74,6 +75,9 @@ namespace Efir
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+
+            // new GeneratedCode.GeneratedClass().CreatePackage(@"D:\Temp\Output.docx");
+
             // гарантируем, что база данных создана
             db.Database.EnsureCreated();
             /* db.Serieses.Load();
@@ -2022,7 +2026,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -2078,7 +2082,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -2325,7 +2329,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -2382,7 +2386,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -2629,7 +2633,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -2686,7 +2690,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -2930,7 +2934,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -2987,7 +2991,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -3228,7 +3232,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -3285,7 +3289,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -3526,7 +3530,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -3583,7 +3587,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -3825,7 +3829,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм: ";
+                                        print.Description = "Фильм:";
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
 
@@ -3882,7 +3886,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал: ";
+                                        print.Description = "Сериал:";
                                         series[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
@@ -4205,38 +4209,6 @@ namespace Efir
                     return;
                 }
 
-                //TODO Переделать удаление значений в полях использую встроенные методы
-                #region Перед созданием эфира отчищаю все модели в базе
-                foreach (var item in context.PrintMondays.ToList())
-                {
-                    context.PrintMondays.Remove(item);
-                }
-                foreach (var item in context.PrintTuesdays.ToList())
-                {
-                    context.PrintTuesdays.Remove(item);
-                }
-                foreach (var item in context.PrintWednesdays.ToList())
-                {
-                    context.PrintWednesdays.Remove(item);
-                }
-                foreach (var item in context.PrintThursdays.ToList())
-                {
-                    context.PrintThursdays.Remove(item);
-                }
-                foreach (var item in context.PrintFridays.ToList())
-                {
-                    context.PrintFridays.Remove(item);
-                }
-                foreach (var item in context.PrintSaturdays.ToList())
-                {
-                    context.PrintSaturdays.Remove(item);
-                }
-                foreach (var item in context.PrintSundays.ToList())
-                {
-                    context.PrintSundays.Remove(item);
-                }
-                context.SaveChanges();
-                #endregion
 
                 #region Отсальные дни заполнить по поенедельнику, если пустые
 
@@ -4460,7 +4432,7 @@ namespace Efir
                                 print.TimeToEfir = lastShoewdTime == null ? startEventMondayFilm.TimeToEfir : lastShoewdTime.TimeToEfir + addedTime;
                                 print.EventName = formattedName;
                                 print.Series = films[i].NumOfSeries > 0 ? films[i].Series : 0;
-                                print.Description = "Фильм: ";
+                                print.Description = "Фильм:";
                                 films[i].LastRun = DateTime.Now;
 
                                 Guid guid = Guid.NewGuid();
@@ -4720,7 +4692,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                         print.EventName = formattedName;
                         print.Series = series[i].NumOfSeries > 0 ? series[i].IsSeries : 0;
-                        print.Description = "Сериал: ";
+                        print.Description = "Сериал:";
                         series[i].LastRun = DateTime.Now;
 
                         Guid guid = Guid.NewGuid();
@@ -4758,9 +4730,238 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
         //Создание эфира
         private void CreateEfir_Click(object sender, RoutedEventArgs e)
         {
-            //GenerateEfir();
+            ClearPrintModels();
+            GenerateEfir();
             SaveEfirAtDoc();
+            WriteEfirAtFile();
         }
+
+        //Отчистка моделей программы телепередач
+        private void ClearPrintModels()
+        {
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                //TODO Переделать удаление значений в полях использую встроенные методы
+                #region Перед созданием эфира отчищаю все модели в базе
+                foreach (var item in context.PrintMondays.ToList())
+                {
+                    context.PrintMondays.Remove(item);
+                }
+                foreach (var item in context.PrintTuesdays.ToList())
+                {
+                    context.PrintTuesdays.Remove(item);
+                }
+                foreach (var item in context.PrintWednesdays.ToList())
+                {
+                    context.PrintWednesdays.Remove(item);
+                }
+                foreach (var item in context.PrintThursdays.ToList())
+                {
+                    context.PrintThursdays.Remove(item);
+                }
+                foreach (var item in context.PrintFridays.ToList())
+                {
+                    context.PrintFridays.Remove(item);
+                }
+                foreach (var item in context.PrintSaturdays.ToList())
+                {
+                    context.PrintSaturdays.Remove(item);
+                }
+                foreach (var item in context.PrintSundays.ToList())
+                {
+                    context.PrintSundays.Remove(item);
+                }
+                context.SaveChanges();
+                #endregion
+            }
+
+        }
+
+        //Записываю в текстовый файл программу телепередач на неделю
+        private void WriteEfirAtFile()
+        {
+            string path = @"C:\Users\SKTV-1\Desktop\Эфир\Efir.txt";
+
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                using (StreamWriter fstream = new StreamWriter(path, false))
+                {
+                    string builtedStr = "";
+                    string h = "";
+                    string m = "";
+                    string desc = "";
+                    string name = "";
+                    string series = "";
+                    string seriesOrPart = "";
+
+
+                    fstream.WriteLine("Понедельник");
+
+                    foreach (var item in context.PrintMondays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                    }
+
+                    fstream.WriteLine("-----------------------------------------------------");
+                    fstream.WriteLine("Вторник");
+
+                    foreach (var item in context.PrintTuesdays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                    }
+
+                    fstream.WriteLine("-----------------------------------------------------");
+                    fstream.WriteLine("Среда");
+
+                    foreach (var item in context.PrintWednesdays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                    }
+
+                    fstream.WriteLine("-----------------------------------------------------");
+                    fstream.WriteLine("Четверг");
+
+                    foreach (var item in context.PrintThursdays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                    }
+
+                    fstream.WriteLine("-----------------------------------------------------");
+                    fstream.WriteLine("Пятница");
+
+                    foreach (var item in context.PrintFridays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                    }
+
+                    fstream.WriteLine("-----------------------------------------------------");
+                    fstream.WriteLine("Суббота");
+
+                    foreach (var item in context.PrintSaturdays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                    }
+
+                    fstream.WriteLine("-----------------------------------------------------");
+                    fstream.WriteLine("Воскресенье");
+
+                    foreach (var item in context.PrintSundays)
+                    {
+                        if (item != null)
+                        {
+                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                            desc = item.Description == null ? item.EventName : item.Description;
+                            name = item.EventName;
+                            series = item.Series == 0 ? "" : item.Series.ToString();
+                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                        }
+                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                        fstream.WriteLine(builtedStr);
+                        CopyContentInDest();
+                    }
+                }
+            }
+        }
+
+        // Копирование контента в папки
+        private void CopyContentInDest()
+        {
+            string sourcePath = "";
+            string nameFolder = "ВАСЯЯЯ";
+            string nameFile = "Новый эфир";
+            string destPath = @"C:\Users\SKTV-1\Desktop\Эфир\" + nameFolder + "\\" + nameFile;
+
+            Directory.CreateDirectory(destPath);
+            //File.Copy(@"C:\Users\SKTV-1\Desktop\Эфир\Efir.txt", destPath);
+
+            string path = @"C:\Users\SKTV-1\Desktop\Эфир\Efir.txt";
+            // string newPath = @"C:\NewDir\index2.txt";
+            FileInfo fileInf = new FileInfo(path);
+            if (fileInf.Exists)
+            {
+                fileInf.CopyTo(destPath, false);
+                // альтернатива с помощью класса File
+                // File.Copy(path, newPath, true);
+            }
+
+        }
+
+
         // метод создание эфира
         private void CreateEfir()
         {
@@ -4770,20 +4971,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
         private void SaveEfirAtDoc()
         {
-            // EfirTable efirTable = new EfirTable();
-            // efirTable.Show();
+            EfirTable efirTable = new EfirTable();
+            efirTable.Show();
 
             string targetPath = @"C:\Users\SKTV-1\Desktop\Эфир\01.docx";
 
-            WordprocessingDocument wordprocessingDocument =
-      WordprocessingDocument.Open(targetPath, true);
 
             try
             {
 
 
 
-                using (ApplicationContext context = new ApplicationContext())
+                /*using (ApplicationContext context = new ApplicationContext())
                 {
                     var query =
                     from product in context.PrintMondays
@@ -4794,7 +4993,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                     efir.GridTest.ItemsSource = null;
                     efir.GridTest.ItemsSource = query.ToList();
                 }
-
+*/
 
 
 

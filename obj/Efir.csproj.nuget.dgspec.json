@@ -86,6 +86,10 @@
               "target": "Package",
               "version": "[1.0.116, )"
             },
+            "WindowsBase_Core.STW": {
+              "target": "Package",
+              "version": "[4.0.30319.1, )"
+            },
             "ZenLib": {
               "target": "Package",
               "version": "[3.1.1, )"
