@@ -2027,15 +2027,19 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
+                                        }
 
-                                            foreach (var item in context.LectionGraphs.ToList())
+                                        // TODO КРАЙНЕ ТЯЖЕЛЫЙ МЕТОД, надо переписать, он не только тяжелый, но и сильно привязанный к символам, любой изменение в имени и все накроется медным тазом!
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
                                             {
-                                                string[] lectionSplitName = item.Name.Split(":");
-                                                string strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
-                                                var lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
                                                 print.Option = lection?.Path;
                                             }
-                                        }
+
                                         print.Id = RandomId;
                                     }
 
@@ -2338,8 +2342,18 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
                                         }
+
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
+                                            {
+                                                print.Option = lection?.Path;
+                                            }
+
                                         print.Id = RandomId;
                                     }
 
@@ -2646,8 +2660,18 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
                                         }
+
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
+                                            {
+                                                print.Option = lection?.Path;
+                                            }
+
                                         print.Id = RandomId;
                                     }
 
@@ -2951,8 +2975,18 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
                                         }
+
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
+                                            {
+                                                print.Option = lection?.Path;
+                                            }
+
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
                                         print.Id = RandomId;
@@ -3255,8 +3289,18 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
                                         }
+
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
+                                            {
+                                                print.Option = lection?.Path;
+                                            }
+
                                         print.Id = RandomId;
                                     }
 
@@ -3557,8 +3601,18 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
                                         }
+
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
+                                            {
+                                                print.Option = lection?.Path;
+                                            }
+
                                         print.Id = RandomId;
                                     }
 
@@ -3860,8 +3914,18 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
                                         }
+
+                                        if (context != null)
+                                            foreach (var lection in from item in context.LectionGraphs.ToList()
+                                                                    let lectionSplitName = item.Name.Split(":")
+                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
+                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
+                                                                    select lection)
+                                            {
+                                                print.Option = lection?.Path;
+                                            }
+
                                         print.Id = RandomId;
                                     }
 
@@ -5030,7 +5094,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                 foreach (var item in context.PrintMondays)
                 {
-                    if (item.Option != null && !item.EventName.Contains("Лекция на тему"))
+                    if (item.Option != null)
                     {
                         sourcePath = item.Option;
                         string[] splitPath = item.Option.Split("\\");
