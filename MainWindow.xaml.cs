@@ -1137,6 +1137,14 @@ namespace Efir
                 {
                     FilePathToLectionTextBox.Text = commonOpenFileDialog.FileName;
                     pathToLection = FilePathToLectionTextBox.Text;
+                    using (ApplicationContext context = new ApplicationContext())
+                    {
+                        foreach (var item in context.Lections.ToList())
+                        {
+                            context.Lections.Remove(item);
+                        }
+                        context.SaveChanges();
+                    }
                     AddLectiontAtDB(pathToLection);
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
