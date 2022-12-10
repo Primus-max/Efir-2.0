@@ -5084,13 +5084,16 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
             string? sourcePath = "";
             string? nameFolder = "";
             string? fileName = "";
-            string destPath = "";
+            string destPath = @"C:\Users\SKTV-1\Desktop\Эфир\";
+            string combainPath = "";
             int orderNumber = 0;
 
             using (ApplicationContext context = new ApplicationContext())
             {
-                destPath = @"C:\Users\SKTV-1\Desktop\Эфир\Понедельник\\";
-                if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
+
+                nameFolder = "Понедельник";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintMondays)
                 {
@@ -5107,6 +5110,160 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
                     }
                 }
+                nameFolder = "";
+                fileName = "";
+                orderNumber = 0;
+                combainPath = "";
+
+                nameFolder = "Вторник";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+
+                foreach (var item in context.PrintTuesdays)
+                {
+                    if (item.Option != null)
+                    {
+                        sourcePath = item.Option;
+                        string[] splitPath = item.Option.Split("\\");
+                        fileName = splitPath[splitPath.Length - 1];
+                        orderNumber += 1;
+                    }
+
+                    if (File.Exists(sourcePath))
+                    {
+                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                    }
+                }
+                nameFolder = "";
+                fileName = "";
+                orderNumber = 0;
+                combainPath = "";
+
+
+                nameFolder = "Среда";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+
+                foreach (var item in context.PrintWednesdays)
+                {
+
+                    if (item.Option != null)
+                    {
+                        sourcePath = item.Option;
+                        string[] splitPath = item.Option.Split("\\");
+                        fileName = splitPath[splitPath.Length - 1];
+                        orderNumber += 1;
+                    }
+
+                    if (File.Exists(sourcePath))
+                    {
+                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                    }
+                }
+                nameFolder = "";
+                fileName = "";
+                orderNumber = 0;
+                combainPath = "";
+
+
+
+                nameFolder = "Четверг";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+
+                foreach (var item in context.PrintThursdays)
+                {
+                    if (item.Option != null)
+                    {
+                        sourcePath = item.Option;
+                        string[] splitPath = item.Option.Split("\\");
+                        fileName = splitPath[splitPath.Length - 1];
+                        orderNumber += 1;
+                    }
+
+                    if (File.Exists(sourcePath))
+                    {
+                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                    }
+                }
+                nameFolder = "";
+                fileName = "";
+                orderNumber = 0;
+                combainPath = "";
+
+
+                nameFolder = "Пятница";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+
+                foreach (var item in context.PrintFridays)
+                {
+                    if (item.Option != null)
+                    {
+                        sourcePath = item.Option;
+                        string[] splitPath = item.Option.Split("\\");
+                        fileName = splitPath[splitPath.Length - 1];
+                        orderNumber += 1;
+                    }
+
+                    if (File.Exists(sourcePath))
+                    {
+                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                    }
+                }
+                nameFolder = "";
+                fileName = "";
+                orderNumber = 0;
+                combainPath = "";
+
+
+                nameFolder = "Суббота";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+
+                foreach (var item in context.PrintSaturdays)
+                {
+
+                    if (item.Option != null)
+                    {
+                        sourcePath = item.Option;
+                        string[] splitPath = item.Option.Split("\\");
+                        fileName = splitPath[splitPath.Length - 1];
+                        orderNumber += 1;
+                    }
+
+                    if (File.Exists(sourcePath))
+                    {
+                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                    }
+                }
+                nameFolder = "";
+                fileName = "";
+                orderNumber = 0;
+                combainPath = "";
+
+
+
+                nameFolder = "Воскресенье";
+                combainPath = destPath + nameFolder;
+                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+
+                foreach (var item in context.PrintSundays)
+                {
+                    if (item.Option != null)
+                    {
+                        sourcePath = item.Option;
+                        string[] splitPath = item.Option.Split("\\");
+                        fileName = splitPath[splitPath.Length - 1];
+                        orderNumber += 1;
+                    }
+
+                    if (File.Exists(sourcePath))
+                    {
+                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                    }
+                }
+                nameFolder = "";
                 fileName = "";
                 destPath = "";
                 orderNumber = 0;
