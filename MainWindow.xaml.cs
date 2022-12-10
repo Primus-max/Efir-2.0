@@ -2027,7 +2027,14 @@ namespace Efir
                                         {
                                             print.EventName = properLection.Name;
                                             print.Description = properLection.Lecturer;
-                                            print.Option = properLection.Path;
+
+                                            foreach (var item in context.LectionGraphs.ToList())
+                                            {
+                                                string[] lectionSplitName = item.Name.Split(":");
+                                                string strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                                var lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+                                                print.Option = lection?.Path;
+                                            }
                                         }
                                         print.Id = RandomId;
                                     }
