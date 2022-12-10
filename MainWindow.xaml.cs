@@ -4872,7 +4872,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
             GenerateEfir();
             SaveEfirAtDoc();
             WriteEfirAtFile();
-            CopyContentInDest();
+            //CopyContentInDest();
         }
 
         //Отчистка моделей программы телепередач
@@ -4933,149 +4933,194 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                     string series = "";
                     string seriesOrPart = "";
 
-
-                    fstream.WriteLine("Понедельник");
-
-                    foreach (var item in context.PrintMondays)
+                    for (int i = 0; i < 7; i++)
                     {
-                        if (item != null)
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                        fstream.WriteLine("Понедельник" + " " + possibleDate);
+
+                        foreach (var item in context.PrintMondays)
                         {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                            fstream.WriteLine(builtedStr);
                         }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                    }
+
+                    fstream.WriteLine("");
+                    fstream.WriteLine("-----------------------------------------------------");
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                        fstream.WriteLine("Вторник" + " " + possibleDate);
+
+                        foreach (var item in context.PrintTuesdays)
+                        {
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
-                        fstream.WriteLine(builtedStr);
+                            fstream.WriteLine(builtedStr);
+                        }
                     }
 
                     fstream.WriteLine("-----------------------------------------------------");
-                    fstream.WriteLine("Вторник");
 
-                    foreach (var item in context.PrintTuesdays)
+                    for (int i = 0; i < 7; i++)
                     {
-                        if (item != null)
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                        fstream.WriteLine("Среда" + " " + possibleDate);
+
+                        foreach (var item in context.PrintWednesdays)
                         {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                            fstream.WriteLine(builtedStr);
                         }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                        fstream.WriteLine(builtedStr);
                     }
 
                     fstream.WriteLine("-----------------------------------------------------");
-                    fstream.WriteLine("Среда");
 
-                    foreach (var item in context.PrintWednesdays)
+                    for (int i = 0; i < 7; i++)
                     {
-                        if (item != null)
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+                        fstream.WriteLine("Четверг" + " " + possibleDate);
+
+                        foreach (var item in context.PrintThursdays)
                         {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                            fstream.WriteLine(builtedStr);
                         }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                        fstream.WriteLine(builtedStr);
                     }
 
                     fstream.WriteLine("-----------------------------------------------------");
-                    fstream.WriteLine("Четверг");
 
-                    foreach (var item in context.PrintThursdays)
+                    for (int i = 0; i < 7; i++)
                     {
-                        if (item != null)
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+                        fstream.WriteLine("Пятница" + " " + possibleDate);
+
+                        foreach (var item in context.PrintFridays)
                         {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                            fstream.WriteLine(builtedStr);
                         }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                        fstream.WriteLine(builtedStr);
                     }
 
                     fstream.WriteLine("-----------------------------------------------------");
-                    fstream.WriteLine("Пятница");
 
-                    foreach (var item in context.PrintFridays)
+                    for (int i = 0; i < 7; i++)
                     {
-                        if (item != null)
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+                        fstream.WriteLine("Суббота" + " " + possibleDate);
+
+                        foreach (var item in context.PrintSaturdays)
                         {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                            fstream.WriteLine(builtedStr);
                         }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                        fstream.WriteLine(builtedStr);
                     }
 
                     fstream.WriteLine("-----------------------------------------------------");
-                    fstream.WriteLine("Суббота");
 
-                    foreach (var item in context.PrintSaturdays)
+                    for (int i = 0; i < 10; i++)
                     {
-                        if (item != null)
+                        if (i < 4) continue;
+                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
+                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+                        fstream.WriteLine("Воскресенье" + " " + possibleDate);
+
+                        foreach (var item in context.PrintSundays)
                         {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            if (item != null)
+                            {
+                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
+                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
+                                desc = item.Description == null ? item.EventName : item.Description;
+                                name = item.EventName;
+                                series = item.Series == 0 ? "" : item.Series.ToString();
+                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                            }
+                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+
+
+                            fstream.WriteLine(builtedStr);
+                            //CopyContentInDest();
                         }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                        fstream.WriteLine(builtedStr);
-                    }
-
-                    fstream.WriteLine("-----------------------------------------------------");
-                    fstream.WriteLine("Воскресенье");
-
-                    foreach (var item in context.PrintSundays)
-                    {
-                        if (item != null)
-                        {
-                            h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                            m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                            desc = item.Description == null ? item.EventName : item.Description;
-                            name = item.EventName;
-                            series = item.Series == 0 ? "" : item.Series.ToString();
-                            seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
-                        }
-                        builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                        fstream.WriteLine(builtedStr);
-                        CopyContentInDest();
                     }
                 }
             }
-            CopyContentInDest();
+            //CopyContentInDest();
         }
 
         // Копирование контента в папки
