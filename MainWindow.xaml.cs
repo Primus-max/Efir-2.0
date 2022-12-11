@@ -2343,7 +2343,6 @@ namespace Efir
                                         print.Option = lection?.Path;
                                     }
 
-
                                     context?.PrintTuesdays.Add(print);
                                     context?.SaveChanges();
                                 }
@@ -2629,37 +2628,29 @@ namespace Efir
                                     PrintWednesday? print = new PrintWednesday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
-                                    DateTime date = new DateTime();
-
-                                    for (int j = 0; j < 10; j++)
+                                    for (int j = 0; j < 7; j++)
                                     {
-
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
-
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                    }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
                                         print.Id = RandomId;
+
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection?.Path;
                                     }
 
                                     context?.PrintWednesdays.Add(print);
@@ -2943,40 +2934,31 @@ namespace Efir
                                 if (model.EventListSourceThursday[i].EventName == "ЛЕКЦИИ")
                                 {
                                     PrintThursday? print = new PrintThursday();
+                                    Guid guid = Guid.NewGuid();
+                                    string RandomId = guid.ToString();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
-
-                                    DateTime date = new DateTime();
-
-                                    for (int j = 0; j < 10; j++)
+                                    for (int j = 0; j < 7; j++)
                                     {
-
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
-
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
-                                        Guid guid = Guid.NewGuid();
-                                        string RandomId = guid.ToString();
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                    }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
                                         print.Id = RandomId;
+
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection?.Path;
                                     }
 
                                     context?.PrintThursdays.Add(print);
@@ -3259,36 +3241,29 @@ namespace Efir
                                     PrintFriday? print = new PrintFriday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
-                                    DateTime date = new DateTime();
-
-                                    for (int j = 0; j < 10; j++)
+                                    for (int j = 0; j < 7; j++)
                                     {
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
-
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                    }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
                                         print.Id = RandomId;
+
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection?.Path;
                                     }
 
                                     context?.PrintFridays.Add(print);
@@ -3571,36 +3546,29 @@ namespace Efir
                                     PrintSaturday? print = new PrintSaturday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
-                                    DateTime date = new DateTime();
-
-                                    for (int j = 0; j < 10; j++)
+                                    for (int j = 0; j < 7; j++)
                                     {
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
-
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                    }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
                                         print.Id = RandomId;
+
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection?.Path;
                                     }
 
                                     context?.PrintSaturdays.Add(print);
@@ -3884,36 +3852,29 @@ namespace Efir
                                     PrintSunday? print = new PrintSunday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
-
-                                    DateTime? date = new DateTime();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
                                     for (int j = 0; j < 10; j++)
                                     {
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
-
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
+                                    }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
                                         print.Id = RandomId;
+
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection?.Path;
                                     }
 
                                     context?.PrintSundays.Add(print);
@@ -4915,7 +4876,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                     string builtedStr = "";
                     string h = "";
                     string m = "";
-                    string desc = "";
+                    string? desc = "";
                     string name = "";
                     string series = "";
                     string seriesOrPart = "";
@@ -5106,7 +5067,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                     }
                 }
             }
-            //CopyContentInDest();
+            CopyContentInDest();
+        }
+
+        //запись в текстовый документ если нет файла по указанному пути
+        private void ErrorPath(string filename, string? sourcepath)
+        {
+            string pathCreateFile = @"C:\Users\SKTV-1\Desktop\Эфир\ErorPath.txt";
+            using (StreamWriter fstream = new StreamWriter(pathCreateFile, false))
+            {
+                fstream.WriteLine($@"Файла с таким именем {filename} по такому пути {filename} не найдено");
+            }
+
         }
 
         // Копирование контента в папки
@@ -5135,10 +5107,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                    }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
                     }
                 }
                 nameFolder = "";
@@ -5159,11 +5139,20 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
+                    }
+
                 }
                 nameFolder = "";
                 fileName = "";
@@ -5185,10 +5174,19 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
+
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                    }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
                     }
                 }
                 nameFolder = "";
@@ -5211,11 +5209,20 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
+                    }
+
                 }
                 nameFolder = "";
                 fileName = "";
@@ -5236,11 +5243,20 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
+                    }
+
                 }
                 nameFolder = "";
                 fileName = "";
@@ -5262,10 +5278,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                    }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
                     }
                 }
                 nameFolder = "";
@@ -5288,10 +5312,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
+                    else
+                    {
+                        ErrorPath(item.EventName, item.Option);
+                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                    }
+                    else
+                    {
+                        ErrorPath(item.EventName, sourcePath);
                     }
                 }
                 nameFolder = "";
