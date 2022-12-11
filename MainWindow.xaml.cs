@@ -2009,40 +2009,34 @@ namespace Efir
                                     PrintMonday? print = new PrintMonday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
                                     DateTime date = new DateTime();
 
-                                    for (int j = 0; j < 10; j++)
+                                    for (int j = 0; j < 7; j++)
                                     {
 
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
 
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        // TODO КРАЙНЕ ТЯЖЕЛЫЙ МЕТОД, надо переписать, он не только тяжелый, но и сильно привязанный к символам, любой изменение в имени и все накроется медным тазом!
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
-                                        print.Id = RandomId;
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
                                     }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
+                                        print.Id = RandomId;
 
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection.Path;
+                                    }
                                     context?.PrintMondays.Add(print);
                                     context?.SaveChanges();
                                 }
@@ -5115,7 +5109,6 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
 
                             fstream.WriteLine(builtedStr);
-                            //CopyContentInDest();
                         }
                     }
                 }
@@ -5152,7 +5145,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
@@ -5176,7 +5169,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
@@ -5202,7 +5195,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
@@ -5228,7 +5221,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
@@ -5253,7 +5246,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
@@ -5279,7 +5272,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
@@ -5305,7 +5298,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, destPath + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
                 }
                 nameFolder = "";
