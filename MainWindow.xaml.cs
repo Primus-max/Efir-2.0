@@ -2012,7 +2012,6 @@ namespace Efir
                                     string possibleDate = "";
                                     LectionGraph? properLection = null;
 
-                                    DateTime date = new DateTime();
 
                                     for (int j = 0; j < 7; j++)
                                     {
@@ -2033,9 +2032,9 @@ namespace Efir
 
                                         var lectionSplitName = properLection.Name.Split(":");
                                         var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
-                                        var lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
-                                        print.Option = lection.Path;
+                                        print.Option = lection?.Path;
                                     }
                                     context?.PrintMondays.Add(print);
                                     context?.SaveChanges();
@@ -2319,37 +2318,31 @@ namespace Efir
                                     PrintTuesday? print = new PrintTuesday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
+                                    string possibleDate = "";
+                                    LectionGraph? properLection = null;
 
-                                    DateTime date = new DateTime();
-
-                                    for (int j = 0; j < 10; j++)
+                                    for (int j = 0; j < 7; j++)
                                     {
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
 
-                                        string possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
-
-                                        LectionGraph? properLection =
-                                        context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
-
-                                        print.TimeToEfir = curItemTime.TimeToEfir;
-                                        if (properLection != null)
-                                        {
-                                            print.EventName = properLection.Name;
-                                            print.Description = properLection.Lecturer;
-                                        }
-
-                                        if (context != null)
-                                            foreach (var lection in from item in context.LectionGraphs.ToList()
-                                                                    let lectionSplitName = item.Name.Split(":")
-                                                                    let strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "")
-                                                                    let lection = context.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()))
-                                                                    select lection)
-                                            {
-                                                print.Option = lection?.Path;
-                                            }
-
-                                        print.Id = RandomId;
+                                        possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
+                                        properLection =
+                                         context?.LectionGraphs.ToList().Find(d => d.LectionDate.ToShortDateString() == possibleDate);
                                     }
+                                    print.TimeToEfir = curItemTime.TimeToEfir;
+                                    if (properLection != null)
+                                    {
+                                        print.EventName = properLection.Name;
+                                        print.Description = properLection.Lecturer;
+                                        print.Id = RandomId;
+
+                                        var lectionSplitName = properLection.Name.Split(":");
+                                        var strName = lectionSplitName[1].Trim(new Char[] { '»', '.' }).Replace("«", "");
+                                        var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
+
+                                        print.Option = lection?.Path;
+                                    }
+
 
                                     context?.PrintTuesdays.Add(print);
                                     context?.SaveChanges();
