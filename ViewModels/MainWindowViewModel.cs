@@ -79,7 +79,7 @@ namespace Efir.ViewModels
         {
             get => _News;
         }
-        private string _EndEfir = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+        private string _EndEfir = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
         public string EndEfir
         {
             get => _EndEfir;

@@ -5487,7 +5487,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                     }
                 }
             }
-            //CopyContentInDest();
+            CopyContentInDest();
         }
 
         //запись в текстовый документ если нет файла по указанному пути
@@ -5507,7 +5507,7 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
             string? sourcePath = "";
             string? nameFolder = "";
             string? fileName = "";
-            string destPath = @"C:\Users\SKTV-1\Desktop\Эфир\";
+            string destPath = @"Z:\TECT\";
             string combainPath = "";
             int orderNumber = 0;
 
@@ -5527,24 +5527,17 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
                 }
+                sourcePath = "";
                 nameFolder = "";
                 fileName = "";
-                orderNumber = 0;
                 combainPath = "";
+                orderNumber = 0;
 
                 nameFolder = "Вторник";
                 combainPath = destPath + nameFolder;
@@ -5559,25 +5552,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
 
                 }
+                sourcePath = "";
                 nameFolder = "";
                 fileName = "";
-                orderNumber = 0;
                 combainPath = "";
+                orderNumber = 0;
 
 
                 nameFolder = "Среда";
@@ -5586,7 +5572,6 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                 foreach (var item in context.PrintWednesdays)
                 {
-
                     if (item.Option != null)
                     {
                         sourcePath = item.Option;
@@ -5594,26 +5579,18 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
-
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
+
                 }
+                sourcePath = "";
                 nameFolder = "";
                 fileName = "";
-                orderNumber = 0;
                 combainPath = "";
-
+                orderNumber = 0;
 
 
                 nameFolder = "Четверг";
@@ -5629,25 +5606,17 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
-
                 }
+                sourcePath = "";
                 nameFolder = "";
                 fileName = "";
-                orderNumber = 0;
                 combainPath = "";
+                orderNumber = 0;
 
 
                 nameFolder = "Пятница";
@@ -5663,26 +5632,17 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
-
                 }
+                sourcePath = "";
                 nameFolder = "";
                 fileName = "";
-                orderNumber = 0;
                 combainPath = "";
-
+                orderNumber = 0;
 
                 nameFolder = "Суббота";
                 combainPath = destPath + nameFolder;
@@ -5690,7 +5650,6 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
 
                 foreach (var item in context.PrintSaturdays)
                 {
-
                     if (item.Option != null)
                     {
                         sourcePath = item.Option;
@@ -5698,26 +5657,17 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
                 }
+                sourcePath = "";
                 nameFolder = "";
                 fileName = "";
-                orderNumber = 0;
                 combainPath = "";
-
-
+                orderNumber = 0;
 
                 nameFolder = "Воскресенье";
                 combainPath = destPath + nameFolder;
@@ -5732,24 +5682,13 @@ lastRunnedFilmList = context.Films.ToList().OrderBy(f => f.LastRun);
                         fileName = splitPath[splitPath.Length - 1];
                         orderNumber += 1;
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, item.Option);
-                    }
 
                     if (File.Exists(sourcePath))
                     {
                         File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
                     }
-                    else
-                    {
-                        ErrorPath(item.EventName, sourcePath);
-                    }
                 }
-                nameFolder = "";
-                fileName = "";
-                destPath = "";
-                orderNumber = 0;
+
             }
 
         }
