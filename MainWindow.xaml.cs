@@ -475,76 +475,70 @@ namespace Efir
 
         #endregion
 
-        #region Профилактика
-        private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
+
+        // метод добавления события в лист событий
+        private void AddEventAtList(object sender)
         {
             MenuItem? menuItem = sender as MenuItem;
+            if (menuItem == null) return;
             string eventName = (string)menuItem.Header;
 
             AddEventByEventName(eventName);
+        }
+
+        #region Образование
+        private void AddEducationalsAtList_Click(object sender, RoutedEventArgs e)
+        {
+            AddEventAtList(sender);
+        }
+        #endregion
+
+        #region Профилактика
+        private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
+        {
+            AddEventAtList(sender);
         }
         #endregion
 
         #region Телепередачи
         private void AddTvShowAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
-
-
-            AddEventByEventName(eventName);
+            AddEventAtList(sender);
         }
-
-
         #endregion
 
         #region Сериалы
         private void AddSeriesAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
-
-            AddEventByEventName(eventName);
+            AddEventAtList(sender);
         }
         #endregion
 
         #region Новости
         private void AddNewsAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
-
-            AddEventByEventName(eventName);
+            AddEventAtList(sender);
         }
         #endregion
 
         #region Лекции
         private void AddLectionAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
-
-            AddEventByEventName(eventName);
+            AddEventAtList(sender);
         }
         #endregion
 
         #region Перерыв
         private void AddBreakAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
-
-            AddEventByEventName(eventName);
+            AddEventAtList(sender);
         }
         #endregion
 
         #region Фильмы
         private void AddFilmsAtList_Click(object sender, RoutedEventArgs e)
         {
-            MenuItem? menuItem = sender as MenuItem;
-            string eventName = (string)menuItem.Header;
-
-            AddEventByEventName(eventName);
+            AddEventAtList(sender);
         }
         #endregion
 
@@ -1323,7 +1317,7 @@ namespace Efir
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Educational educational = new Educational();
-            
+
             //List<Educational> Ed = new List<Documentaries>();
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
@@ -5833,6 +5827,8 @@ var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//со�
         {
 
         }
+
+
 
 
 

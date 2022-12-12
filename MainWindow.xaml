@@ -109,6 +109,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
@@ -199,6 +200,7 @@
                                             <ContextMenu x:Name="AddEventFromContextMenu">
                                                 <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
@@ -288,6 +290,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
@@ -375,6 +378,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
@@ -462,6 +466,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
@@ -549,6 +554,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
@@ -635,6 +641,7 @@
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить">
                                                     <MenuItem Header="{Binding PreventionEvent}" Click="AddPreventionAtList_Click" />
+                                                    <MenuItem Header="{Binding EducationalsEvent}" Click="AddEducationalsAtList_Click" />
                                                     <MenuItem Header="{Binding TvShowEvent}" Click="AddTvShowAtList_Click"/>
                                                     <MenuItem Header="{Binding SeriesEvent}" Click="AddSeriesAtList_Click"/>
                                                     <MenuItem Header="{Binding FilmsEvent}" Click="AddFilmsAtList_Click"/>
