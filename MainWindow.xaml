@@ -748,7 +748,9 @@
                                     Click="ParsingDoc_Click"/>
                         </StackPanel>
 
-                        <Button Content="Распарсить документ" Click="ParsingDoc_Click" ></Button>
+                        <Button Content="Получить лекции"
+                                Click="ParsingDoc_Click"
+                                Width="500"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem
@@ -952,99 +954,6 @@
                             </StackPanel>
 
 
-                            <!--<StackPanel
-                            Orientation="Horizontal"
-                            Margin="10,0,0,30">
-                            -->
-                            <!--<TextBlock
-                            FontSize="16"
-                            Text="Документальные: "
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Margin="0,0,10,0"/>-->
-                            <!--
-                            <TextBox
-                            x:Name="FilePathToEntertainmentTextBox"
-                            Width="310"
-                            Padding="5 0 0 0"
-                            Margin="0 0 15 0"
-                            materialDesign:HintAssist.Hint="Путь к папке"
-                            materialDesign:HintAssist.HelperText="РАЗВЛЕКАТЕЛЬНЫЕ"
-                            materialDesign:HintAssist.HelperTextFontSize="14"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="#c5c5c5"
-                            VerticalAlignment="Center" />
-                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                            Content="{materialDesign:PackIcon FolderSearchOutline}"
-                            Click="OpenEntertainmentDialog_Click"/>
-                            <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Margin="15 0 0 0">
-
-                            <TextBlock Text="всего: "/>
-                            <TextBlock x:Name="CountOfEntertainmentTextBlock"
-                            Margin="5 0 5 0" Text="0"/>
-                            <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                            <ProgressBar
-                            x:Name="ProgressDownLoadingContentEntertainment"
-                            Value="26"
-                            Width="120"
-                            Height="20"
-                            SmallChange="1"
-                            Foreground="#FF006BD4" Background="#FF303030" />
-                            </StackPanel>
-                            </StackPanel>
-                            </StackPanel>-->
-
-                            <!--<StackPanel
-                            Orientation="Horizontal"
-                            Margin="10,0,0,30">
-                            -->
-                            <!--<TextBlock
-                            FontSize="16"
-                            Text="Документальные: "
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Margin="0,0,10,0"/>-->
-                            <!--
-                            <TextBox
-                            x:Name="FilePathToEntertainmentTextBox"
-                            Width="310"
-                            Padding="5 0 0 0"
-                            Margin="0 0 15 0"
-                            materialDesign:HintAssist.Hint="Путь к папке"
-                            materialDesign:HintAssist.HelperText="РАЗВЛЕКАТЕЛЬНЫЕ"
-                            materialDesign:HintAssist.HelperTextFontSize="14"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="#c5c5c5"
-                            VerticalAlignment="Center" />
-                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                            Content="{materialDesign:PackIcon FolderSearchOutline}"
-                            Click="OpenEntertainmentDialog_Click"/>
-                            <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Margin="15 0 0 0">
-
-                            <TextBlock Text="всего: "/>
-                            <TextBlock x:Name="CountOfEntertainmentTextBlock"
-                            Margin="5 0 5 0" Text="0"/>
-                            <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
-
-                            <ProgressBar
-                            x:Name="ProgressDownLoadingContentEntertainment"
-                            Value="26"
-                            Width="120"
-                            Height="20"
-                            SmallChange="1"
-                            Foreground="#FF006BD4" Background="#FF303030" />
-                            </StackPanel>
-                            </StackPanel>
-                            </StackPanel>-->
-
-
                             <StackPanel
                                 Orientation="Horizontal"
                                 Margin="10,0,0,30">
@@ -1085,18 +994,48 @@
                                 </StackPanel>
                             </StackPanel>
 
+                            <StackPanel
+                                Orientation="Horizontal"
+                                Margin="10,0,0,30">
+                                <TextBox
+                                    x:Name="FilePathToEducationalsTextBox"
+                                    Width="310"
+                                    Padding="5 0 0 0"
+                                    Margin="0 0 15 0"
+                                    materialDesign:HintAssist.Hint="Путь к папке"
+                                    materialDesign:HintAssist.HelperText="{Binding EducationalsEvent}"
+                                    materialDesign:HintAssist.HelperTextFontSize="14"
+                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                    Foreground="#c5c5c5"
+                                    VerticalAlignment="Center" />
+                                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                        Click="OpenEducationalsDialog_Click"/>
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Margin="15 0 0 0">
+
+                                    <TextBlock Text="всего: "/>
+                                    <TextBlock x:Name="CountOfEducationalsTextBlock"
+                                               Width="30"
+                                               Margin="5 0 0 0"
+                                               Text="0"/>
+                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                        <ProgressBar
+                                            x:Name="ProgressDownLoadingContentEducationals"
+                                            Value="18"
+                                            Width="100"
+                                            Height="20"
+                                            SmallChange="1"
+                                            Foreground="#FF006BD4" Background="#FF303030" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+
                         </StackPanel>
-                        <!--Прогресс загрузки-->
-                        <!--<StackPanel Margin="0 40 0 0">
-                        <TextBlock />
-                        <ProgressBar
-                        x:Name="ProgressDownLoadingContent"
-                        Value="{Binding ValueProgressDownlaodingSeries}"
-                        Width="400"
-                        Height="20"
-                        SmallChange="1"
-                        Foreground="#FF006BD4" />
-                        </StackPanel>-->
+
 
                     </StackPanel>
                 </TabItem>

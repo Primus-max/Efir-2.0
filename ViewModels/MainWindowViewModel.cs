@@ -48,6 +48,12 @@ namespace Efir.ViewModels
             get => _LectionEvent;
         }
 
+        private string _EducationalsEvent = "ОБРАЗОВАНИЕ";
+        public string EducationalsEvent
+        {
+            get => _EducationalsEvent;
+        }
+
         private string _FilmsEvent = "ФИЛЬМЫ";
         public string FilmsEvent
         {
