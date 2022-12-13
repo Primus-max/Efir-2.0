@@ -104,7 +104,7 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                        BorderThickness="0,0,0,0"   >
+                                        BorderThickness="0,0,0,0" Drop="CapturedReorderEventItem_Drop"   >
                                         <ListView.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
@@ -1073,8 +1073,34 @@
                                 HorizontalAlignment="Center"
                                 Kind="Atlassian"/>
                         </Button>
+
+                        <StackPanel
+                            Margin="0 20 0 0"
+                            Orientation="Horizontal" HorizontalAlignment="Center"
+                            VerticalAlignment="Center"     >
+
+                            <TextBox
+                                x:Name="FilePathToSaveEfirTextBox"
+                                Width="200"
+                                Padding="5 0 0 0"
+                                Margin="0 0 15 0"
+
+                                materialDesign:HintAssist.Hint="Путь к папке"
+                                materialDesign:HintAssist.HelperTextFontSize="14"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                Foreground="#c5c5c5"
+                                VerticalAlignment="Center"/>
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                    Click="OpenSaveEfirDialog_Click"/>
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Margin="15 0 0 0">
+                            </StackPanel>
+                        </StackPanel>
                         <TextBlock Text="СОЗДАТЬ ПРОГРАММУ ТЕЛЕПЕРЕДАЧ НА НЕДЕЛЮ"
-                                   Margin="0 70 0 0"/>
+                                   Margin="0 50 0 0"/>
                     </StackPanel>
                 </TabItem>
                 <!--________________________________________________________________________________________-->

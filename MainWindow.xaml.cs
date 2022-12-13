@@ -111,10 +111,10 @@ namespace Efir
             {
                 //TODO Профиксить отображение путей, убрать лишнее
 
-                if (context.LectionGraphs.Count() != 0)
+                if (context.Lections.Count() != 0)
                 {
-                    FilePathToLectionTextBox.Text = context.LectionGraphs.ToList()[0].Path;
-                    CountOfLectionTextBlock.Text = context.LectionGraphs.Count().ToString();
+                    FilePathToLectionTextBox.Text = context.Lections.ToList()[0].Path;
+                    CountOfLectionTextBlock.Text = context.Lections.Count().ToString();
                 }
 
                 if (context.Films.Count() != 0)
@@ -4592,19 +4592,52 @@ namespace Efir
         {
             ClearPrintModels();
             GenerateEfir();
-            //SaveEfirAtDoc();
             WriteEfirAtFile();
             //CopyContentInDest();
+        }
+
+        // выбрать путь сохранения эфира(текстовый файл, медиа)
+        public void SavePathEfir()
+        {
+            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+            commonOpenFileDialog.IsFolderPicker = true;
+            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                try
+                {
+                    using (MainWindowViewModel model = new MainWindowViewModel())
+                    {
+                        model.SavePathEfir = commonOpenFileDialog.FileName;
+                        FilePathToSaveEfirTextBox.Text = model.SavePathEfir;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Произошла ошибка: {ex.Message}");
+                }
+
+            }
+        }
+
+        private void OpenSaveEfirDialog_Click(object sender, RoutedEventArgs e)
+        {
+            SavePathEfir();
         }
 
         //Записываю в текстовый файл программу телепередач на неделю
         private void WriteEfirAtFile()
         {
-            string path = @"C:\Users\SKTV-1\Desktop\Эфир\Efir.txt";
+            MainWindowViewModel model = new MainWindowViewModel();
+
+            string nameFile = "Efir.txt";
+            string savePath = FilePathToSaveEfirTextBox.Text + "\\" + nameFile;
 
             using (ApplicationContext context = new ApplicationContext())
             {
-                using (StreamWriter fstream = new StreamWriter(path, false))
+                using (StreamWriter fstream = new StreamWriter(savePath, false))
                 {
                     string builtedStr = "";
                     string h = "";
@@ -4820,7 +4853,7 @@ namespace Efir
             string? sourcePath = "";
             string? nameFolder = "";
             string? fileName = "";
-            string destPath = @"Z:\TECT\";
+            string destPath = FilePathToSaveEfirTextBox.Text;
             string combainPath = "";
             int orderNumber = 0;
 
@@ -4828,7 +4861,7 @@ namespace Efir
             {
 
                 nameFolder = "Понедельник";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintMondays)
@@ -5133,8 +5166,24 @@ namespace Efir
             }
         }
 
+        // сохраняю изменения смены порядка эвентов
+        private void CapturedReorderEventItem_Drop(object sender, DragEventArgs e)
+        {
+            //TODO В этом методе надо сделать обновление моделей, если был изменен порядок в ручную(если перетащил событие)
+            using (MainWindowViewModel model = new MainWindowViewModel())
+            {
+                //EfirListOnMonday.UpdateLayout;
 
-        #region Обновление отображения моделей
+
+                /*  foreach (var item in model.EventListSourceMonday)
+                {
+                model?.EventListSourceMonday?.Add(item);
+                }
+                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;*/
+            }
+        }
+
+        #region Обновление отображения моделей (обновление в базе)
         private void UpdateModelsView()
         {
 
@@ -5322,9 +5371,6 @@ namespace Efir
             }
 
         }
-
-
-
 
 
         #endregion

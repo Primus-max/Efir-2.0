@@ -34,6 +34,13 @@ namespace Efir.ViewModels
             set => Set(ref _PathToSaveEfir, value);
         }
 
+        private string _SavePathEfir;
+        public string SavePathEfir
+        {
+            get => _SavePathEfir;
+            set => Set(ref _SavePathEfir, value);
+        }
+
         #region Список названий всех событий
 
         private string _StartEfir = "НАЧАЛО ТРАНСЛЯЦИИ";
