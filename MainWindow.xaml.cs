@@ -33,6 +33,7 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO ОБЯЗАТЕЛЬНО сделать проверку на наличие контента по путям!!
         //TODO Сделать рефреш эфирной сетки по времени по кнопке - схранить эфир или по другому событию
         //TODO Сделать массовое удаление событий в эфире, типо отчистить или что то еще
         //TODO Сделать проверку на наличие контента в базе, перез созданием эфира, и сделать записб в текстовый файл если по некоторым путям контент отсутствует
@@ -2431,6 +2432,68 @@ namespace Efir
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
 
+                                #region ОБРАЗОВАНИЕ
+                                if (model.EventListSourceTuesday[i].EventName == "ОБРАЗОВАНИЕ")
+                                {
+                                    List<Educational> educationals = context.Educationals.ToList();
+                                    PrintTuesday? print = new PrintTuesday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                IfLengthIsOver:
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = educationals[j].Duration.Hours * 60;
+                                        mm = educationals[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = educationals[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
+                                        print.Description = "Образование:";
+                                        print.Option = educationals[j].Path;
+                                        print.Id = RandomId;
+                                        educationals[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        context.PrintTuesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == listSortedByDate.Count() - 1)
+                                        {
+                                            lastSeries = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+
                                 #region ТЕЛЕПЕРЕДАЧИ
                                 if (model.EventListSourceTuesday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
@@ -2800,6 +2863,68 @@ namespace Efir
 
                                 //------------------------------------------поиск контента------------------------------------------//
 
+                                #region ОБРАЗОВАНИЕ
+                                if (model.EventListSourceWednesday[i].EventName == "ОБРАЗОВАНИЕ")
+                                {
+                                    List<Educational> educationals = context.Educationals.ToList();
+                                    PrintWednesday? print = new PrintWednesday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                IfLengthIsOver:
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = educationals[j].Duration.Hours * 60;
+                                        mm = educationals[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = educationals[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
+                                        print.Description = "Образование:";
+                                        print.Option = educationals[j].Path;
+                                        print.Id = RandomId;
+                                        educationals[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        context.PrintWednesdays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == listSortedByDate.Count() - 1)
+                                        {
+                                            lastSeries = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+
                                 #region ТЕЛЕПЕРЕДАЧИ
                                 if (model.EventListSourceWednesday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
@@ -3167,6 +3292,68 @@ namespace Efir
 
                                 //------------------------------------------поиск контента------------------------------------------//
 
+                                #region ОБРАЗОВАНИЕ
+                                if (model.EventListSourceThursday[i].EventName == "ОБРАЗОВАНИЕ")
+                                {
+                                    List<Educational> educationals = context.Educationals.ToList();
+                                    PrintThursday? print = new PrintThursday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                IfLengthIsOver:
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = educationals[j].Duration.Hours * 60;
+                                        mm = educationals[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = educationals[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
+                                        print.Description = "Образование:";
+                                        print.Option = educationals[j].Path;
+                                        print.Id = RandomId;
+                                        educationals[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        context.PrintThursdays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == listSortedByDate.Count() - 1)
+                                        {
+                                            lastSeries = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+
                                 #region ТЕЛЕПЕРЕДАЧИ
                                 if (model.EventListSourceThursday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
@@ -3531,6 +3718,69 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
+
+                                #region ОБРАЗОВАНИЕ
+                                if (model.EventListSourceFriday[i].EventName == "ОБРАЗОВАНИЕ")
+                                {
+                                    List<Educational> educationals = context.Educationals.ToList();
+                                    PrintFriday? print = new PrintFriday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                IfLengthIsOver:
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = educationals[j].Duration.Hours * 60;
+                                        mm = educationals[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = educationals[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
+                                        print.Description = "Образование:";
+                                        print.Option = educationals[j].Path;
+                                        print.Id = RandomId;
+                                        educationals[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        context.PrintFridays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == listSortedByDate.Count() - 1)
+                                        {
+                                            lastSeries = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+
                                 #region ТЕЛЕПЕРЕДАЧИ
                                 if (model.EventListSourceFriday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
@@ -3894,6 +4144,66 @@ namespace Efir
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
 
+                                #region ОБРАЗОВАНИЕ
+                                if (model.EventListSourceSaturday[i].EventName == "ОБРАЗОВАНИЕ")
+                                {
+                                    List<Educational> educationals = context.Educationals.ToList();
+                                    PrintSaturday? print = new PrintSaturday();
+                                    bool elseFilm = false;
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                IfLengthIsOver:
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = educationals[j].Duration.Hours * 60;
+                                        mm = educationals[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = educationals[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
+                                        print.Description = "Образование:";
+                                        print.Option = educationals[j].Path;
+                                        print.Id = RandomId;
+                                        educationals[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        context.PrintSaturdays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == listSortedByDate.Count() - 1)
+                                        {
+                                            lastSeries = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
+
                                 #region ТЕЛЕПЕРЕДАЧИ
                                 if (model.EventListSourceSaturday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
@@ -4256,6 +4566,68 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 int totalMinute = totalMinuteEvent;
                                 //------------------------------------------поиск контента------------------------------------------//
+
+                                #region ОБРАЗОВАНИЕ
+                                if (model.EventListSourceSunday[i].EventName == "ОБРАЗОВАНИЕ")
+                                {
+                                    List<Educational> educationals = context.Educationals.ToList();
+                                    PrintSunday? print = new PrintSunday();
+                                    bool elseFilm = false;
+
+
+                                    int hh = 0;
+                                    int mm = 0;
+
+
+                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                IfLengthIsOver:
+                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    {
+                                        #region Определение времени
+                                        hh = educationals[j].Duration.Hours * 60;
+                                        mm = educationals[j].Duration.Minutes;
+
+                                        int curMinuteEvent = hh + mm;
+                                        #endregion
+
+                                        if (curMinuteEvent > totalMinute) continue;
+
+                                        TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
+                                        string[] splitName = educationals[j].Name.Split(".");
+                                        string formattedName = splitName[0];
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
+                                        print.Description = "Образование:";
+                                        print.Option = educationals[j].Path;
+                                        print.Id = RandomId;
+                                        educationals[j].LastRun = DateTime.Now;
+
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+                                        context.PrintSundays.Add(print);
+                                        context.SaveChanges();
+
+                                        TheRestTime = totalMinute - curMinuteEvent;
+                                        totalMinute = TheRestTime;
+                                        elseFilm = true;
+
+                                        if (j == listSortedByDate.Count() - 1)
+                                        {
+                                            lastSeries = 0;
+                                            goto IfLengthIsOver;
+                                        }
+                                    }
+
+                                }
+                                #endregion
 
                                 #region ТЕЛЕПЕРЕДАЧИ
                                 if (model.EventListSourceSunday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
