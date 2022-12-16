@@ -2113,15 +2113,17 @@ namespace Efir
 
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
+                                        print.Description = tvShows[j]?.Name;
                                         print.Option = tvShows[j].Path;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
@@ -2560,15 +2562,17 @@ namespace Efir
 
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
+                                        print.Description = tvShows[j]?.Name;
                                         print.Option = tvShows[j].Path;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
@@ -3006,15 +3010,17 @@ namespace Efir
 
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
+                                        print.Description = tvShows[j]?.Name;
                                         print.Option = tvShows[j].Path;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
@@ -3451,15 +3457,17 @@ namespace Efir
 
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
+                                        print.Description = tvShows[j]?.Name;
                                         print.Option = tvShows[j].Path;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
@@ -3893,16 +3901,17 @@ namespace Efir
                                         if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
-                                        print.Option = tvShows[j].Path;
+                                        print.Description = tvShows[j]?.Name;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
                                         print.Id = RandomId;
@@ -4333,15 +4342,17 @@ namespace Efir
                                         if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
+                                        print.Description = tvShows[j]?.Name;
                                         print.Option = tvShows[j].Path;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
@@ -4774,15 +4785,17 @@ namespace Efir
                                         if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = tvShows[j].Name.Split(".");
+                                        string[] splitName = tvShows[j].Description.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        bool isNumber = int.TryParse(formattedName, out int fake);
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = tvShows[j]?.Description;
+                                        print.EventName = isNumber ? "" : formattedName;
                                         print.Series = tvShows[j].NumOfSeries > 0 ? tvShows[j].Series : 0;
-                                        print.Description = formattedName;
+                                        print.Description = tvShows[j]?.Name;
                                         print.Option = tvShows[j].Path;
                                         tvShows[j].LastRun = DateTime.Now;
                                         tvShows[j].NumOfRun += 1;
