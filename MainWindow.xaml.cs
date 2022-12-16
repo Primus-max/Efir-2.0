@@ -2406,14 +2406,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceMonday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceMonday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintMonday? print = new PrintMonday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintMondays.Add(print);
@@ -2854,14 +2854,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceTuesday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceTuesday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintTuesday? print = new PrintTuesday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintTuesdays.Add(print);
@@ -3300,14 +3300,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceWednesday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceWednesday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintWednesday? print = new PrintWednesday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintWednesdays.Add(print);
@@ -3747,14 +3747,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceThursday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceThursday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintThursday? print = new PrintThursday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintThursdays.Add(print);
@@ -4190,14 +4190,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceFriday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceFriday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintFriday? print = new PrintFriday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintFridays.Add(print);
@@ -4632,14 +4632,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceSaturday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceSaturday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintSaturday? print = new PrintSaturday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintSaturdays.Add(print);
@@ -5080,14 +5080,14 @@ namespace Efir
                                 #endregion
 
                                 #region ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ
-                                if (model.EventListSourceSunday[i + 1].EventName == "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ")
+                                if (model.EventListSourceSunday[i + 1].EventName == "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ")
                                 {
                                     PrintSunday? print = new PrintSunday();
                                     Guid guid = Guid.NewGuid();
                                     string RandomId = guid.ToString();
 
                                     print.TimeToEfir = nextItemTime.TimeToEfir;
-                                    print.EventName = "ЗАВРЕШЕНИЕ ТРАНСЛЯЦИИ";
+                                    print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
                                     context.PrintSundays.Add(print);
@@ -5404,7 +5404,7 @@ namespace Efir
                 orderNumber = 0;
 
                 nameFolder = "Вторник";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintTuesdays)
@@ -5431,7 +5431,7 @@ namespace Efir
 
 
                 nameFolder = "Среда";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintWednesdays)
@@ -5458,7 +5458,7 @@ namespace Efir
 
 
                 nameFolder = "Четверг";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintThursdays)
@@ -5484,7 +5484,7 @@ namespace Efir
 
 
                 nameFolder = "Пятница";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintFridays)
@@ -5509,7 +5509,7 @@ namespace Efir
                 orderNumber = 0;
 
                 nameFolder = "Суббота";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintSaturdays)
@@ -5534,7 +5534,7 @@ namespace Efir
                 orderNumber = 0;
 
                 nameFolder = "Воскресенье";
-                combainPath = destPath + nameFolder;
+                combainPath = destPath + "\\" + nameFolder;
                 if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
 
                 foreach (var item in context.PrintSundays)
