@@ -33,9 +33,12 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
-        //TODO ОБЯЗАТЕЛЬНО сделать проверку на наличие контента по путям!!
+        //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть. 
+        //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
+
+        //TODO Профиксить отображение путей в медиа, сейчас отображется полный путь до первого файла. Нужно указывать только директорию
         //TODO Сделать рефреш эфирной сетки по времени по кнопке - схранить эфир или по другому событию
-        //TODO Сделать массовое удаление событий в эфире, типо отчистить или что то еще
+        //xTODO Сделать массовое удаление событий в эфире, типо отчистить или что то еще
         //TODO Сделать проверку на наличие контента в базе, перез созданием эфира, и сделать записб в текстовый файл если по некоторым путям контент отсутствует
         //TODO Сделать удаление контента из базы если нажата кнопка выбора контента(отчистка моделей), чтобы не догружалось, а с нуля грузилось, хотя может есть сммысл оставить, чтобы просто догружалось
         //TODO Профиксить отчистку всех моделей в базе, на занчение null  в одном из полей(бывает в одно из полей записывается NULL и при старте программы выкидывает ошибку, для пользователя это краш программы. удалять приходится в ручную из базы)
@@ -47,13 +50,12 @@ namespace Efir
         //xTODO Добавить модели для создания эфира по остальным дням
 
         //xTODO подумать над тем что решением проблемы с определением что будет именем файла в базе, имя папки или имя самого файла, может быть писать одно в Name другое в Description, а пользователь потом это сможет поменять поменяв местами поля в списках
-        //TODO сделать в настройках программы возможность добавления флага для определения жанра, этот флаг будет отображаться в имении папки
-        //TODO запуск программы по середине окна
+        //xTODO запуск программы посередине окна
         //TODO сделать чтобы колличество добавляемых элементов показывалось в рантайме а не по факту добавленного
         //TODO поработать надо высвобождением ресурсов, слишком много по памяти жрет
 
-        ApplicationContext db = new ApplicationContext();
-        DayOfWeek dayOfWeek = new DayOfWeek();
+        //ApplicationContext db = new ApplicationContext();
+        //DayOfWeek dayOfWeek = new DayOfWeek();
 
         #region ПЕРЕМЕННЫЕ: блок эфир
         #endregion
@@ -84,7 +86,11 @@ namespace Efir
             // new GeneratedCode.GeneratedClass().CreatePackage(@"D:\Temp\Output.docx");
 
             // гарантируем, что база данных создана
-            db.Database.EnsureCreated();
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                context.Database.EnsureCreated();
+            }
+
             /* db.Serieses.Load();
             db.Films.Load();
             //db.Documentarieses.Load();
@@ -104,13 +110,22 @@ namespace Efir
 
             #region Установка источников данных для отображения колличества контента в категории медиа
             //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
-            CountOfFilmTextBlock.Text = Convert.ToString(db?.Films.Count());
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                CountOfFilmTextBlock.Text = Convert.ToString(context?.Films.Count());
+            }
+
             #endregion
 
             #region Установка данных для отображения путей контента и его колличества
             using (ApplicationContext context = new ApplicationContext())
             {
                 //TODO Профиксить отображение путей, убрать лишнее
+                if (context.Lections.Count() != 0)
+                {
+                    FilePathToEducationalsTextBox.Text = context.Educationals.ToList()[0].Path;
+                    CountOfEducationalsTextBlock.Text = context.Educationals.Count().ToString();
+                }
 
                 if (context.Lections.Count() != 0)
                 {
@@ -1437,7 +1452,8 @@ namespace Efir
                                 ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-                        CountOfFilmTextBlock.Text = Convert.ToString(db.Films.Count());
+                        using (ApplicationContext context = new ApplicationContext())
+                            CountOfFilmTextBlock.Text = Convert.ToString(context.Films.Count());
                     }
                 }
                 catch (Exception ex)
@@ -1535,8 +1551,8 @@ namespace Efir
                                 ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-
-                        CountOfLectionTextBlock.Text = Convert.ToString(db.Lections.Count());
+                        using (ApplicationContext context = new ApplicationContext())
+                            CountOfLectionTextBlock.Text = Convert.ToString(context.Lections.Count());
                     }
                 }
                 catch (Exception ex)
@@ -1568,7 +1584,7 @@ namespace Efir
                     StringNumberComparer comparer = new StringNumberComparer();
                     MainWindowViewModel viewModel = new MainWindowViewModel();
 
-                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                    foreach (FileInfo item in contentListMedia)
                     {
                         counPrevention += 1;
 
@@ -1634,8 +1650,8 @@ namespace Efir
                                 ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
-
-                        CountOfPreventionlTextBlock.Text = Convert.ToString(db.Preventions.Count());
+                        using (ApplicationContext context = new ApplicationContext())
+                            CountOfPreventionlTextBlock.Text = Convert.ToString(context.Preventions.Count());
                     }
                 }
                 catch (Exception ex)
@@ -1785,7 +1801,8 @@ namespace Efir
                             }
                         }
 
-                        CountOfTvShowTextBlock.Text = Convert.ToString(db.Preventions.Count());
+                        using (ApplicationContext context = new ApplicationContext())
+                            CountOfTvShowTextBlock.Text = Convert.ToString(context.Preventions.Count());
                     }
                 }
                 catch (Exception ex)
@@ -2170,17 +2187,28 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-                                        #endregion
+                                    #endregion
 
+                                    ElseRotation:
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -2207,6 +2235,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -2598,19 +2632,28 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
-
-
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-
                                         #endregion
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
+
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -2637,6 +2680,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -3029,19 +3078,28 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
-
-
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-
                                         #endregion
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
+
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -3068,6 +3126,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -3459,17 +3523,28 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-
                                         #endregion
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
+
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -3496,6 +3571,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -3884,17 +3965,28 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-
                                         #endregion
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
+
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -3921,6 +4013,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -4307,17 +4405,28 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-
                                         #endregion
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
+
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -4344,6 +4453,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -4729,23 +4844,35 @@ namespace Efir
                                 if (model.EventListSourceSunday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintSunday print = new PrintSunday();
-                                    List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
+                                    List<Film>? films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
                                     int mm = 0;
 
-                                    for (int j = 0; j < films.Count; j++)
+
+                                    Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
                                     {
+                                        int maybeDays = 15;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-
                                         #endregion
 
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
+
+                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = films[j].Name.Split(".");
@@ -4772,6 +4899,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion

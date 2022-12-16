@@ -12,7 +12,7 @@ namespace Efir.ViewModels
 {
     internal class MainWindowViewModel : BaseViewModel
     {
-        private string _Title;
+        private string _Title = "";
         public string Title
         {
             get => _Title;
@@ -153,7 +153,6 @@ namespace Efir.ViewModels
 
 
 
-
         #endregion
 
         #region БЛОК МЕДИА
@@ -198,10 +197,6 @@ namespace Efir.ViewModels
 
         public MainWindowViewModel()
         {
-            for (int i = 0; i < 10; i++)
-            {
-                testList.Add("ТЕст" + i.ToString());
-            }
 
 
 

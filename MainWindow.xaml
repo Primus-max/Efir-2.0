@@ -21,7 +21,8 @@
     Title="Программа телепередач Эфир-1.0"
     Height="520"
     Width="810"
-    Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen" >
+    Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen"
+    Icon="/mainIco.ico" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -1065,17 +1066,9 @@
                         </StackPanel>
                     </TabItem.Header>
                     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Button Width="200"
-                                Height="200" Click="CreateEfir_Click" >
-                            <materialDesign:PackIcon
-                                Width="170"
-                                Height="170"
-                                HorizontalAlignment="Center"
-                                Kind="Atlassian"/>
-                        </Button>
 
                         <StackPanel
-                            Margin="0 20 0 0"
+                            Margin="0 0 0 20"
                             Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center"     >
 
@@ -1093,12 +1086,16 @@
                             <Button Style="{StaticResource MaterialDesignRaisedButton}"
                                     Content="{materialDesign:PackIcon FolderSearchOutline}"
                                     Click="OpenSaveEfirDialog_Click"/>
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Margin="15 0 0 0">
-                            </StackPanel>
                         </StackPanel>
+                        <Button Width="200"
+                                Height="200" Click="CreateEfir_Click" >
+                            <materialDesign:PackIcon
+                                Width="170"
+                                Height="170"
+                                HorizontalAlignment="Center"
+                                Kind="Atlassian"/>
+                        </Button>
+
                         <TextBlock Text="СОЗДАТЬ ПРОГРАММУ ТЕЛЕПЕРЕДАЧ НА НЕДЕЛЮ"
                                    Margin="0 50 0 0"/>
                     </StackPanel>
