@@ -1949,6 +1949,8 @@ namespace Efir
 
 
         #region ПОДБОР КОНТЕНТА
+
+        // перемешиваю список
         static void Shuffle<T>(List<T> a)
         {
             Random rand = new Random();
@@ -1968,6 +1970,17 @@ namespace Efir
             int TheRestTime = 0;
             TabControl tabControl = TabOfDayWeek;
             List<string> listFilmOfWeek = new List<string>();
+
+            // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
+            using (ApplicationContext context = new ApplicationContext())
+            {
+                foreach (var item in context.Films.ToList())
+                {
+                    item.LastRun = new DateTime().AddYears(2015);
+                }
+                context.SaveChanges();
+            }
+            // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
 
             foreach (var tab in tabControl.Items)
             {
@@ -2226,7 +2239,18 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
+
+                                        /* string name = filmList[j].Name.Split(".")[0];                                       
+
+                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
+                                         {
+                                             if (listFilmOfWeek[k] == name)
+                                             {                                                
+                                                 j++;
+                                             }
+                                         }
+ */
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -2234,8 +2258,6 @@ namespace Efir
                                             maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
-
-                                        //var sdfgsdfgsdfg = filmList.Average(f => (f.Duration.Hours + f.Duration.Minutes + f.Duration.Seconds));
 
                                         #region Определение времени
                                         hh = filmList[j].Duration.Hours * 60;
@@ -2704,20 +2726,17 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
 
-                                        string name = filmList[j].Name.Split(".")[0];
-                                        var eventlist = context?.PrintMondays.ToList();
+                                        /*string name = filmList[j].Name.Split(".")[0];                                     
 
-                                        for (int k = 0; k < eventlist.Count; k++)
+                                        for (int k = 0; k < listFilmOfWeek.Count; k++)
                                         {
-                                            if (eventlist[k].EventName == name)
-                                            {
-                                                filmList.Remove(filmList[j]);
-                                                Shuffle<Film>(filmList);
-                                                goto ElseCircle;
+                                            if (listFilmOfWeek[k] == name)
+                                            {                                                
+                                                j++;
                                             }
-                                        }
+                                        }*/
 
 
                                         if (j == filmList.Count - 1)
@@ -2760,6 +2779,7 @@ namespace Efir
 
                                         context?.PrintTuesdays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -3180,20 +3200,16 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
 
-                                        string name = filmList[j].Name.Split(".")[0];
-                                        var eventlist = context?.PrintTuesdays.ToList();
-
-                                        for (int k = 0; k < eventlist?.Count; k++)
-                                        {
-                                            if (eventlist[k].EventName == name)
-                                            {
-                                                filmList.Remove(filmList[j]);
-                                                Shuffle<Film>(filmList);
-                                                goto ElseCircle;
-                                            }
-                                        }
+                                        /* string name = filmList[j].Name.Split(".")[0];
+                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
+                                         {
+                                             if (listFilmOfWeek[k] == name)
+                                             {                                                
+                                                 j++;
+                                             }
+                                         }*/
 
 
                                         if (j == filmList.Count - 1)
@@ -3236,6 +3252,7 @@ namespace Efir
 
                                         context?.PrintWednesdays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -3662,20 +3679,16 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
 
-                                        string name = filmList[j].Name.Split(".")[0];
-                                        var eventlist = context?.PrintWednesdays.ToList();
-
-                                        for (int k = 0; k < eventlist?.Count; k++)
-                                        {
-                                            if (eventlist[k].EventName == name)
-                                            {
-                                                filmList.Remove(filmList[j]);
-                                                Shuffle<Film>(filmList);
-                                                goto ElseCircle;
-                                            }
-                                        }
+                                        /* string name = filmList[j].Name.Split(".")[0];
+                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
+                                         {
+                                             if (listFilmOfWeek[k] == name)
+                                             {
+                                                 j++;
+                                             }
+                                         }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -3717,6 +3730,8 @@ namespace Efir
 
                                         context?.PrintThursdays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
+
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -4141,20 +4156,16 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
 
-                                        string name = filmList[j].Name.Split(".")[0];
-                                        var eventlist = context?.PrintThursdays.ToList();
-
-                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        /*string name = filmList[j].Name.Split(".")[0];
+                                        for (int k = 0; k < listFilmOfWeek.Count; k++)
                                         {
-                                            if (eventlist[k].EventName == name)
+                                            if (listFilmOfWeek[k] == name)
                                             {
-                                                filmList.Remove(filmList[j]);
-                                                Shuffle<Film>(filmList);
-                                                goto ElseCircle;
+                                                j++;
                                             }
-                                        }
+                                        }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -4196,6 +4207,7 @@ namespace Efir
 
                                         context?.PrintFridays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -4621,20 +4633,16 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
 
-                                        string name = filmList[j].Name.Split(".")[0];
-                                        var eventlist = context?.PrintFridays.ToList();
-
-                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        /*string name = filmList[j].Name.Split(".")[0];
+                                        for (int k = 0; k < listFilmOfWeek.Count; k++)
                                         {
-                                            if (eventlist[k].EventName == name)
+                                            if (listFilmOfWeek[k] == name)
                                             {
-                                                filmList.Remove(filmList[j]);
-                                                Shuffle<Film>(filmList);
-                                                goto ElseCircle;
+                                                j++;
                                             }
-                                        }
+                                        }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -4676,6 +4684,7 @@ namespace Efir
 
                                         context?.PrintSaturdays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -5105,20 +5114,16 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        if (maybeDays < 0) break;
+                                        if (maybeDays < 15) break;
 
-                                        string name = filmList[j].Name.Split(".")[0];
-                                        var eventlist = context?.PrintSaturdays.ToList();
-
-                                        for (int k = 0; k < eventlist?.Count; k++)
-                                        {
-                                            if (eventlist[k].EventName == name)
-                                            {
-                                                filmList.Remove(filmList[j]);
-                                                Shuffle<Film>(filmList);
-                                                goto ElseCircle;
-                                            }
-                                        }
+                                        /* string name = filmList[j].Name.Split(".")[0];
+                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
+                                         {
+                                             if (listFilmOfWeek[k] == name)
+                                             {
+                                                 j++;
+                                             }
+                                         }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -5161,6 +5166,7 @@ namespace Efir
 
                                         context?.PrintSundays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
