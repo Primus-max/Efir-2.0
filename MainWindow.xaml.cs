@@ -1967,6 +1967,7 @@ namespace Efir
             MainWindowViewModel model = new MainWindowViewModel();
             int TheRestTime = 0;
             TabControl tabControl = TabOfDayWeek;
+            List<string> listFilmOfWeek = new List<string>();
 
             foreach (var tab in tabControl.Items)
             {
@@ -2225,12 +2226,16 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
                                         if (j == filmList.Count - 1)
                                         {
                                             Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
+
+                                        //var sdfgsdfgsdfg = filmList.Average(f => (f.Duration.Hours + f.Duration.Minutes + f.Duration.Seconds));
 
                                         #region Определение времени
                                         hh = filmList[j].Duration.Hours * 60;
@@ -2267,12 +2272,11 @@ namespace Efir
 
                                         context?.PrintMondays.Add(print);
                                         context?.SaveChanges();
+                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
 
                                     }
                                 }
@@ -2693,15 +2697,32 @@ namespace Efir
                                     List<Film> filmList = context.Films.ToList();
                                     Shuffle<Film>(filmList);
 
+                                    //PrintMonday printMonday = new PrintMonday();
+
                                     int maybeDays = 30;
 
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
+                                        string name = filmList[j].Name.Split(".")[0];
+                                        var eventlist = context?.PrintMondays.ToList();
+
+                                        for (int k = 0; k < eventlist.Count; k++)
+                                        {
+                                            if (eventlist[k].EventName == name)
+                                            {
+                                                filmList.Remove(filmList[j]);
+                                                Shuffle<Film>(filmList);
+                                                goto ElseCircle;
+                                            }
+                                        }
+
+
                                         if (j == filmList.Count - 1)
                                         {
-                                            Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
                                         #region Определение времени
@@ -2743,8 +2764,6 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -3161,10 +3180,25 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
+                                        string name = filmList[j].Name.Split(".")[0];
+                                        var eventlist = context?.PrintTuesdays.ToList();
+
+                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        {
+                                            if (eventlist[k].EventName == name)
+                                            {
+                                                filmList.Remove(filmList[j]);
+                                                Shuffle<Film>(filmList);
+                                                goto ElseCircle;
+                                            }
+                                        }
+
+
                                         if (j == filmList.Count - 1)
                                         {
-                                            Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
                                         #region Определение времени
@@ -3206,8 +3240,6 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -3630,10 +3662,24 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
+                                        string name = filmList[j].Name.Split(".")[0];
+                                        var eventlist = context?.PrintWednesdays.ToList();
+
+                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        {
+                                            if (eventlist[k].EventName == name)
+                                            {
+                                                filmList.Remove(filmList[j]);
+                                                Shuffle<Film>(filmList);
+                                                goto ElseCircle;
+                                            }
+                                        }
+
                                         if (j == filmList.Count - 1)
                                         {
-                                            Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
                                         #region Определение времени
@@ -3675,8 +3721,6 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -4097,10 +4141,24 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
+                                        string name = filmList[j].Name.Split(".")[0];
+                                        var eventlist = context?.PrintThursdays.ToList();
+
+                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        {
+                                            if (eventlist[k].EventName == name)
+                                            {
+                                                filmList.Remove(filmList[j]);
+                                                Shuffle<Film>(filmList);
+                                                goto ElseCircle;
+                                            }
+                                        }
+
                                         if (j == filmList.Count - 1)
                                         {
-                                            Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
                                         #region Определение времени
@@ -4142,8 +4200,6 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -4565,10 +4621,24 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
+                                        string name = filmList[j].Name.Split(".")[0];
+                                        var eventlist = context?.PrintFridays.ToList();
+
+                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        {
+                                            if (eventlist[k].EventName == name)
+                                            {
+                                                filmList.Remove(filmList[j]);
+                                                Shuffle<Film>(filmList);
+                                                goto ElseCircle;
+                                            }
+                                        }
+
                                         if (j == filmList.Count - 1)
                                         {
-                                            Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
                                             goto ElseCircle;
                                         }
                                         #region Определение времени
@@ -4610,8 +4680,6 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -5037,10 +5105,25 @@ namespace Efir
                                 ElseCircle:
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
+                                        if (maybeDays < 0) break;
+
+                                        string name = filmList[j].Name.Split(".")[0];
+                                        var eventlist = context?.PrintSaturdays.ToList();
+
+                                        for (int k = 0; k < eventlist?.Count; k++)
+                                        {
+                                            if (eventlist[k].EventName == name)
+                                            {
+                                                filmList.Remove(filmList[j]);
+                                                Shuffle<Film>(filmList);
+                                                goto ElseCircle;
+                                            }
+                                        }
+
                                         if (j == filmList.Count - 1)
                                         {
-                                            Shuffle<Film>(filmList);
-                                            maybeDays = maybeDays - 5;
+                                            maybeDays = maybeDays - 3;
+
                                             goto ElseCircle;
                                         }
                                         #region Определение времени
@@ -5082,8 +5165,6 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
-
-                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
