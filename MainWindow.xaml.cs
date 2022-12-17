@@ -1949,6 +1949,18 @@ namespace Efir
 
 
         #region ПОДБОР КОНТЕНТА
+        static void Shuffle<T>(List<T> a)
+        {
+            Random rand = new Random();
+            for (int i = a.Count - 1; i > 0; i--)
+            {
+                int j = rand.Next(0, i + 1);
+                T tmp = a[i];
+                a[i] = a[j];
+                a[j] = tmp;
+            }
+        }
+
         private void GenerateEfir()
         {
             TabItem? SelectedTab = TabOfDayWeek.SelectedItem as TabItem;
@@ -1988,17 +2000,12 @@ namespace Efir
                         }
                         EfirListOnMonday.ItemsSource = model.EventListSourceMonday;
 
-                        //var MinTimeEfir = context?.OnMonday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnMonday.ToList().Max(t => t.TimeToEfir);
-
-
                         for (int i = 0; i < model.EventListSourceMonday.Count; i++)
                         {
                             if (model.EventListSourceMonday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
                             if (i < model.EventListSourceMonday.Count - 1)
                             {
-                                //if (model.EventListSourceMonday[i].EventName == "ПЕРЕРЫВ") continue;
 
                                 var curItemTime = model.EventListSourceMonday[i];
                                 var nextItemTime = model.EventListSourceMonday[i + 1];
@@ -2028,13 +2035,20 @@ namespace Efir
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    //var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    //Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                    //int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    //int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    //IfLengthIsOver:
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -2043,6 +2057,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -2068,10 +2087,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -2088,13 +2107,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
-                                    //int j = 0;
 
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
 
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -2108,7 +2129,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
 
 
@@ -2137,6 +2158,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == tvShows.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -2190,39 +2217,41 @@ namespace Efir
                                     int mm = 0;
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
-                                    Random randomContent = new Random();
 
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
+
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
-                                    #endregion
+                                        #endregion
 
-                                    ElseRotation:
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
                                         print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
+                                        print.Option = filmList[j].Path;
                                         films[j].LastRun = DateTime.Now;
                                         films[j].NumOfRun += 1;
                                         print.Id = RandomId;
@@ -2230,19 +2259,15 @@ namespace Efir
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
 
-
-                                        context.PrintMondays.Add(print);
-                                        context.SaveChanges();
+                                        context?.PrintMondays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
+
                                     }
                                 }
                                 #endregion
@@ -2263,6 +2288,7 @@ namespace Efir
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
                                     {
@@ -2480,13 +2506,21 @@ namespace Efir
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    /*var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);*/
+
+
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -2495,6 +2529,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -2520,10 +2559,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -2540,10 +2579,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
+
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
-                                        int maybeDays = 15;
+
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -2557,7 +2601,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
 
 
@@ -2586,6 +2630,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == tvShows.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -2637,14 +2687,14 @@ namespace Efir
                                     int mm = 0;
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
-                                    Random randomContent = new Random();
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
 
-                                ElseRotation:
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -2652,44 +2702,40 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
-
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
-                                        films[j].LastRun = DateTime.Now;
-                                        films[j].NumOfRun += 1;
-
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
+                                        print.Description = "Фильм:";
+                                        print.Option = filmList[j].Path;
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
                                         print.Id = RandomId;
 
-                                        context.PrintTuesdays.Add(print);
-                                        context.SaveChanges();
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+
+                                        context?.PrintTuesdays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -2927,14 +2973,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -2943,6 +2990,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -2968,10 +3020,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -2988,10 +3040,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
+
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
-                                        int maybeDays = 15;
+
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -3005,7 +3062,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
 
 
@@ -3034,6 +3091,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == tvShows.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -3085,14 +3148,14 @@ namespace Efir
                                     int mm = 0;
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
-                                    Random randomContent = new Random();
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
 
-                                ElseRotation:
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -3100,44 +3163,40 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
-
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
-                                        films[j].LastRun = DateTime.Now;
-                                        films[j].NumOfRun += 1;
-
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
+                                        print.Description = "Фильм:";
+                                        print.Option = filmList[j].Path;
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
                                         print.Id = RandomId;
 
-                                        context.PrintWednesdays.Add(print);
-                                        context.SaveChanges();
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+
+                                        context?.PrintWednesdays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -3374,13 +3433,21 @@ namespace Efir
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    /* var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                 IfLengthIsOver:*/
+
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -3389,6 +3456,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -3414,10 +3486,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -3434,11 +3506,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
 
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
-                                        int maybeDays = 15;
+
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -3452,7 +3528,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
 
 
@@ -3481,6 +3557,9 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (TheRestTime < minFilmDuration) break;
+
                                     }
                                 }
                                 #endregion
@@ -3532,14 +3611,14 @@ namespace Efir
                                     int mm = 0;
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
-                                    Random randomContent = new Random();
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
 
-                                ElseRotation:
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -3547,44 +3626,40 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
-
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
-                                        films[j].LastRun = DateTime.Now;
-                                        films[j].NumOfRun += 1;
-
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
+                                        print.Description = "Фильм:";
+                                        print.Option = filmList[j].Path;
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
                                         print.Id = RandomId;
 
-                                        context.PrintThursdays.Add(print);
-                                        context.SaveChanges();
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+
+                                        context?.PrintThursdays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -3820,13 +3895,21 @@ namespace Efir
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    /* var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                 IfLengthIsOver:*/
+
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -3835,6 +3918,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -3860,10 +3948,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -3880,11 +3968,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
 
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
-                                        int maybeDays = 15;
+
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -3898,7 +3990,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = tvShows[j].Description.Split(".");
@@ -3924,6 +4016,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == tvShows.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -3975,14 +4073,14 @@ namespace Efir
                                     int mm = 0;
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
-                                    Random randomContent = new Random();
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
 
-                                ElseRotation:
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -3990,44 +4088,40 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
-
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
-                                        films[j].LastRun = DateTime.Now;
-                                        films[j].NumOfRun += 1;
-
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
+                                        print.Description = "Фильм:";
+                                        print.Option = filmList[j].Path;
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
                                         print.Id = RandomId;
 
-                                        context.PrintFridays.Add(print);
-                                        context.SaveChanges();
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+
+                                        context?.PrintFridays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -4261,13 +4355,21 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                    /* var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
+                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                 IfLengthIsOver:*/
+
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -4276,6 +4378,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -4301,10 +4408,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -4321,11 +4428,16 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
 
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
-                                        int maybeDays = 15;
+
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -4339,7 +4451,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = tvShows[j].Description.Split(".");
@@ -4366,6 +4478,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == tvShows.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -4417,14 +4535,16 @@ namespace Efir
                                     int mm = 0;
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
                                     Random randomContent = new Random();
 
-                                ElseRotation:
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
+
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -4432,44 +4552,40 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
-
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
-                                        films[j].LastRun = DateTime.Now;
-                                        films[j].NumOfRun += 1;
-
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
+                                        print.Description = "Фильм:";
+                                        print.Option = filmList[j].Path;
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
                                         print.Id = RandomId;
 
-                                        context.PrintSaturdays.Add(print);
-                                        context.SaveChanges();
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+
+                                        context?.PrintSaturdays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
@@ -4705,13 +4821,21 @@ namespace Efir
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
+                                    /*var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:
-                                    for (int j = lastSeries; j < listSortedByDate.Count(); j++)
+                                IfLengthIsOver:*/
+
+                                    Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minEducationalTime.Duration.Days;
+
+                                    Random randomContent = new Random();
+
+                                ElseRotation:
+                                    for (int j = randomContent.Next(0, educationals.Count - 1); j < educationals.Count; j++)
                                     {
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = educationals[j].Duration.Hours * 60;
                                         mm = educationals[j].Duration.Minutes;
@@ -4720,6 +4844,11 @@ namespace Efir
                                         #endregion
 
                                         if (curMinuteEvent > totalMinute) continue;
+
+                                        DateTime lastRunnedDate = educationals[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = educationals[j].Name.Split(".");
@@ -4745,10 +4874,10 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == listSortedByDate.Count() - 1)
+                                        if (j == educationals.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
                                         {
-                                            lastSeries = 0;
-                                            goto IfLengthIsOver;
+                                            j = 0;
+                                            goto ElseRotation;
                                         }
                                     }
 
@@ -4765,10 +4894,15 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
+                                    TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
+                                    int minFilmDuration = minFilmTime.Duration.Days;
                                     Random randomContent = new Random();
+
+                                ElseRotation:
                                     for (int j = randomContent.Next(0, tvShows.Count - 1); j < tvShows.Count; j++)
                                     {
-                                        int maybeDays = 15;
+
+                                        int maybeDays = 10;
 
                                         #region Определение времени
                                         hh = tvShows[j].Duration.Hours * 60;
@@ -4782,7 +4916,7 @@ namespace Efir
                                         DateTime lastRunnedDate = tvShows[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
                                         string[] splitName = tvShows[j].Description.Split(".");
@@ -4809,6 +4943,12 @@ namespace Efir
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
+
+                                        if (j == tvShows.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
+                                        {
+                                            j = 0;
+                                            goto ElseRotation;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -4865,14 +5005,14 @@ namespace Efir
 
 
                                     Film? minFilmTime = context?.Films.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int minFilmDuration = minFilmTime.Duration.Days == 0 ? minFilmTime.Duration.Minutes : minFilmTime.Duration.Days;
 
-                                    Random randomContent = new Random();
+                                    List<Film> filmList = films.ToList();
+                                    Shuffle<Film>(filmList);
 
-                                ElseRotation:
-                                    for (int j = randomContent.Next(0, films.Count - 1); j < films.Count; j++)
+                                    for (int j = 0; j < filmList.Count; j++)
                                     {
-                                        int maybeDays = 15;
+                                        int maybeDays = 10;
                                         #region Определение времени
                                         hh = films[j].Duration.Hours * 60;
                                         mm = films[j].Duration.Minutes;
@@ -4880,44 +5020,40 @@ namespace Efir
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+
                                         if (curMinuteEvent > totalMinuteEvent) continue; // если время фильма больше необходимого, дальше
 
-                                        DateTime lastRunnedDate = films[j].LastRun;
+                                        DateTime lastRunnedDate = filmList[j].LastRun;
                                         int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
 
-                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 15 дней
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = films[j].Name.Split(".");
+                                        string[] splitName = filmList[j].Name.Split(".");
                                         string formattedName = splitName[0];
-
-                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
-                                        print.EventName = formattedName;
-                                        print.Series = films[j].NumOfSeries > 0 ? films[j].Series : 0;
-                                        print.Description = "Фильм:";
-                                        print.Option = films[j].Path;
-                                        films[j].LastRun = DateTime.Now;
-                                        films[j].NumOfRun += 1;
-
-                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
                                         Guid guid = Guid.NewGuid();
                                         string RandomId = guid.ToString();
 
+                                        print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
+                                        print.EventName = formattedName;
+                                        print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
+                                        print.Description = "Фильм:";
+                                        print.Option = filmList[j].Path;
+                                        films[j].LastRun = DateTime.Now;
+                                        films[j].NumOfRun += 1;
                                         print.Id = RandomId;
 
-                                        context.PrintSundays.Add(print);
-                                        context.SaveChanges();
+                                        if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
+
+
+                                        context?.PrintSundays.Add(print);
+                                        context?.SaveChanges();
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == films.Count && curMinuteEvent > totalMinuteEvent && curMinuteEvent > minFilmDuration)
-                                        {
-                                            j = 0;
-                                            goto ElseRotation;
-                                        }
+                                        if (TheRestTime < minFilmDuration) break;
                                     }
                                 }
                                 #endregion
