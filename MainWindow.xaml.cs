@@ -2287,7 +2287,7 @@ namespace Efir
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
                                     int indexElement = series.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
+                                    int lastSeries = indexElement == listSortedByDate.Count() ? 0 : (indexElement);
 
                                 IfLengthIsOver:
                                     for (int j = lastSeries; j < listSortedByDate.Count(); j++)
