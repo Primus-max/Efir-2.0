@@ -23,8 +23,8 @@ using System.Reflection;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-
-
+using System.Diagnostics;
+using System.Threading;
 
 namespace Efir
 {
@@ -82,7 +82,6 @@ namespace Efir
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-
             // new GeneratedCode.GeneratedClass().CreatePackage(@"D:\Temp\Output.docx");
 
             // гарантируем, что база данных создана
@@ -491,6 +490,7 @@ namespace Efir
             if (menuItem == null) return;
             string eventName = (string)menuItem.Header;
 
+            //new Thread(() => AddEventByEventName(eventName)).Start();
             AddEventByEventName(eventName);
         }
 
@@ -504,6 +504,7 @@ namespace Efir
         #region Профилактика
         private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
         {
+            //new Thread(() => AddEventAtList(sender)).Start();
             AddEventAtList(sender);
         }
         #endregion
@@ -1979,6 +1980,17 @@ namespace Efir
                     item.LastRun = new DateTime().AddYears(2015);
                 }
                 context.SaveChanges();
+
+                foreach (var item in context.Educationals.ToList())
+                {
+                    item.LastRun = new DateTime().AddYears(2015);
+                }
+                context.SaveChanges();
+                foreach (var item in context.TvShows.ToList())
+                {
+                    item.LastRun = new DateTime().AddYears(2015);
+                }
+                context.SaveChanges();
             }
             // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
 
@@ -2087,7 +2099,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -2283,7 +2295,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -2340,7 +2352,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -2577,7 +2589,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -2768,7 +2780,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -2824,7 +2836,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -3054,7 +3066,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -3241,7 +3253,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -3297,7 +3309,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -3532,7 +3544,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -3719,7 +3731,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -3776,7 +3788,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -4010,7 +4022,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -4196,7 +4208,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -4252,7 +4264,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -4484,7 +4496,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -4673,7 +4685,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -4729,7 +4741,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -4963,7 +4975,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = educationals[j].NumOfSeries > 0 ? educationals[j].Series : 0;
-                                        print.Description = "Образование:";
+                                        print.Description = "Образование";
                                         print.Option = educationals[j].Path;
                                         print.Id = RandomId;
                                         educationals[j].LastRun = DateTime.Now;
@@ -5155,7 +5167,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = filmList[j].NumOfSeries > 0 ? filmList[j].Series : 0;
-                                        print.Description = "Фильм:";
+                                        print.Description = "Фильм";
                                         print.Option = filmList[j].Path;
                                         filmList[j].LastRun = DateTime.Now;
                                         filmList[j].NumOfRun += 1;
@@ -5211,7 +5223,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
-                                        print.Description = "Сериал:";
+                                        print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
 
@@ -5395,7 +5407,7 @@ namespace Efir
 
         private void OpenSaveEfirDialog_Click(object sender, RoutedEventArgs e)
         {
-            SavePathEfir();
+            SavePathEfir();            
         }
 
         //Записываю в текстовый файл программу телепередач на неделю
@@ -5434,9 +5446,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5462,9 +5474,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5489,9 +5501,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5515,9 +5527,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5541,9 +5553,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5567,9 +5579,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5594,9 +5606,9 @@ namespace Efir
                                 desc = item.Description == null ? item.EventName : item.Description;
                                 name = item.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм:" ? series + " часть" : series + " серия";
+                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
-                            builtedStr = h + ":" + m + " " + desc + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
 
 
                             fstream.WriteLine(builtedStr);
@@ -5604,7 +5616,8 @@ namespace Efir
                     }
                 }
             }
-            CopyContentInDest();
+            TheadTest();
+            //CopyContentInDest();
         }
 
         //запись в текстовый документ если нет файла по указанному пути
@@ -5618,22 +5631,31 @@ namespace Efir
 
         }
 
+        public void TheadTest()
+        {
+            Thread potok1 = new Thread(CopyContentInDest);
+            potok1.IsBackground = true;
+            potok1.Start();
+        }
+
         // Копирование контента в папки
         private void CopyContentInDest()
         {
+            
             string? sourcePath = "";
             string? nameFolder = "";
             string? fileName = "";
             string destPath = FilePathToSaveEfirTextBox.Text;
-            string combainPath = "";
+            var combainPath = "";
+            var dirPath = "";
             int orderNumber = 0;
 
             using (ApplicationContext context = new ApplicationContext())
             {
 
                 nameFolder = "Понедельник";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintMondays)
                 {
@@ -5645,20 +5667,45 @@ namespace Efir
                         orderNumber += 1;
                     }
 
-                    if (File.Exists(sourcePath))
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
+
+                    try
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        if (File.Exists(sourcePath))
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        /* FileAttributes attributes = File.GetAttributes(sourcePath);
+                         if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                         {
+                             FileInfo fileInfo = new FileInfo(sourcePath);
+                             fileInfo.IsReadOnly = false; //Только для чтения неактивен
+                             *//*fileInfo.IsReadOnly = true; //Только для чтения активен
+                             attributes &= ~FileAttributes.ReadOnly;
+                             File.SetAttributes(sourcePath, attributes);*//*
+                             File.Copy(sourcePath, combainPath, true);
+                         }
+                         else
+                         {
+                             throw;
+                         }*/
                     }
                 }
+                dirPath = "";
                 sourcePath = "";
                 nameFolder = "";
                 fileName = "";
                 combainPath = "";
                 orderNumber = 0;
 
+
                 nameFolder = "Вторник";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintTuesdays)
                 {
@@ -5670,12 +5717,14 @@ namespace Efir
                         orderNumber += 1;
                     }
 
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath, true);
                     }
-
                 }
+                dirPath = "";
                 sourcePath = "";
                 nameFolder = "";
                 fileName = "";
@@ -5684,8 +5733,8 @@ namespace Efir
 
 
                 nameFolder = "Среда";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintWednesdays)
                 {
@@ -5697,12 +5746,14 @@ namespace Efir
                         orderNumber += 1;
                     }
 
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath, true);
                     }
-
                 }
+                dirPath = "";
                 sourcePath = "";
                 nameFolder = "";
                 fileName = "";
@@ -5711,8 +5762,8 @@ namespace Efir
 
 
                 nameFolder = "Четверг";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintThursdays)
                 {
@@ -5724,11 +5775,14 @@ namespace Efir
                         orderNumber += 1;
                     }
 
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath, true);
                     }
                 }
+                dirPath = "";
                 sourcePath = "";
                 nameFolder = "";
                 fileName = "";
@@ -5737,8 +5791,8 @@ namespace Efir
 
 
                 nameFolder = "Пятница";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintFridays)
                 {
@@ -5750,11 +5804,14 @@ namespace Efir
                         orderNumber += 1;
                     }
 
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath, true);
                     }
                 }
+                dirPath = "";
                 sourcePath = "";
                 nameFolder = "";
                 fileName = "";
@@ -5762,8 +5819,8 @@ namespace Efir
                 orderNumber = 0;
 
                 nameFolder = "Суббота";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintSaturdays)
                 {
@@ -5775,11 +5832,14 @@ namespace Efir
                         orderNumber += 1;
                     }
 
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath, true);
                     }
                 }
+                dirPath = "";
                 sourcePath = "";
                 nameFolder = "";
                 fileName = "";
@@ -5787,8 +5847,8 @@ namespace Efir
                 orderNumber = 0;
 
                 nameFolder = "Воскресенье";
-                combainPath = destPath + "\\" + nameFolder;
-                if (!Directory.Exists(combainPath)) Directory.CreateDirectory(combainPath);
+                dirPath = Path.Combine(destPath, nameFolder);
+                if (!Directory.Exists(dirPath)) Directory.CreateDirectory(dirPath);
 
                 foreach (var item in context.PrintSundays)
                 {
@@ -5800,14 +5860,19 @@ namespace Efir
                         orderNumber += 1;
                     }
 
+                    combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
+
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath + "\\" + orderNumber + " " + fileName, true);
+                        File.Copy(sourcePath, combainPath, true);
                     }
                 }
 
-            }
 
+            }
+            MessageBox.Show("Эфир на неделю успешно сформирован");
+
+            Process.Start("explorer.exe", dirPath);
         }
 
         #endregion
