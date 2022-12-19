@@ -780,274 +780,319 @@
                     <StackPanel
                         Margin="16">
                         <TextBlock
+
                             Margin="0,0,0,8"
                             Text="Укажите места расположений папок с медиаконтентом" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Margin="15 0 0 0" >
 
-                        <StackPanel Margin="30 5 0 0" >
+                                <StackPanel
+                                    x:Name="ListEventtoMedia"
+                                    Orientation="Horizontal"
+                                    Margin="10,0,0,20"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch">
 
-                            <StackPanel
-                                x:Name="ListEventtoMedia"
-                                Orientation="Horizontal"
-                                Margin="10,0,0,30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <!--<TextBlock
-                                FontSize="16"
-                                Text="Лекции: "
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Margin="0,0,10,0"/>-->
-                                <TextBox
-                                    x:Name="FilePathToLectionTextBox"
-                                    Width="310"
-                                    Padding="5 0 0 0"
-                                    Margin="0 0 15 0"
-                                    materialDesign:HintAssist.Hint="Путь к папке"
-                                    materialDesign:HintAssist.HelperText="{Binding LectionEvent}"
-                                    materialDesign:HintAssist.HelperTextFontSize="14"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    Foreground="#c5c5c5"
-                                    VerticalAlignment="Center"/>
-                                <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                        Click="OpenLectionDialog_Click"/>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="15 0 0 0">
-                                    <TextBlock Text="всего: "/>
-                                    <TextBlock x:Name="CountOfLectionTextBlock"
-                                               Width="30"
-                                               Margin="5 0 0 0"
-                                               Text="0"/>
-                                </StackPanel>
-                                <!--Прогресс загрузки-->
-                                <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5 0 5 0"
+                                        Kind="FolderQuestion"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="#060"
+                                        ToolTip="Как правильно добавлять контент в категорию - Лекции"/>
 
-                                    <ProgressBar
+                                    <TextBox
+                                        x:Name="FilePathToLectionTextBox"
+                                        Width="310"
+                                        Padding="5 0 0 0"
+                                        Margin="0 0 15 0"
+                                        materialDesign:HintAssist.Hint="Путь к папке"
+                                        materialDesign:HintAssist.HelperText="{Binding LectionEvent}"
+                                        materialDesign:HintAssist.HelperTextFontSize="14"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Foreground="#c5c5c5"
+                                        VerticalAlignment="Center"/>
+                                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                            Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                            Click="OpenLectionDialog_Click"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Margin="15 0 0 0">
+                                        <TextBlock Text="всего: "/>
+                                        <TextBlock x:Name="CountOfLectionTextBlock"
+                                                   Width="30"
+                                                   Margin="5 0 0 0"
+                                                   Text="0"/>
+                                    </StackPanel>
+                                    <!--Прогресс загрузки-->
+                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                                        <!--<ProgressBar
                                         x:Name="ProgressDownLoadingContentLection"
                                         Value="{Binding ValueProgressDownlaodingSeries}"
                                         Width="100"
                                         Height="20"
                                         SmallChange="1"
-                                        Foreground="#FF006BD4" Background="#FF303030" />
+                                        Foreground="#FF006BD4" Background="#FF303030" />-->
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="10,0,0,30">
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5 0 5 0"
+                                        Kind="FolderQuestion"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="#060"
+                                        ToolTip="Как правильно добавлять контент в категорию - Фильмы"/>
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Margin="10,0,0,30">
-                                <!--<TextBlock
-                                FontSize="16"
-                                Text="Фильмы: "
-                                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,10,0"/>-->
-                                <TextBox
-                                    x:Name="FilePathToFilmTextBox"
-                                    Width="310"
-                                    Padding="5 0 0 0"
-                                    Margin="0 0 15 0"
-                                    materialDesign:HintAssist.Hint="Путь к папке"
-                                    materialDesign:HintAssist.HelperText="{Binding FilmsEvent}"
-                                    materialDesign:HintAssist.HelperTextFontSize="14"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    Foreground="#c5c5c5"
-                                    VerticalAlignment="Center"/>
-                                <Button  Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                        Click="OpenFilmsDialog_Click"/>
+                                    <TextBox
+                                        x:Name="FilePathToFilmTextBox"
+                                        Width="310"
+                                        Padding="5 0 0 0"
+                                        Margin="0 0 15 0"
+                                        materialDesign:HintAssist.Hint="Путь к папке"
+                                        materialDesign:HintAssist.HelperText="{Binding FilmsEvent}"
+                                        materialDesign:HintAssist.HelperTextFontSize="14"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Foreground="#c5c5c5"
+                                        VerticalAlignment="Center"/>
+                                    <Button  Style="{StaticResource MaterialDesignRaisedButton}"
+                                            Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                            Click="OpenFilmsDialog_Click"/>
 
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="15 0 0 0">
-                                    <TextBlock Text="всего: "/>
-                                    <TextBlock x:Name="CountOfFilmTextBlock"
-                                               Width="30"
-                                               Margin="5 0 0 0" Text="0"/>
-                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Margin="15 0 0 0">
+                                        <TextBlock Text="всего: "/>
+                                        <TextBlock x:Name="CountOfFilmTextBlock"
+                                                   Width="30"
+                                                   Margin="5 0 0 0" Text="0"/>
+                                        <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                                        <ProgressBar
+                                            <!--<ProgressBar
                                             x:Name="ProgressDownLoadingContentFilm"
                                             Value="{Binding ValueProgressDownlaodingSeries}"
                                             Width="100"
                                             Height="20"
                                             SmallChange="1"
-                                            Foreground="#FF006BD4" Background="#FF303030" />
+                                            Foreground="#FF006BD4" Background="#FF303030" />-->
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Margin="10,0,0,30">
-                                <!--<TextBlock
-                                FontSize="16"
-                                Text="Сериалы: "
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Margin="0,0,10,0"/>-->
-                                <TextBox
-                                    x:Name="FilePathToSeriesTextBox"
-                                    Width="310"
-                                    Padding="5 0 0 0"
-                                    Margin="0 0 15 0"
-                                    materialDesign:HintAssist.Hint="Путь к папке"
-                                    materialDesign:HintAssist.HelperText="{Binding SeriesEvent}"
-                                    materialDesign:HintAssist.HelperTextFontSize="14"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    Foreground="#c5c5c5"
-                                    VerticalAlignment="Center"/>
-                                <Button
-                                    Style="{StaticResource MaterialDesignRaisedButton}"
-                                    Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                    Click="OpenSeriesDialog_Click"/>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="15 0 0 0">
-                                    <TextBlock Text="всего: "/>
-                                    <TextBlock x:Name="CountOfSeriesTextBlock"
-                                               Width="30"
-                                               Margin="5 0 0 0"
-                                               Text="0"/>
-                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="10,0,0,30">
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5 0 5 0"
+                                        Kind="FolderQuestion"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="#060"
+                                        ToolTip="Как правильно добавлять контент в категорию - Сериалы"/>
+                                    <TextBox
+                                        x:Name="FilePathToSeriesTextBox"
+                                        Width="310"
+                                        Padding="5 0 0 0"
+                                        Margin="0 0 15 0"
+                                        materialDesign:HintAssist.Hint="Путь к папке"
+                                        materialDesign:HintAssist.HelperText="{Binding SeriesEvent}"
+                                        materialDesign:HintAssist.HelperTextFontSize="14"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Foreground="#c5c5c5"
+                                        VerticalAlignment="Center"/>
+                                    <Button
+                                        Style="{StaticResource MaterialDesignRaisedButton}"
+                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                        Click="OpenSeriesDialog_Click"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Margin="15 0 0 0">
+                                        <TextBlock Text="всего: "/>
+                                        <TextBlock x:Name="CountOfSeriesTextBlock"
+                                                   Width="30"
+                                                   Margin="5 0 0 0"
+                                                   Text="0"/>
+                                        <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                                        <ProgressBar
+                                            <!--<ProgressBar
                                             x:Name="ProgressDownLoadingContentSeries"
                                             Value="{Binding ValueProgressDownlaodingSeries}"
                                             Width="100"
                                             Height="20"
                                             SmallChange="1"
-                                            Foreground="#FF006BD4" Background="#FF303030" />
+                                            Foreground="#FF006BD4" Background="#FF303030" />-->
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Margin="10,0,0,30">
-                                <TextBox
-                                    x:Name="FilePathToPreventionTextBox"
-                                    Width="310"
-                                    Padding="5 0 0 0"
-                                    Margin="0 0 15 0"
-                                    materialDesign:HintAssist.Hint="Путь к папке"
-                                    materialDesign:HintAssist.HelperText="{Binding PreventionEvent}"
-                                    materialDesign:HintAssist.HelperTextFontSize="14"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    Foreground="#c5c5c5"
-                                    VerticalAlignment="Center"
-                                    Text="{Binding FilePathToDocumentariesextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                        Click="OpenPreventionDialog_Click"/>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="15 0 0 0">
-                                    <TextBlock Text="всего: "/>
-                                    <TextBlock x:Name="CountOfPreventionlTextBlock"
-                                               Width="30"
-                                               Margin="5 0 0 0" Text="0"/>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="10,0,0,30">
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5 0 5 0"
+                                        Kind="FolderQuestion"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="#060"
+                                        ToolTip="Как правильно добавлять контент в категорию - Профилактика"/>
+                                    <TextBox
+                                        x:Name="FilePathToPreventionTextBox"
+                                        Width="310"
+                                        Padding="5 0 0 0"
+                                        Margin="0 0 15 0"
+                                        materialDesign:HintAssist.Hint="Путь к папке"
+                                        materialDesign:HintAssist.HelperText="{Binding PreventionEvent}"
+                                        materialDesign:HintAssist.HelperTextFontSize="14"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Foreground="#c5c5c5"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding FilePathToDocumentariesextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                            Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                            Click="OpenPreventionDialog_Click"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Margin="15 0 0 0">
+                                        <TextBlock Text="всего: "/>
+                                        <TextBlock x:Name="CountOfPreventionlTextBlock"
+                                                   Width="30"
+                                                   Margin="5 0 0 0" Text="0"/>
 
-                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                                        <ProgressBar
+                                            <!--<ProgressBar
                                             x:Name="ProgressDownLoadingContentPrevent"
                                             Value="{Binding ValueProgressDownlaodingSeries}"
                                             Width="100"
                                             Height="20"
                                             SmallChange="1"
-                                            Foreground="#FF006BD4" Background="#FF303030" />
+                                            Foreground="#FF006BD4" Background="#FF303030" />-->
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Margin="10,0,0,30">
-                                <TextBox
-                                    x:Name="FilePathToTvShowTextBox"
-                                    Width="310"
-                                    Padding="5 0 0 0"
-                                    Margin="0 0 15 0"
-                                    materialDesign:HintAssist.Hint="Путь к папке"
-                                    materialDesign:HintAssist.HelperText="{Binding TvShowEvent}"
-                                    materialDesign:HintAssist.HelperTextFontSize="14"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    Foreground="#c5c5c5"
-                                    VerticalAlignment="Center" />
-                                <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                        Click="OpenTvShowDialog_Click"/>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="15 0 0 0">
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="10,0,0,30">
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5 0 5 0"
+                                        Kind="FolderQuestion"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="#060"
+                                        ToolTip="Как правильно добавлять контент в категорию - Телепередачи"/>
+                                    <TextBox
+                                        x:Name="FilePathToTvShowTextBox"
+                                        Width="310"
+                                        Padding="5 0 0 0"
+                                        Margin="0 0 15 0"
+                                        materialDesign:HintAssist.Hint="Путь к папке"
+                                        materialDesign:HintAssist.HelperText="{Binding TvShowEvent}"
+                                        materialDesign:HintAssist.HelperTextFontSize="14"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Foreground="#c5c5c5"
+                                        VerticalAlignment="Center" />
+                                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                            Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                            Click="OpenTvShowDialog_Click"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Margin="15 0 0 0">
 
-                                    <TextBlock Text="всего: "/>
-                                    <TextBlock x:Name="CountOfTvShowTextBlock"
-                                               Width="30"
-                                               Margin="5 0 0 0"
-                                               Text="0"/>
-                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="всего: "/>
+                                        <TextBlock x:Name="CountOfTvShowTextBlock"
+                                                   Width="30"
+                                                   Margin="5 0 0 0"
+                                                   Text="0"/>
+                                        <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                                        <ProgressBar
+                                            <!--<ProgressBar
                                             x:Name="ProgressDownLoadingContentTvShow"
                                             Value="18"
                                             Width="100"
                                             Height="20"
                                             SmallChange="1"
-                                            Foreground="#FF006BD4" Background="#FF303030" />
+                                            Foreground="#FF006BD4" Background="#FF303030" />-->
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Margin="10,0,0,30">
-                                <TextBox
-                                    x:Name="FilePathToEducationalsTextBox"
-                                    Width="310"
-                                    Padding="5 0 0 0"
-                                    Margin="0 0 15 0"
-                                    materialDesign:HintAssist.Hint="Путь к папке"
-                                    materialDesign:HintAssist.HelperText="{Binding EducationalsEvent}"
-                                    materialDesign:HintAssist.HelperTextFontSize="14"
-                                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                    Foreground="#c5c5c5"
-                                    VerticalAlignment="Center" />
-                                <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                        Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                        Click="OpenEducationalsDialog_Click"/>
-                                <StackPanel Orientation="Horizontal"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Margin="15 0 0 0">
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    Margin="10,0,0,30">
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="30"
+                                        Margin="5 0 5 0"
+                                        Kind="FolderQuestion"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="#060"
+                                        ToolTip="Как правильно добавлять контент в категорию - Образование"/>
+                                    <TextBox
+                                        x:Name="FilePathToEducationalsTextBox"
+                                        Width="310"
+                                        Padding="5 0 0 0"
+                                        Margin="0 0 15 0"
+                                        materialDesign:HintAssist.Hint="Путь к папке"
+                                        materialDesign:HintAssist.HelperText="{Binding EducationalsEvent}"
+                                        materialDesign:HintAssist.HelperTextFontSize="14"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                                        Foreground="#c5c5c5"
+                                        VerticalAlignment="Center" />
+                                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                            Content="{materialDesign:PackIcon FolderSearchOutline}"
+                                            Click="OpenEducationalsDialog_Click"/>
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Margin="15 0 0 0">
 
-                                    <TextBlock Text="всего: "/>
-                                    <TextBlock x:Name="CountOfEducationalsTextBlock"
-                                               Width="30"
-                                               Margin="5 0 0 0"
-                                               Text="0"/>
-                                    <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="всего: "/>
+                                        <TextBlock x:Name="CountOfEducationalsTextBlock"
+                                                   Width="30"
+                                                   Margin="5 0 0 0"
+                                                   Text="0"/>
+                                        <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                                        <ProgressBar
+                                            <!--<ProgressBar
                                             x:Name="ProgressDownLoadingContentEducationals"
                                             Value="18"
                                             Width="100"
                                             Height="20"
                                             SmallChange="1"
-                                            Foreground="#FF006BD4" Background="#FF303030" />
+                                            Foreground="#FF006BD4" Background="#FF303030" />-->
+                                        </StackPanel>
                                     </StackPanel>
                                 </StackPanel>
+
+                                <!--________________________________________________________________________________________-->
+
                             </StackPanel>
-
                         </StackPanel>
-
 
                     </StackPanel>
                 </TabItem>
-                <!--________________________________________________________________________________________-->
+
                 <TabItem
                     Width="100">
                     <TabItem.Header>
@@ -1093,13 +1138,16 @@
                                 Width="170"
                                 Height="170"
                                 HorizontalAlignment="Center"
-                                Kind="Atlassian"/>
+                                Kind="FolderQuestion"/>
                         </Button>
 
                         <TextBlock Text="СОЗДАТЬ ПРОГРАММУ ТЕЛЕПЕРЕДАЧ НА НЕДЕЛЮ"
                                    Margin="0 50 0 0"/>
                     </StackPanel>
+
                 </TabItem>
+
+
                 <!--________________________________________________________________________________________-->
             </TabControl>
         </materialDesign:Card>

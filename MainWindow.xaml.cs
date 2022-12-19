@@ -19,6 +19,7 @@ using System.Windows.Documents;
 using Word = Microsoft.Office.Interop.Word;
 using System.Globalization;
 using System.Reflection;
+using main = Efir.ViewModels;
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -33,6 +34,7 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO Обернуть все потенциальные участки кода в try catch
         //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть. 
         //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
 
@@ -73,7 +75,7 @@ namespace Efir
         string CountFilm = "";
         #endregion
 
-
+        string pathToEfirForSave = "";
 
         public MainWindow()
         {
@@ -1450,7 +1452,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                                //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         using (ApplicationContext context = new ApplicationContext())
@@ -1549,7 +1551,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
+                                //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         using (ApplicationContext context = new ApplicationContext())
@@ -1648,7 +1650,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
+                                //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         using (ApplicationContext context = new ApplicationContext())
@@ -1727,7 +1729,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentSeries.Value += viewModel.ValueProgressDownlaodingSeries;
+                                //ProgressDownLoadingContentSeries.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
 
@@ -1798,7 +1800,7 @@ namespace Efir
 
                                 viewModel.ValueProgressDownlaodingSeries += 1;
 
-                                ProgressDownLoadingContentTvShow.Value += viewModel.ValueProgressDownlaodingSeries;
+                                //ProgressDownLoadingContentTvShow.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
 
@@ -5374,9 +5376,26 @@ namespace Efir
         private void CreateEfir_Click(object sender, RoutedEventArgs e)
         {
             ClearPrintModels();
+
+            /* Thread myThread5 = new Thread(() => GenerateEfir());
+             myThread5.IsBackground = true;
+             myThread5.Start();*/
+
+            MessageBox.Show("Началось создание эфира не неделю." + '\n' +
+                "Это может занять продолжительное время." + '\n' +
+                "Не тревожьте программу." + '\n' +
+                "Не клацайте по кнопкам." + '\n' +
+                "Наберитесь терпения." + '\n' +
+                "В конце процесса вы получите уведомление");
+
             GenerateEfir();
-            WriteEfirAtFile();
-            //CopyContentInDest();
+
+
+            Thread threadWriteEfir = new Thread(() => WriteEfirAtFile());
+            threadWriteEfir.IsBackground = true;
+            threadWriteEfir.Start();
+            //WriteEfirAtFile();
+
         }
 
         // выбрать путь сохранения эфира(текстовый файл, медиа)
@@ -5394,6 +5413,7 @@ namespace Efir
                     {
                         model.SavePathEfir = commonOpenFileDialog.FileName;
                         FilePathToSaveEfirTextBox.Text = model.SavePathEfir;
+                        pathToEfirForSave = model.SavePathEfir;
                     }
 
                 }
@@ -5407,7 +5427,7 @@ namespace Efir
 
         private void OpenSaveEfirDialog_Click(object sender, RoutedEventArgs e)
         {
-            SavePathEfir();            
+            SavePathEfir();
         }
 
         //Записываю в текстовый файл программу телепередач на неделю
@@ -5416,7 +5436,7 @@ namespace Efir
             MainWindowViewModel model = new MainWindowViewModel();
 
             string nameFile = "Efir.txt";
-            string savePath = FilePathToSaveEfirTextBox.Text + "\\" + nameFile;
+            string savePath = pathToEfirForSave + "\\" + nameFile;
 
             using (ApplicationContext context = new ApplicationContext())
             {
@@ -5616,7 +5636,7 @@ namespace Efir
                     }
                 }
             }
-            TheadTest();
+            ThreadingTasks();
             //CopyContentInDest();
         }
 
@@ -5630,22 +5650,29 @@ namespace Efir
             }
 
         }
-
-        public void TheadTest()
+        //метод многопоточности для отдельных методов
+        public void ThreadingTasks()
         {
-            Thread potok1 = new Thread(CopyContentInDest);
-            potok1.IsBackground = true;
-            potok1.Start();
+            Thread threadCopyStream = new Thread(CopyContentInDest);
+            threadCopyStream.IsBackground = true;
+            threadCopyStream.Start();
         }
+
+
+        //показываю прогресс добавления контента
+        /*   private void ProgressAddingContent(int progress)
+           {
+               using (MainWindowViewModel model = new MainWindowViewModel())
+                   model.ProgressAddinContent = progress;
+           }*/
 
         // Копирование контента в папки
         private void CopyContentInDest()
         {
-            
             string? sourcePath = "";
             string? nameFolder = "";
             string? fileName = "";
-            string destPath = FilePathToSaveEfirTextBox.Text;
+            string destPath = pathToEfirForSave;
             var combainPath = "";
             var dirPath = "";
             int orderNumber = 0;
@@ -5867,14 +5894,19 @@ namespace Efir
                         File.Copy(sourcePath, combainPath, true);
                     }
                 }
-
-
             }
-            MessageBox.Show("Эфир на неделю успешно сформирован");
-
-            Process.Start("explorer.exe", dirPath);
+            Thread threadInfEndGenerate = new Thread(() => InformationEndGenerateEfir(destPath));
+            threadInfEndGenerate.IsBackground = true;
+            threadInfEndGenerate.Start();
         }
 
+
+        private void InformationEndGenerateEfir(string dirPath)
+        {
+            // MessageBox.Show("Эфир на неделю успешно сформирован");
+            if (MessageBox.Show("Эфир на неделю успешно сформирован") == MessageBoxResult.OK)
+                Process.Start("explorer.exe", dirPath);
+        }
         #endregion
 
         // добавляю и сохраняю макет эфира

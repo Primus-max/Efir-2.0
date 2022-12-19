@@ -41,6 +41,13 @@ namespace Efir.ViewModels
             set => Set(ref _SavePathEfir, value);
         }
 
+        private int _ProgressAddinContent = 0;
+        public int ProgressAddinContent
+        {
+            get => _ProgressAddinContent;
+            set => Set(ref _ProgressAddinContent, value);
+        }
+
         #region Список названий всех событий
 
         private string _StartEfir = "НАЧАЛО ТРАНСЛЯЦИИ";
