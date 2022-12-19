@@ -34,6 +34,8 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+
+        //TODO Сделать при загрузке контента первый раз дату месячной давности
         //TODO Обернуть все потенциальные участки кода в try catch
         //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть. 
         //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
@@ -89,7 +91,15 @@ namespace Efir
             // гарантируем, что база данных создана
             using (ApplicationContext context = new ApplicationContext())
             {
-                context.Database.EnsureCreated();
+                try
+                {
+                    context.Database.EnsureCreated();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
             }
 
             /* db.Serieses.Load();
@@ -310,7 +320,15 @@ namespace Efir
                     // отчищаю модель в базу
                     foreach (var item in context.LectionGraphs.ToList())
                     {
-                        context.LectionGraphs.Remove(item);
+                        try
+                        {
+                            context.LectionGraphs.Remove(item);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message);
+                        }
+
                     }
 
                     for (int i = 0; i < parsBaza.Length; i++)
@@ -326,9 +344,17 @@ namespace Efir
                             lection.LectionDate = Convert.ToDateTime(parsBaza[i + 3].Replace("\r", ""));
                             lection.Path = @"Z:\Programming\ProjectC#\Efir\lection.docx";
 
-                            lectionGraphs.Add(lection);
-                            context.LectionGraphs.Add(lection);
-                            context.SaveChanges();
+                            try
+                            {
+                                lectionGraphs.Add(lection);
+                                context.LectionGraphs.Add(lection);
+                                context.SaveChanges();
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show(e.Message);
+                            }
+
 
                         }
 
@@ -479,12 +505,6 @@ namespace Efir
 
         #region Добавление события с учетом дня недели
 
-        #region Начало трансляции
-
-
-        #endregion
-
-
         // метод добавления события в лист событий
         private void AddEventAtList(object sender)
         {
@@ -492,7 +512,6 @@ namespace Efir
             if (menuItem == null) return;
             string eventName = (string)menuItem.Header;
 
-            //new Thread(() => AddEventByEventName(eventName)).Start();
             AddEventByEventName(eventName);
         }
 
@@ -506,7 +525,6 @@ namespace Efir
         #region Профилактика
         private void AddPreventionAtList_Click(object sender, RoutedEventArgs e)
         {
-            //new Thread(() => AddEventAtList(sender)).Start();
             AddEventAtList(sender);
         }
         #endregion
@@ -579,8 +597,16 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnMonday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnMonday.Add(efir);
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
                     foreach (var item in context.OnMonday.ToList())
                     {
                         model.EventListSourceMonday.Add(item);
@@ -596,8 +622,17 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnTuesday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnTuesday.Add(efir);
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
+
                     foreach (var item in context.OnTuesday.ToList())
                     {
                         model.EventListSourceTuesday.Add(item);
@@ -614,8 +649,17 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnWednesday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnWednesday.Add(efir);
+                        context.SaveChanges();
+
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
                     foreach (var item in context.OnWednesday.ToList())
                     {
                         model.EventListSourceWednesday.Add(item);
@@ -632,8 +676,16 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnThursday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnThursday.Add(efir);
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
                     foreach (var item in context.OnThursday.ToList())
                     {
                         model.EventListSourceThursday.Add(item);
@@ -650,8 +702,17 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnFriday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnFriday.Add(efir);
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
+
                     foreach (var item in context.OnFriday.ToList())
                     {
                         model.EventListSourceFriday.Add(item);
@@ -669,8 +730,17 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnSaturday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnSaturday.Add(efir);
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
+
                     foreach (var item in context.OnSaturday.ToList())
                     {
                         model.EventListSourceSaturday.Add(item);
@@ -687,8 +757,17 @@ namespace Efir
 
                 using (ApplicationContext context = new ApplicationContext())
                 {
-                    context.OnSunday.Add(efir);
-                    context.SaveChanges();
+                    try
+                    {
+                        context.OnSunday.Add(efir);
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
+
                     foreach (var item in context.OnSunday.ToList())
                     {
                         model.EventListSourceSunday.Add(item);
@@ -723,7 +802,15 @@ namespace Efir
                         if (itemInBase != null) context.OnMonday.Remove(itemInBase);
                     }
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     //TODO рефактор этой функции. сделать из нее полноценный рефреш
                     foreach (var item in context.OnMonday.ToList())
@@ -747,7 +834,16 @@ namespace Efir
 
                         if (itemInBase != null) context.OnTuesday.Remove(itemInBase);
                     }
-                    context.SaveChanges();
+
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     foreach (var item in context.OnTuesday.ToList())
                     {
@@ -772,7 +868,15 @@ namespace Efir
                         if (itemInBase != null) context.OnWednesday.Remove(itemInBase);
                     }
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     foreach (var item in context.OnWednesday.ToList())
                     {
@@ -796,7 +900,15 @@ namespace Efir
                         if (itemInBase != null) context.OnThursday.Remove(itemInBase);
                     }
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     foreach (var item in context.OnThursday.ToList())
                     {
@@ -819,7 +931,15 @@ namespace Efir
 
                         if (itemInBase != null) context.OnFriday.Remove(itemInBase);
                     }
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     foreach (var item in context.OnFriday.ToList())
                     {
@@ -843,7 +963,15 @@ namespace Efir
                         if (itemInBase != null) context.OnSaturday.Remove(itemInBase);
                     }
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     foreach (var item in context.OnSaturday.ToList())
                     {
@@ -868,7 +996,16 @@ namespace Efir
 
                         if (itemInBase != null) context.OnSunday.Remove(itemInBase);
                     }
-                    context.SaveChanges();
+
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+
 
                     foreach (var item in context.OnSunday.ToList())
                     {
@@ -885,7 +1022,8 @@ namespace Efir
         {
             TimePicker? userTime = sender as TimePicker;
 
-            SetNewTimeEvent(userTime);
+            if (userTime != null)
+                SetNewTimeEvent(userTime);
         }
 
 
@@ -908,7 +1046,15 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnMonday.ToList())
                     {
@@ -933,7 +1079,15 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnTuesday.ToList())
                     {
@@ -958,7 +1112,15 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnWednesday.ToList())
                     {
@@ -984,7 +1146,15 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnThursday.ToList())
                     {
@@ -1009,7 +1179,15 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnFriday.ToList())
                     {
@@ -1034,7 +1212,15 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnSaturday.ToList())
                     {
@@ -1059,15 +1245,21 @@ namespace Efir
                     if (itemInBase == null) return;
                     itemInBase.TimeToEfir = convertedTime;
 
-                    context.SaveChanges();
+                    try
+                    {
+                        context.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+
 
                     foreach (var item in context.OnSunday.ToList())
                     {
                         model.EventListSourceSunday.Add(item);
                     }
                 }
-
-
                 EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
         }
@@ -1350,8 +1542,16 @@ namespace Efir
                                 //добавдяю сериал в базу
                                 using (ApplicationContext context = new ApplicationContext())
                                 {
-                                    context.Educationals.Add(educational);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context.Educationals.Add(educational);
+                                        context.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
 
                                 educational = new Educational();
@@ -1386,88 +1586,98 @@ namespace Efir
             if (firstDirectory.Exists)
             {
                 int countFilm = 0;
-                try
+
+                bool searchOpt = true;
+                contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
+
+                StringNumberComparer comparer = new StringNumberComparer();
+                //MainWindowViewModel viewModel = new MainWindowViewModel();
+                foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                 {
-                    bool searchOpt = true;
-                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
-
-                    StringNumberComparer comparer = new StringNumberComparer();
-                    //MainWindowViewModel viewModel = new MainWindowViewModel();
-                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                    if (contentListMedia != null)
                     {
-                        if (contentListMedia != null)
-                        {
-                            film.Name = item.Name;
-                            film.Path = item.FullName;
-                            film.Duration = DurationContent(pathToContent, item.ToString());
-                            film.Series += countFilm;
-                            film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-31).ToString("dd.MM.yy"));
+                        film.Name = item.Name;
+                        film.Path = item.FullName;
+                        film.Duration = DurationContent(pathToContent, item.ToString());
+                        film.Series += countFilm;
+                        film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-31).ToString("dd.MM.yy"));
 
-                            using (ApplicationContext context = new ApplicationContext())
+                        using (ApplicationContext context = new ApplicationContext())
+                        {
+                            try
                             {
                                 context.Films.Add(film);
                                 context.SaveChanges();
                             }
-
-                            film = new Film();
-                            searchOpt = false;
-
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-                        }
-                    }
-
-                    DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
-                    if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
-                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
-
-                    for (int i = 0; i < listInnerDirectories.Length; i++)
-                    {
-                        countFilm = 0;
-                        string directroryName = listInnerDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-                        searchOpt = true;
-                        contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
-
-                        foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
-                        {
-                            countFilm += 1;
-
-                            if (contentListMedia != null)
+                            catch (Exception e)
                             {
-                                film.Name = listInnerDirectories[i].Name;
-                                film.Path = item.FullName;
-                                film.Duration = DurationContent(pathToContent, item.ToString());
-                                film.NumOfSeries = contentListMedia.Count();
-                                film.Series += countFilm;
-                                film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-2).ToString("dd.MM.yy"));
+                                MessageBox.Show(e.Message);
+                            }
 
-                                using (ApplicationContext context = new ApplicationContext())
+                        }
+
+                        film = new Film();
+                        searchOpt = false;
+
+                        viewModel.ValueProgressDownlaodingSeries += 1;
+                    }
+                }
+
+                DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
+                if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                for (int i = 0; i < listInnerDirectories.Length; i++)
+                {
+                    countFilm = 0;
+                    string directroryName = listInnerDirectories[i].FullName;
+                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                    searchOpt = true;
+                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
+
+                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                    {
+                        countFilm += 1;
+
+                        if (contentListMedia != null)
+                        {
+                            film.Name = listInnerDirectories[i].Name;
+                            film.Path = item.FullName;
+                            film.Duration = DurationContent(pathToContent, item.ToString());
+                            film.NumOfSeries = contentListMedia.Count();
+                            film.Series += countFilm;
+                            film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-2).ToString("dd.MM.yy"));
+
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                try
                                 {
                                     context.Films.Add(film);
                                     context.SaveChanges();
                                 }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
 
-                                film = new Film();
-
-                                viewModel.ValueProgressDownlaodingSeries += 1;
-
-                                //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
+
+                            film = new Film();
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+
+                            //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                         }
-                        using (ApplicationContext context = new ApplicationContext())
-                            CountOfFilmTextBlock.Text = Convert.ToString(context.Films.Count());
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+                    using (ApplicationContext context = new ApplicationContext())
+                        CountOfFilmTextBlock.Text = Convert.ToString(context.Films.Count());
                 }
             }
         }
 
         // добавление лекций
-        public async void AddLectiontAtDB(string pathToContent)
+        public void AddLectiontAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Lection lection = new Lection();
@@ -1480,20 +1690,69 @@ namespace Efir
             if (firstDirectory.Exists)
             {
                 int countLection = 0;
-                try
-                {
-                    bool searchOpt = true;
-                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
 
-                    StringNumberComparer comparer = new StringNumberComparer();
-                    //MainWindowViewModel viewModel = new MainWindowViewModel();
+                bool searchOpt = true;
+                contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
+
+                StringNumberComparer comparer = new StringNumberComparer();
+                //MainWindowViewModel viewModel = new MainWindowViewModel();
+                foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                {
+                    countLection += 1;
+
+                    if (contentListMedia != null)
+                    {
+                        lection.Name = item.Name;
+                        lection.Path = item.FullName;
+                        lection.Duration = DurationContent(pathToContent, item.ToString());
+                        lection.NumOfSeries = contentListMedia.Count();
+                        lection.Series += countLection;
+
+                        using (ApplicationContext context = new ApplicationContext())
+                        {
+                            try
+                            {
+                                context.Lections.Add(lection);
+                                context.SaveChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message);
+                            }
+
+                        }
+
+                        lection = new Lection();
+                        searchOpt = false;
+
+                        viewModel.ValueProgressDownlaodingSeries += 1;
+                        //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                    }
+                }
+
+                //TODO пересмотреть данный диалог
+                DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
+                if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                for (int i = 0; i < listInnerDirectories.Length; i++)
+                {
+                    countLection = 0;
+                    string directroryName = listInnerDirectories[i].FullName;
+                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                    searchOpt = true;
+                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
+
                     foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                     {
                         countLection += 1;
 
                         if (contentListMedia != null)
                         {
+
                             lection.Name = item.Name;
+                            lection.Description = listInnerDirectories[i].Name;
                             lection.Path = item.FullName;
                             lection.Duration = DurationContent(pathToContent, item.ToString());
                             lection.NumOfSeries = contentListMedia.Count();
@@ -1501,74 +1760,35 @@ namespace Efir
 
                             using (ApplicationContext context = new ApplicationContext())
                             {
-                                context.Lections.Add(lection);
-                                context.SaveChanges();
-                            }
-
-                            lection = new Lection();
-                            searchOpt = false;
-
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-                            //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
-                        }
-                    }
-
-                    //TODO пересмотреть данный диалог
-                    DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
-                    if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
-                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
-
-                    for (int i = 0; i < listInnerDirectories.Length; i++)
-                    {
-                        countLection = 0;
-                        string directroryName = listInnerDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-                        searchOpt = true;
-                        contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
-
-                        foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
-                        {
-                            countLection += 1;
-
-                            if (contentListMedia != null)
-                            {
-
-                                lection.Name = item.Name;
-                                lection.Description = listInnerDirectories[i].Name;
-                                lection.Path = item.FullName;
-                                lection.Duration = DurationContent(pathToContent, item.ToString());
-                                lection.NumOfSeries = contentListMedia.Count();
-                                lection.Series += countLection;
-
-                                using (ApplicationContext context = new ApplicationContext())
+                                try
                                 {
                                     context.Lections.Add(lection);
                                     context.SaveChanges();
                                 }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
 
-                                lection = new Lection();
-
-                                viewModel.ValueProgressDownlaodingSeries += 1;
-
-                                //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
+
+                            lection = new Lection();
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+
+                            //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                         }
-                        using (ApplicationContext context = new ApplicationContext())
-                            CountOfLectionTextBlock.Text = Convert.ToString(context.Lections.Count());
                     }
+                    using (ApplicationContext context = new ApplicationContext())
+                        CountOfLectionTextBlock.Text = Convert.ToString(context.Lections.Count());
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                await System.Threading.Tasks.Task.Yield();
+
             }
         }
 
         // TODO для профилактических отображать колличество контента а не папок
         // добавление профилактических
-        public async void AddPreventionAtDB(string pathToContent)
+        public void AddPreventionAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Prevention prevention = new Prevention();
@@ -1579,21 +1799,69 @@ namespace Efir
             if (firstDirectory.Exists)
             {
                 int counPrevention = 0;
-                try
+
+                bool searchOpt = true;
+                contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
+
+                StringNumberComparer comparer = new StringNumberComparer();
+                MainWindowViewModel viewModel = new MainWindowViewModel();
+
+                foreach (FileInfo item in contentListMedia)
                 {
-                    bool searchOpt = true;
-                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
+                    counPrevention += 1;
 
-                    StringNumberComparer comparer = new StringNumberComparer();
-                    MainWindowViewModel viewModel = new MainWindowViewModel();
+                    if (contentListMedia != null)
+                    {
+                        prevention.Name = item.Name;
+                        prevention.Path = item.FullName;
+                        prevention.Duration = DurationContent(pathToContent, item.ToString());
+                        prevention.NumOfSeries = contentListMedia.Count();
+                        prevention.Series += counPrevention;
 
-                    foreach (FileInfo item in contentListMedia)
+                        using (ApplicationContext context = new ApplicationContext())
+                        {
+                            try
+                            {
+                                context.Preventions.Add(prevention);
+                                context.SaveChanges();
+                            }
+                            catch (Exception e)
+                            {
+                                MessageBox.Show(e.Message);
+                            }
+
+                        }
+                        prevention = new Prevention();
+                        searchOpt = false;
+
+                        viewModel.ValueProgressDownlaodingSeries += 1;
+                        //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                    }
+                }
+
+                //TODO пересмотреть данный диалог
+                DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
+                if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                for (int i = 0; i < listInnerDirectories.Length; i++)
+                {
+                    counPrevention = 0;
+                    string directroryName = listInnerDirectories[i].FullName;
+                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                    searchOpt = true;
+                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
+
+                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                     {
                         counPrevention += 1;
 
                         if (contentListMedia != null)
                         {
+
                             prevention.Name = item.Name;
+                            prevention.Description = listInnerDirectories[i].Name;
                             prevention.Path = item.FullName;
                             prevention.Duration = DurationContent(pathToContent, item.ToString());
                             prevention.NumOfSeries = contentListMedia.Count();
@@ -1601,73 +1869,34 @@ namespace Efir
 
                             using (ApplicationContext context = new ApplicationContext())
                             {
-                                context.Preventions.Add(prevention);
-                                context.SaveChanges();
-                            }
-                            prevention = new Prevention();
-                            searchOpt = false;
-
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-                            //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
-                        }
-                    }
-
-                    //TODO пересмотреть данный диалог
-                    DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
-                    if (listInnerDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
-                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
-
-                    for (int i = 0; i < listInnerDirectories.Length; i++)
-                    {
-                        counPrevention = 0;
-                        string directroryName = listInnerDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-                        searchOpt = true;
-                        contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
-
-                        foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
-                        {
-                            counPrevention += 1;
-
-                            if (contentListMedia != null)
-                            {
-
-                                prevention.Name = item.Name;
-                                prevention.Description = listInnerDirectories[i].Name;
-                                prevention.Path = item.FullName;
-                                prevention.Duration = DurationContent(pathToContent, item.ToString());
-                                prevention.NumOfSeries = contentListMedia.Count();
-                                prevention.Series += counPrevention;
-
-                                using (ApplicationContext context = new ApplicationContext())
+                                try
                                 {
                                     context.Preventions.Add(prevention);
                                     context.SaveChanges();
                                 }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
 
-                                prevention = new Prevention();
-
-                                viewModel.ValueProgressDownlaodingSeries += 1;
-
-                                //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
+
+                            prevention = new Prevention();
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+
+                            //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
                         }
-                        using (ApplicationContext context = new ApplicationContext())
-                            CountOfPreventionlTextBlock.Text = Convert.ToString(context.Preventions.Count());
                     }
+                    using (ApplicationContext context = new ApplicationContext())
+                        CountOfPreventionlTextBlock.Text = Convert.ToString(context.Preventions.Count());
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                await System.Threading.Tasks.Task.Yield();
             }
-            await System.Threading.Tasks.Task.Yield();
+
         }
 
         // добавление сериалов
-        public async void AddSreiesAtDB(string pathToContent)
+        public void AddSreiesAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Series series = new Series();
@@ -1676,76 +1905,79 @@ namespace Efir
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
-                try
+
+                DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                for (int i = 0; i < listDirectories.Length; i++)
                 {
-                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
-                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+                    string directroryName = listDirectories[i].FullName;
+                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
-                    for (int i = 0; i < listDirectories.Length; i++)
+                    bool searchOpt = false;
+                    contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
+                    /*IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                        IEnumerable<FileSystemInfo> filteredFileList =
+                            from file in allFileList
+                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                            select file;*/
+
+
+                    StringNumberComparer comparer = new StringNumberComparer();
+                    MainWindowViewModel viewModel = new MainWindowViewModel();
+                    foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                     {
-                        string directroryName = listDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
+                        string[] splittedName = item.Name.Split(".");
+                        int parsedName = int.Parse(splittedName[0]);
 
-                        bool searchOpt = false;
-                        contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
-                        /*IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                            IEnumerable<FileSystemInfo> filteredFileList =
-                                from file in allFileList
-                                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                                select file;*/
+                        //?TODO убрать рандомное подставление даты, это для тестирования!
+                        Random random = new Random();
 
 
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        MainWindowViewModel viewModel = new MainWindowViewModel();
-                        foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
+                        if (contentListMedia != null)
                         {
-                            string[] splittedName = item.Name.Split(".");
-                            int parsedName = int.Parse(splittedName[0]);
-
-                            //?TODO убрать рандомное подставление даты, это для тестирования!
-                            Random random = new Random();
-
-
-                            if (contentListMedia != null)
+                            series.Name = listDirectories[i].Name;
+                            series.Path = item.FullName;
+                            series.Duration = DurationContent(pathToContent, item.ToString());
+                            series.NumOfSeries = contentListMedia.Count();
+                            series.IsSeries = parsedName;
+                            series.LastRun = new DateTime();
+                            series.NumOfRun = 0;
+                            //Convert.ToDateTime(DateTime.Now.AddDays(-random.Next(1, 60)).ToString("dd.MM.yy")) - рандомайзер
+                            using (ApplicationContext context = new ApplicationContext())
                             {
-                                series.Name = listDirectories[i].Name;
-                                series.Path = item.FullName;
-                                series.Duration = DurationContent(pathToContent, item.ToString());
-                                series.NumOfSeries = contentListMedia.Count();
-                                series.IsSeries = parsedName;
-                                series.LastRun = new DateTime();
-                                series.NumOfRun = 0;
-                                //Convert.ToDateTime(DateTime.Now.AddDays(-random.Next(1, 60)).ToString("dd.MM.yy")) - рандомайзер
-                                using (ApplicationContext context = new ApplicationContext())
+                                try
                                 {
                                     context.Serieses.Add(series);
                                     context.SaveChanges();
                                 }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
 
-                                series = new Series();
-
-                                viewModel.ValueProgressDownlaodingSeries += 1;
-
-                                //ProgressDownLoadingContentSeries.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
-                        }
 
-                        CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
+                            series = new Series();
+
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+
+                            //ProgressDownLoadingContentSeries.Value += viewModel.ValueProgressDownlaodingSeries;
+                        }
                     }
+
+                    CountOfSeriesTextBlock.Text = Convert.ToString(listDirectories.Length);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+
             }
-            await System.Threading.Tasks.Task.Yield();
+
         }
 
         // добавление телепередач
-        public async void AddTvShowAtDB(string pathToContent)
+        public void AddTvShowAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             TvShow tvShow = new TvShow();
@@ -1754,73 +1986,73 @@ namespace Efir
             if (firstDirectory.Exists)
             {
                 int countTvShow = 0;
-                try
+
+                DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
+                if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
+                "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
+                "ознакомьтесь пожалуйста с правилами добавления контента. ");
+
+                for (int i = 0; i < listDirectories.Length; i++)
                 {
-                    DirectoryInfo[] listDirectories = firstDirectory.GetDirectories();
-                    if (listDirectories.Length == 0) MessageBox.Show("Скорее всего вы выбрали папку в которой нет подпапок с сериалами, " +
-                    "Скорее всего надо выбрать папку - Сериалы, а не папку с одним сериалом " +
-                    "ознакомьтесь пожалуйста с правилами добавления контента. ");
+                    countTvShow = 0;
+                    string directroryName = listDirectories[i].FullName;
+                    DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
-                    for (int i = 0; i < listDirectories.Length; i++)
+                    IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                    IEnumerable<FileSystemInfo> filteredFileList =
+                        from file in allFileList
+                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                        select file;
+
+
+                    StringNumberComparer comparer = new StringNumberComparer();
+                    MainWindowViewModel viewModel = new MainWindowViewModel();
+
+                    foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
                     {
-                        countTvShow = 0;
-                        string directroryName = listDirectories[i].FullName;
-                        DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
-
-                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;
-
-
-                        StringNumberComparer comparer = new StringNumberComparer();
-                        MainWindowViewModel viewModel = new MainWindowViewModel();
-
-                        foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
+                        countTvShow += 1;
+                        if (filteredFileList != null)
                         {
-                            countTvShow += 1;
-                            if (filteredFileList != null)
-                            {
-                                tvShow.Name = listDirectories[i].Name;
-                                tvShow.Description = item.Name;
-                                var asdff = listDirectories[i];
-                                tvShow.Path = item.FullName;
-                                tvShow.Duration = DurationContent(pathToContent, item.ToString());
-                                tvShow.NumOfSeries = filteredFileList.Count();
-                                tvShow.Series = countTvShow;
+                            tvShow.Name = listDirectories[i].Name;
+                            tvShow.Description = item.Name;
+                            var asdff = listDirectories[i];
+                            tvShow.Path = item.FullName;
+                            tvShow.Duration = DurationContent(pathToContent, item.ToString());
+                            tvShow.NumOfSeries = filteredFileList.Count();
+                            tvShow.Series = countTvShow;
 
-                                using (ApplicationContext context = new ApplicationContext())
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                try
                                 {
                                     context.TvShows.Add(tvShow);
                                     context.SaveChanges();
                                 }
-                                tvShow = new TvShow();
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
 
-                                viewModel.ValueProgressDownlaodingSeries += 1;
-
-                                //ProgressDownLoadingContentTvShow.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
-                        }
+                            tvShow = new TvShow();
 
-                        using (ApplicationContext context = new ApplicationContext())
-                            CountOfTvShowTextBlock.Text = Convert.ToString(context.Preventions.Count());
+                            viewModel.ValueProgressDownlaodingSeries += 1;
+                        }
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
+
+                    using (ApplicationContext context = new ApplicationContext())
+                        CountOfTvShowTextBlock.Text = Convert.ToString(context.Preventions.Count());
                 }
             }
-            await System.Threading.Tasks.Task.Yield();
+
         }
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
         //TODO  вынести данный класс в отдельный файл
         class StringNumberComparer : IComparer<string>
         {
-            public int Compare(string x, string y)
+            public int Compare(string? x, string? y)
             {
                 int compareResult;
                 int xIndex = 0, yIndex = 0;
@@ -2047,8 +2279,7 @@ namespace Efir
                                 int totalMinuteEvent = h + m;
                                 string eventName = model.EventListSourceMonday[i].EventName;
                                 int totalMinute = totalMinuteEvent;
-                                //узнаю начала события
-                                // EfirOnMonday? startEvent = context.OnMonday.ToList().Find(w => w.EventName == "СЕРИАЛЫ");
+
                                 //------------------------------------------поиск контента------------------------------------------//
 
                                 #region ОБРАЗОВАНИЕ
@@ -2062,12 +2293,6 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-
-                                    //var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    //Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    //int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    //int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                    //IfLengthIsOver:
                                     Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
                                     int minFilmDuration = minEducationalTime.Duration.Days;
 
@@ -2108,8 +2333,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintMondays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintMondays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -2129,14 +2362,14 @@ namespace Efir
                                 if (model.EventListSourceMonday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
                                     PrintMonday print = new PrintMonday();
-                                    //List<TvShow> tvShows = context.TvShows.OrderBy(f => f.LastRun).ToList();
+
                                     bool elseFilm = false;
 
                                     int hh = 0;
                                     int mm = 0;
 
                                     TvShow? minFilmTime = context?.TvShows.ToList().MinBy(f => f.Duration);
-                                    int minFilmDuration = minFilmTime.Duration.Days;
+                                    int? minFilmDuration = minFilmTime.Duration.Days;
 
 
                                     List<TvShow> tvShowList = context.TvShows.ToList();
@@ -2182,8 +2415,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintMondays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintMondays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -2227,8 +2468,17 @@ namespace Efir
 
                                         print.Option = lection?.Path;
                                     }
-                                    context?.PrintMondays.Add(print);
-                                    context?.SaveChanges();
+
+                                    try
+                                    {
+                                        context?.PrintMondays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -2236,7 +2486,6 @@ namespace Efir
                                 if (model.EventListSourceMonday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintMonday print = new PrintMonday();
-                                    // List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -2254,17 +2503,6 @@ namespace Efir
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
                                         if (maybeDays < 15) break;
-
-                                        /* string name = filmList[j].Name.Split(".")[0];                                       
-
-                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                         {
-                                             if (listFilmOfWeek[k] == name)
-                                             {                                                
-                                                 j++;
-                                             }
-                                         }
- */
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -2305,10 +2543,17 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
+                                        try
+                                        {
+                                            context?.PrintMondays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
-                                        context?.PrintMondays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -2365,8 +2610,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintMondays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintMondays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -2428,8 +2681,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintMondays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintMondays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -2456,8 +2717,16 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintMondays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintMondays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -2472,8 +2741,16 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintMondays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintMondays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -2488,8 +2765,16 @@ namespace Efir
                                     print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
-                                    context.PrintMondays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintMondays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
                             }
@@ -2552,12 +2837,6 @@ namespace Efir
                                     int mm = 0;
 
 
-                                    /*var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);*/
-
-
                                     Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
                                     int minFilmDuration = minEducationalTime.Duration.Days;
 
@@ -2598,8 +2877,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintTuesdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintTuesdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -2619,7 +2906,6 @@ namespace Efir
                                 if (model.EventListSourceTuesday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
                                     PrintTuesday print = new PrintTuesday();
-                                    //List<TvShow> tvShows = context.TvShows.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -2669,8 +2955,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintTuesdays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintTuesdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -2712,8 +3005,16 @@ namespace Efir
                                         print.Option = lection?.Path;
                                     }
 
-                                    context?.PrintTuesdays.Add(print);
-                                    context?.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintTuesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -2721,7 +3022,6 @@ namespace Efir
                                 if (model.EventListSourceTuesday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintTuesday print = new PrintTuesday();
-                                    //List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -2733,7 +3033,6 @@ namespace Efir
                                     List<Film> filmList = context.Films.ToList();
                                     Shuffle<Film>(filmList);
 
-                                    //PrintMonday printMonday = new PrintMonday();
 
                                     int maybeDays = 30;
 
@@ -2741,17 +3040,6 @@ namespace Efir
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
                                         if (maybeDays < 15) break;
-
-                                        /*string name = filmList[j].Name.Split(".")[0];                                     
-
-                                        for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                        {
-                                            if (listFilmOfWeek[k] == name)
-                                            {                                                
-                                                j++;
-                                            }
-                                        }*/
-
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -2790,10 +3078,17 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
+                                        try
+                                        {
+                                            context?.PrintTuesdays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
-                                        context?.PrintTuesdays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -2849,8 +3144,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintTuesdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintTuesdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -2912,8 +3215,15 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintTuesdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintTuesdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -2940,8 +3250,16 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintTuesdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintTuesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -2956,8 +3274,15 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintTuesdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintTuesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
 
@@ -3075,8 +3400,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintWednesdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintWednesdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -3096,7 +3429,6 @@ namespace Efir
                                 if (model.EventListSourceWednesday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
                                     PrintWednesday print = new PrintWednesday();
-                                    //List<TvShow> tvShows = context.TvShows.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -3145,8 +3477,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintWednesdays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintWednesdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -3188,8 +3527,16 @@ namespace Efir
                                         print.Option = lection?.Path;
                                     }
 
-                                    context?.PrintWednesdays.Add(print);
-                                    context?.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintWednesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -3197,7 +3544,6 @@ namespace Efir
                                 if (model.EventListSourceWednesday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintWednesday print = new PrintWednesday();
-                                    //List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -3215,15 +3561,6 @@ namespace Efir
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
                                         if (maybeDays < 15) break;
-
-                                        /* string name = filmList[j].Name.Split(".")[0];
-                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                         {
-                                             if (listFilmOfWeek[k] == name)
-                                             {                                                
-                                                 j++;
-                                             }
-                                         }*/
 
 
                                         if (j == filmList.Count - 1)
@@ -3263,10 +3600,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-
-                                        context?.PrintWednesdays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
+                                        try
+                                        {
+                                            context?.PrintWednesdays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -3286,7 +3629,6 @@ namespace Efir
 
                                     int hh = 0;
                                     int mm = 0;
-
 
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
@@ -3322,8 +3664,15 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintWednesdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintWednesdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -3372,7 +3721,6 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Option = preventions[j].Path;
-                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
                                         print.Description = preventions[j].Description;
                                         preventions[j].LastRun = DateTime.Now;
 
@@ -3383,8 +3731,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintWednesdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintWednesdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -3411,8 +3767,16 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintWednesdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintWednesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -3427,8 +3791,16 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintWednesdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintWednesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -3443,8 +3815,16 @@ namespace Efir
                                     print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
-                                    context.PrintWednesdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintWednesdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
                             }
@@ -3465,9 +3845,6 @@ namespace Efir
                             model.EventListSourceThursday.Add(item);
                         }
                         EfirListOnThursday.ItemsSource = model.EventListSourceThursday;
-
-                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
 
                         for (int i = 0; i < model.EventListSourceThursday.Count; i++)
                         {
@@ -3505,13 +3882,6 @@ namespace Efir
 
                                     int hh = 0;
                                     int mm = 0;
-
-
-                                    /* var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                 IfLengthIsOver:*/
 
                                     Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
                                     int minFilmDuration = minEducationalTime.Duration.Days;
@@ -3553,8 +3923,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintThursdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintThursdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -3574,7 +3951,6 @@ namespace Efir
                                 if (model.EventListSourceThursday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
                                     PrintThursday print = new PrintThursday();
-                                    //List<TvShow> tvShows = context.TvShows.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -3587,7 +3963,6 @@ namespace Efir
 
                                     for (int j = 0; j < tvShowList.Count; j++)
                                     {
-
                                         int maybeDays = 10;
 
                                         #region Определение времени
@@ -3623,8 +3998,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintThursdays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintThursdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -3667,8 +4050,16 @@ namespace Efir
                                         print.Option = lection?.Path;
                                     }
 
-                                    context?.PrintThursdays.Add(print);
-                                    context?.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintThursdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -3676,7 +4067,6 @@ namespace Efir
                                 if (model.EventListSourceThursday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintThursday print = new PrintThursday();
-                                    //List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -3695,14 +4085,7 @@ namespace Efir
                                     {
                                         if (maybeDays < 15) break;
 
-                                        /* string name = filmList[j].Name.Split(".")[0];
-                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                         {
-                                             if (listFilmOfWeek[k] == name)
-                                             {
-                                                 j++;
-                                             }
-                                         }*/
+
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -3741,11 +4124,17 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
+                                        try
+                                        {
+                                            context?.PrintThursdays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
 
-                                        context?.PrintThursdays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
-
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -3755,7 +4144,6 @@ namespace Efir
                                 #endregion
 
                                 #region СЕРИАЛЫ
-                                //int totalMinute = totalMinuteEvent;
                                 if (model.EventListSourceThursday[i].EventName == "СЕРИАЛЫ")
                                 {
                                     List<Series> series = context.Serieses.ToList();
@@ -3801,8 +4189,15 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintThursdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintThursdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -3851,7 +4246,6 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Option = preventions[j].Path;
-                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
                                         print.Description = preventions[j].Description;
                                         preventions[j].LastRun = DateTime.Now;
 
@@ -3862,8 +4256,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintThursdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintThursdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -3890,8 +4292,16 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintThursdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintThursdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -3906,8 +4316,16 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintThursdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintThursdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -3922,8 +4340,16 @@ namespace Efir
                                     print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
-                                    context.PrintThursdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintThursdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
                             }
@@ -3945,12 +4371,10 @@ namespace Efir
                         }
                         EfirListOnFriday.ItemsSource = model.EventListSourceFriday;
 
-                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
 
                         for (int i = 0; i < model.EventListSourceFriday.Count; i++)
                         {
-                            if (model.EventListSourceFriday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
+                            if (model.EventListSourceFriday.Count == 0) MessageBox.Show("В базе отсутствует контент, убедитесь что вы добавили что либо");
 
                             if (i < model.EventListSourceFriday.Count - 1)
                             {
@@ -3983,13 +4407,6 @@ namespace Efir
 
                                     int hh = 0;
                                     int mm = 0;
-
-
-                                    /* var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                 IfLengthIsOver:*/
 
                                     Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
                                     int minFilmDuration = minEducationalTime.Duration.Days;
@@ -4031,8 +4448,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintFridays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintFridays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -4052,7 +4477,6 @@ namespace Efir
                                 if (model.EventListSourceFriday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
                                     PrintFriday print = new PrintFriday();
-                                    //List<TvShow> tvShows = context.TvShows.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -4101,8 +4525,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintFridays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintFridays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -4144,8 +4575,16 @@ namespace Efir
                                         print.Option = lection?.Path;
                                     }
 
-                                    context?.PrintFridays.Add(print);
-                                    context?.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintFridays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -4153,7 +4592,6 @@ namespace Efir
                                 if (model.EventListSourceFriday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintFriday print = new PrintFriday();
-                                    //List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -4171,15 +4609,6 @@ namespace Efir
                                     for (int j = 0; j < filmList.Count; j++)
                                     {
                                         if (maybeDays < 15) break;
-
-                                        /*string name = filmList[j].Name.Split(".")[0];
-                                        for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                        {
-                                            if (listFilmOfWeek[k] == name)
-                                            {
-                                                j++;
-                                            }
-                                        }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -4218,10 +4647,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-
-                                        context?.PrintFridays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
+                                        try
+                                        {
+                                            context?.PrintFridays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -4238,10 +4673,8 @@ namespace Efir
                                     PrintFriday? print = new PrintFriday();
                                     bool elseFilm = false;
 
-
                                     int hh = 0;
                                     int mm = 0;
-
 
                                     var listSortedByDate = context.Serieses.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
                                     Series sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
@@ -4277,8 +4710,17 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintFridays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintFridays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -4327,7 +4769,6 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Option = preventions[j].Path;
-                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
                                         print.Description = preventions[j].Description;
                                         preventions[j].LastRun = DateTime.Now;
 
@@ -4338,8 +4779,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintFridays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintFridays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -4366,8 +4815,16 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintFridays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintFridays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -4382,8 +4839,16 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintFridays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintFridays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
                                 }
                                 #endregion
 
@@ -4398,8 +4863,15 @@ namespace Efir
                                     print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
-                                    context.PrintFridays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintFridays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
                             }
@@ -4420,9 +4892,6 @@ namespace Efir
                             model.EventListSourceSaturday.Add(item);
                         }
                         EfirtListOnSaturday.ItemsSource = model.EventListSourceSaturday;
-
-                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
 
                         for (int i = 0; i < model.EventListSourceSaturday.Count; i++)
                         {
@@ -4459,11 +4928,6 @@ namespace Efir
                                     int hh = 0;
                                     int mm = 0;
 
-                                    /* var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                     Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                     int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                     int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                 IfLengthIsOver:*/
 
                                     Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
                                     int minFilmDuration = minEducationalTime.Duration.Days;
@@ -4505,8 +4969,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintSaturdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintSaturdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -4576,8 +5047,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintSaturdays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintSaturdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -4628,7 +5106,6 @@ namespace Efir
                                 if (model.EventListSourceSaturday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintSaturday print = new PrintSaturday();
-                                    //List<Film> films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -4649,14 +5126,6 @@ namespace Efir
                                     {
                                         if (maybeDays < 15) break;
 
-                                        /*string name = filmList[j].Name.Split(".")[0];
-                                        for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                        {
-                                            if (listFilmOfWeek[k] == name)
-                                            {
-                                                j++;
-                                            }
-                                        }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -4696,9 +5165,17 @@ namespace Efir
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
 
-                                        context?.PrintSaturdays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
+                                        try
+                                        {
+                                            context?.PrintSaturdays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -4754,8 +5231,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintSaturdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintSaturdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -4804,7 +5289,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Option = preventions[j].Path;
-                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
+
                                         print.Description = preventions[j].Description;
                                         preventions[j].LastRun = DateTime.Now;
 
@@ -4815,8 +5300,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintSaturdays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintSaturdays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -4843,8 +5336,15 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintSaturdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSaturdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
 
@@ -4859,8 +5359,16 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintSaturdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSaturdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
 
@@ -4875,8 +5383,15 @@ namespace Efir
                                     print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
-                                    context.PrintSaturdays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSaturdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
                             }
@@ -4898,17 +5413,12 @@ namespace Efir
                         }
                         EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
 
-                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
-
                         for (int i = 0; i < model.EventListSourceSunday.Count; i++)
                         {
                             if (model.EventListSourceSunday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
                             if (i < model.EventListSourceSunday.Count - 1)
                             {
-                                //if (model.EventListSourceSunday[i].EventName == "ПЕРЕРЫВ") continue;
-
                                 // xTODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
                                 // xTODO Нужны начальные и конечные точки эфира(хотябы конечная)
                                 // xTODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
@@ -4936,13 +5446,6 @@ namespace Efir
 
                                     int hh = 0;
                                     int mm = 0;
-
-
-                                    /*var listSortedByDate = context.Educationals.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Educational sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = educationals.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
-                                    int lastSeries = indexElement + 1 == listSortedByDate.Count() ? 0 : (indexElement + 1);
-                                IfLengthIsOver:*/
 
                                     Educational? minEducationalTime = context?.Educationals.ToList().MinBy(f => f.Duration);
                                     int minFilmDuration = minEducationalTime.Duration.Days;
@@ -4984,8 +5487,16 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context.PrintSundays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintSundays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -5005,7 +5516,6 @@ namespace Efir
                                 if (model.EventListSourceSunday[i].EventName == "ТЕЛЕПЕРЕДАЧИ")
                                 {
                                     PrintSunday print = new PrintSunday();
-                                    //List<TvShow> tvShows = context.TvShows.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -5054,8 +5564,15 @@ namespace Efir
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        context?.PrintSundays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintSundays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -5098,8 +5615,16 @@ namespace Efir
 
                                         print.Option = lection?.Path;
 
-                                        context?.PrintSundays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintSundays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
                                     }
 
 
@@ -5110,7 +5635,6 @@ namespace Efir
                                 if (model.EventListSourceSunday[i].EventName == "ФИЛЬМЫ")
                                 {
                                     PrintSunday print = new PrintSunday();
-                                    //List<Film>? films = context.Films.OrderBy(f => f.LastRun).ToList();
                                     bool elseFilm = false;
 
                                     int hh = 0;
@@ -5130,14 +5654,6 @@ namespace Efir
                                     {
                                         if (maybeDays < 15) break;
 
-                                        /* string name = filmList[j].Name.Split(".")[0];
-                                         for (int k = 0; k < listFilmOfWeek.Count; k++)
-                                         {
-                                             if (listFilmOfWeek[k] == name)
-                                             {
-                                                 j++;
-                                             }
-                                         }*/
 
                                         if (j == filmList.Count - 1)
                                         {
@@ -5178,9 +5694,17 @@ namespace Efir
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
 
-                                        context?.PrintSundays.Add(print);
-                                        context?.SaveChanges();
-                                        listFilmOfWeek.Add(print.EventName);
+                                        try
+                                        {
+                                            context?.PrintSundays.Add(print);
+                                            context?.SaveChanges();
+                                            listFilmOfWeek.Add(print.EventName);
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinuteEvent - curMinuteEvent;
                                         totalMinuteEvent = TheRestTime;
@@ -5236,8 +5760,16 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintSundays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintSundays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -5286,7 +5818,7 @@ namespace Efir
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Option = preventions[j].Path;
-                                        //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
+
                                         print.Description = preventions[j].Description;
                                         preventions[j].LastRun = DateTime.Now;
 
@@ -5297,8 +5829,15 @@ namespace Efir
 
                                         print.Id = RandomId;
 
-                                        context.PrintSundays.Add(print);
-                                        context.SaveChanges();
+                                        try
+                                        {
+                                            context.PrintSundays.Add(print);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
                                         TheRestTime = totalMinute - curMinuteEvent;
                                         totalMinute = TheRestTime;
@@ -5325,8 +5864,16 @@ namespace Efir
                                     print.EventName = "НОВОСТИ";
                                     print.Id = RandomId;
 
-                                    context.PrintSundays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSundays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
 
@@ -5341,8 +5888,15 @@ namespace Efir
                                     print.EventName = "ПЕРЕРЫВ";
                                     print.Id = RandomId;
 
-                                    context.PrintSundays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSundays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
 
@@ -5357,8 +5911,16 @@ namespace Efir
                                     print.EventName = "ЗАВЕРШЕНИЕ ТРАНСЛЯЦИИ";
                                     print.Id = RandomId;
 
-                                    context.PrintSundays.Add(print);
-                                    context.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSundays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+
+                                        MessageBox.Show(e.Message);
+                                    }
                                 }
                                 #endregion
                             }
@@ -5377,16 +5939,13 @@ namespace Efir
         {
             ClearPrintModels();
 
-            /* Thread myThread5 = new Thread(() => GenerateEfir());
-             myThread5.IsBackground = true;
-             myThread5.Start();*/
-
-            MessageBox.Show("Началось создание эфира не неделю." + '\n' +
+            MessageBox.Show("Началось создание эфира на неделю." + '\n' +
                 "Это может занять продолжительное время." + '\n' +
                 "Не тревожьте программу." + '\n' +
                 "Не клацайте по кнопкам." + '\n' +
                 "Наберитесь терпения." + '\n' +
-                "В конце процесса вы получите уведомление");
+                "В конце процесса вы получите уведомление" + '\n' +
+                "              Нажмите OK для продолжения");
 
             GenerateEfir();
 
@@ -5394,7 +5953,6 @@ namespace Efir
             Thread threadWriteEfir = new Thread(() => WriteEfirAtFile());
             threadWriteEfir.IsBackground = true;
             threadWriteEfir.Start();
-            //WriteEfirAtFile();
 
         }
 
@@ -5492,7 +6050,7 @@ namespace Efir
                                 h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
                                 m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
                                 desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
+                                name = item?.EventName;
                                 series = item.Series == 0 ? "" : item.Series.ToString();
                                 seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
                             }
@@ -5637,7 +6195,6 @@ namespace Efir
                 }
             }
             ThreadingTasks();
-            //CopyContentInDest();
         }
 
         //запись в текстовый документ если нет файла по указанному пути
@@ -5658,13 +6215,6 @@ namespace Efir
             threadCopyStream.Start();
         }
 
-
-        //показываю прогресс добавления контента
-        /*   private void ProgressAddingContent(int progress)
-           {
-               using (MainWindowViewModel model = new MainWindowViewModel())
-                   model.ProgressAddinContent = progress;
-           }*/
 
         // Копирование контента в папки
         private void CopyContentInDest()
@@ -5696,30 +6246,32 @@ namespace Efir
 
                     combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
 
-
-                    try
+                    if (File.Exists(sourcePath))
                     {
-                        if (File.Exists(sourcePath))
+                        try
                         {
                             File.Copy(sourcePath, combainPath, true);
                         }
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        /* FileAttributes attributes = File.GetAttributes(sourcePath);
-                         if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                         {
-                             FileInfo fileInfo = new FileInfo(sourcePath);
-                             fileInfo.IsReadOnly = false; //Только для чтения неактивен
-                             *//*fileInfo.IsReadOnly = true; //Только для чтения активен
-                             attributes &= ~FileAttributes.ReadOnly;
-                             File.SetAttributes(sourcePath, attributes);*//*
-                             File.Copy(sourcePath, combainPath, true);
-                         }
-                         else
-                         {
-                             throw;
-                         }*/
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            #region Добавление атрибутов для файла
+                            /* FileAttributes attributes = File.GetAttributes(sourcePath);
+                             if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                             {
+                                 FileInfo fileInfo = new FileInfo(sourcePath);
+                                 fileInfo.IsReadOnly = false; //Только для чтения неактивен
+                                 *//*fileInfo.IsReadOnly = true; //Только для чтения активен
+                                 attributes &= ~FileAttributes.ReadOnly;
+                                 File.SetAttributes(sourcePath, attributes);*//*
+                                 File.Copy(sourcePath, combainPath, true);
+                             }
+                             else
+                             {
+                                 throw;
+                             }*/
+                            #endregion
+                        }
                     }
                 }
                 dirPath = "";
@@ -5745,11 +6297,18 @@ namespace Efir
                     }
 
                     combainPath = Path.Combine(dirPath, orderNumber + " " + fileName);
-
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath, true);
+                        try
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
+
                 }
                 dirPath = "";
                 sourcePath = "";
@@ -5777,7 +6336,14 @@ namespace Efir
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath, true);
+                        try
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
                 }
                 dirPath = "";
@@ -5806,7 +6372,14 @@ namespace Efir
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath, true);
+                        try
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
                 }
                 dirPath = "";
@@ -5835,7 +6408,14 @@ namespace Efir
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath, true);
+                        try
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
                 }
                 dirPath = "";
@@ -5863,7 +6443,14 @@ namespace Efir
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath, true);
+                        try
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
                 }
                 dirPath = "";
@@ -5891,8 +6478,16 @@ namespace Efir
 
                     if (File.Exists(sourcePath))
                     {
-                        File.Copy(sourcePath, combainPath, true);
+                        try
+                        {
+                            File.Copy(sourcePath, combainPath, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
+
                 }
             }
             Thread threadInfEndGenerate = new Thread(() => InformationEndGenerateEfir(destPath));
@@ -5903,7 +6498,6 @@ namespace Efir
 
         private void InformationEndGenerateEfir(string dirPath)
         {
-            // MessageBox.Show("Эфир на неделю успешно сформирован");
             if (MessageBox.Show("Эфир на неделю успешно сформирован") == MessageBoxResult.OK)
                 Process.Start("explorer.exe", dirPath);
         }
@@ -5917,10 +6511,11 @@ namespace Efir
             {
                 MainWindowViewModel model = new MainWindowViewModel();
 
-                if (context.Films.Count() == 0 || context.Serieses.Count() == 0)
+                if (context.Films.Count() == 0 || context.Serieses.Count() == 0 || context.Educationals.Count() == 0 ||
+                     context.Preventions.Count() == 0 || context.Lections.Count() == 0 || context.TvShows.Count() == 0)
                 {
-                    MessageBox.Show("Проверьте, указаны ли пути к контенту");
-                    return;
+                    MessageBox.Show("Проверьте, указаны ли пути к контенту" + '\n' +
+                        "Возможно вы не добавили в одну из категорий видео");
                 }
 
                 #region Отсальные дни заполнить по поенедельнику, если пустые
@@ -5938,8 +6533,16 @@ namespace Efir
                         efirTuesday.Description = itemEvent.Description;
                         efirTuesday.Option = itemEvent.Option;
 
-                        context.OnTuesday.Add(efirTuesday);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.OnTuesday.Add(efirTuesday);
+                            context.SaveChanges();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+
                         foreach (var item in context.OnTuesday.ToList())
                         {
                             model.EventListSourceTuesday.Add(item);
@@ -5954,8 +6557,16 @@ namespace Efir
                         efirWednesday.Description = itemEvent.Description;
                         efirWednesday.Option = itemEvent.Option;
 
-                        context.OnWednesday.Add(efirWednesday);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.OnWednesday.Add(efirWednesday);
+                            context.SaveChanges();
+                        }
+                        catch (Exception exx)
+                        {
+                            MessageBox.Show(exx.Message);
+                        }
+
                         foreach (var item in context.OnWednesday.ToList())
                         {
                             model.EventListSourceWednesday.Add(item);
@@ -5970,8 +6581,16 @@ namespace Efir
                         efirThursday.Description = itemEvent.Description;
                         efirThursday.Option = itemEvent.Option;
 
-                        context.OnThursday.Add(efirThursday);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.OnThursday.Add(efirThursday);
+                            context.SaveChanges();
+                        }
+                        catch (Exception exxx)
+                        {
+                            MessageBox.Show(exxx.Message);
+                        }
+
                         foreach (var item in context.OnThursday.ToList())
                         {
                             model.EventListSourceThursday.Add(item);
@@ -5986,8 +6605,16 @@ namespace Efir
                         efirFriday.Description = itemEvent.Description;
                         efirFriday.Option = itemEvent.Option;
 
-                        context.OnFriday.Add(efirFriday);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.OnFriday.Add(efirFriday);
+                            context.SaveChanges();
+                        }
+                        catch (Exception exxxx)
+                        {
+                            MessageBox.Show(exxxx.Message);
+                        }
+
                         foreach (var item in context.OnFriday.ToList())
                         {
                             model.EventListSourceFriday.Add(item);
@@ -6002,8 +6629,16 @@ namespace Efir
                         efirSaturday.Description = itemEvent.Description;
                         efirSaturday.Option = itemEvent.Option;
 
-                        context.OnSaturday.Add(efirSaturday);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.OnSaturday.Add(efirSaturday);
+                            context.SaveChanges();
+                        }
+                        catch (Exception exxxxxx)
+                        {
+                            MessageBox.Show(exxxxxx.Message);
+                        }
+
                         foreach (var item in context.OnSaturday.ToList())
                         {
                             model.EventListSourceSaturday.Add(item);
@@ -6018,8 +6653,16 @@ namespace Efir
                         efirSunday.Description = itemEvent.Description;
                         efirSunday.Option = itemEvent.Option;
 
-                        context.OnSunday.Add(efirSunday);
-                        context.SaveChanges();
+                        try
+                        {
+                            context.OnSunday.Add(efirSunday);
+                            context.SaveChanges();
+                        }
+                        catch (Exception exxxxxxx)
+                        {
+                            MessageBox.Show(exxxxxxx.Message);
+                        }
+
                         foreach (var item in context.OnSunday.ToList())
                         {
                             model.EventListSourceSunday.Add(item);
@@ -6031,23 +6674,6 @@ namespace Efir
                 #endregion
 
                 UpdateModelsView();
-            }
-        }
-
-        // сохраняю изменения смены порядка эвентов
-        private void CapturedReorderEventItem_Drop(object sender, DragEventArgs e)
-        {
-            //TODO В этом методе надо сделать обновление моделей, если был изменен порядок в ручную(если перетащил событие)
-            using (MainWindowViewModel model = new MainWindowViewModel())
-            {
-                //EfirListOnMonday.UpdateLayout;
-
-
-                /*  foreach (var item in model.EventListSourceMonday)
-                {
-                model?.EventListSourceMonday?.Add(item);
-                }
-                EfirListOnMonday.ItemsSource = model.EventListSourceMonday;*/
             }
         }
 
@@ -6196,7 +6822,15 @@ namespace Efir
                 {
                     context.PrintSundays.Remove(item);
                 }
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
                 #endregion
             }
 
@@ -6235,7 +6869,14 @@ namespace Efir
                 {
                     context.TvShows.Remove(item);
                 }
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
             }
 
         }

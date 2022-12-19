@@ -105,7 +105,7 @@
                                         ScrollViewer.CanContentScroll="True"
                                         AllowDrop="True"
                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                        BorderThickness="0,0,0,0" Drop="CapturedReorderEventItem_Drop"   >
+                                        BorderThickness="0,0,0,0" >
                                         <ListView.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem  Header="Добавить" >
@@ -1110,20 +1110,21 @@
                                 Text="Эфир" />
                         </StackPanel>
                     </TabItem.Header>
-                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
 
                         <StackPanel
-                            Margin="0 0 0 20"
+                            Margin="0 0 0 40"
                             Orientation="Horizontal" HorizontalAlignment="Center"
                             VerticalAlignment="Center"     >
 
                             <TextBox
                                 x:Name="FilePathToSaveEfirTextBox"
-                                Width="200"
+                                MinWidth="200"
                                 Padding="5 0 0 0"
                                 Margin="0 0 15 0"
 
-                                materialDesign:HintAssist.Hint="Путь к папке"
+                                materialDesign:HintAssist.Hint="Путь к папке где будет создан эфир"
                                 materialDesign:HintAssist.HelperTextFontSize="14"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Foreground="#c5c5c5"
@@ -1132,17 +1133,9 @@
                                     Content="{materialDesign:PackIcon FolderSearchOutline}"
                                     Click="OpenSaveEfirDialog_Click"/>
                         </StackPanel>
-                        <Button Width="200"
-                                Height="200" Click="CreateEfir_Click" >
-                            <materialDesign:PackIcon
-                                Width="170"
-                                Height="170"
-                                HorizontalAlignment="Center"
-                                Kind="FolderQuestion"/>
+                        <Button  Click="CreateEfir_Click" >
+                            СОЗДАТЬ ПРОГРАММУ ТЕЛЕПЕРЕДАЧ НА НЕДЕЛЮ
                         </Button>
-
-                        <TextBlock Text="СОЗДАТЬ ПРОГРАММУ ТЕЛЕПЕРЕДАЧ НА НЕДЕЛЮ"
-                                   Margin="0 50 0 0"/>
                     </StackPanel>
 
                 </TabItem>
