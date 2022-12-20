@@ -22,7 +22,7 @@
     Height="520"
     Width="810"
     Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen"
-    Icon="/mainIco.ico" >
+    Icon="/mainIco.ico" ResizeMode="NoResize" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
