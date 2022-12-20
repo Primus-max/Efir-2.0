@@ -753,7 +753,7 @@
                                 VerticalAlignment="Center"/>
                             <Button  Style="{StaticResource MaterialDesignRaisedButton}"
                                     Content="{materialDesign:PackIcon FolderSearchOutline}"
-                                    Click="ParsingDoc_Click"/>
+                                    Click="ChoosePath_Click"/>
                         </StackPanel>
 
                         <Button Content="Получить лекции"

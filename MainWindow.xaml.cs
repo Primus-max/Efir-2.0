@@ -294,23 +294,48 @@ namespace Efir
         }
 
         #region ПАРСИНГ ДОКУМЕНТА С ГРАФИКОМ ЛЕКЦИЙ
+        private void ChoosePath_Click(object sender, RoutedEventArgs e)
+        {
+
+            CommonOpenFileDialog commonOpenFileDialog = new CommonOpenFileDialog();
+            commonOpenFileDialog.ShowHiddenItems = true;
+            commonOpenFileDialog.AddToMostRecentlyUsedList = true;
+
+
+            if (commonOpenFileDialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                FilePathToLectionDocTextBox.Text = commonOpenFileDialog.FileName;
+            }
+        }
+
         private void ParsingDoc_Click(object sender, RoutedEventArgs e)
         {
             ParseBase();
         }
 
-        public static void ParseBase()
+        public void ParseBase()
         {
             MainWindowViewModel model = new MainWindowViewModel();
             List<LectionGraph> lectionGraphs = new List<LectionGraph>();
             LectionGraph lection = new LectionGraph();
+            string? path = FilePathToLectionDocTextBox.Text;
+
+            if (path == "")
+            {
+                MessageBox.Show("Сначала выберите файл");
+                return;
+            }
+
             var wordApp = new Word.Application();
             wordApp.Visible = false;
 
             try
             {
-                var wordBaza = wordApp.Documents.Open(@"Z:\Programming\ProjectC#\Efir\lection.docx");
-                var contentBaza = wordBaza.Content;
+                var wordBaza = wordApp.Documents.Open(path);
+
+                if (wordBaza == null) return;
+
+                Word.Range? contentBaza = wordBaza.Content;
                 string stringBaza = contentBaza.Text;
                 string[] parsBaza = stringBaza.Split('\a');
 
@@ -342,7 +367,7 @@ namespace Efir
                             lection.Name = parsBaza[i].Replace("\r", "");
                             lection.Lecturer = parsBaza[i + 2].Replace("\r", "");
                             lection.LectionDate = Convert.ToDateTime(parsBaza[i + 3].Replace("\r", ""));
-                            lection.Path = @"Z:\Programming\ProjectC#\Efir\lection.docx";
+                            lection.Path = path;
 
                             try
                             {
@@ -354,10 +379,7 @@ namespace Efir
                             {
                                 MessageBox.Show(e.Message);
                             }
-
-
                         }
-
                     }
                     wordBaza.Close();
                     wordApp.Quit();
@@ -1918,13 +1940,6 @@ namespace Efir
 
                     bool searchOpt = false;
                     contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
-                    /*IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;*/
-
 
                     StringNumberComparer comparer = new StringNumberComparer();
                     MainWindowViewModel viewModel = new MainWindowViewModel();
