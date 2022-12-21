@@ -1560,6 +1560,7 @@ namespace Efir
                                 educational.Duration = DurationContent(pathToContent, item.ToString());
                                 educational.NumOfSeries = filteredFileList.Count();
                                 educational.Series = countSeries;
+                                educational.LastRun = new DateTime(2021);
 
                                 //добавдяю сериал в базу
                                 using (ApplicationContext context = new ApplicationContext())
@@ -1622,7 +1623,7 @@ namespace Efir
                         film.Path = item.FullName;
                         film.Duration = DurationContent(pathToContent, item.ToString());
                         film.Series += countFilm;
-                        film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-31).ToString("dd.MM.yy"));
+                        film.LastRun = new DateTime().AddYears(2021);
 
                         using (ApplicationContext context = new ApplicationContext())
                         {
@@ -1839,6 +1840,7 @@ namespace Efir
                         prevention.Duration = DurationContent(pathToContent, item.ToString());
                         prevention.NumOfSeries = contentListMedia.Count();
                         prevention.Series += counPrevention;
+                        prevention.LastRun = new DateTime().AddYears(2021);
 
                         using (ApplicationContext context = new ApplicationContext())
                         {
@@ -1959,7 +1961,7 @@ namespace Efir
                             series.Duration = DurationContent(pathToContent, item.ToString());
                             series.NumOfSeries = contentListMedia.Count();
                             series.IsSeries = parsedName;
-                            series.LastRun = new DateTime();
+                            series.LastRun = new DateTime().AddYears(2021);
                             series.NumOfRun = 0;
                             //Convert.ToDateTime(DateTime.Now.AddDays(-random.Next(1, 60)).ToString("dd.MM.yy")) - рандомайзер
                             using (ApplicationContext context = new ApplicationContext())
@@ -2031,11 +2033,11 @@ namespace Efir
                         {
                             tvShow.Name = listDirectories[i].Name;
                             tvShow.Description = item.Name;
-                            var asdff = listDirectories[i];
                             tvShow.Path = item.FullName;
                             tvShow.Duration = DurationContent(pathToContent, item.ToString());
                             tvShow.NumOfSeries = filteredFileList.Count();
                             tvShow.Series = countTvShow;
+                            tvShow.LastRun = new DateTime().AddYears(2021);
 
                             using (ApplicationContext context = new ApplicationContext())
                             {
@@ -2222,25 +2224,25 @@ namespace Efir
             List<string> listFilmOfWeek = new List<string>();
 
             // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
-            using (ApplicationContext context = new ApplicationContext())
-            {
-                foreach (var item in context.Films.ToList())
-                {
-                    item.LastRun = new DateTime().AddYears(2015);
-                }
-                context.SaveChanges();
+            /*  using (ApplicationContext context = new ApplicationContext())
+              {
+                  foreach (var item in context.Films.ToList())
+                  {
+                      item.LastRun = new DateTime().AddYears(2015);
+                  }
+                  context.SaveChanges();
 
-                foreach (var item in context.Educationals.ToList())
-                {
-                    item.LastRun = new DateTime().AddYears(2015);
-                }
-                context.SaveChanges();
-                foreach (var item in context.TvShows.ToList())
-                {
-                    item.LastRun = new DateTime().AddYears(2015);
-                }
-                context.SaveChanges();
-            }
+                  foreach (var item in context.Educationals.ToList())
+                  {
+                      item.LastRun = new DateTime().AddYears(2015);
+                  }
+                  context.SaveChanges();
+                  foreach (var item in context.TvShows.ToList())
+                  {
+                      item.LastRun = new DateTime().AddYears(2015);
+                  }
+                  context.SaveChanges();
+              }*/
             // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
 
             foreach (var tab in tabControl.Items)
@@ -2300,6 +2302,7 @@ namespace Efir
                                 #region ОБРАЗОВАНИЕ
                                 if (model.EventListSourceMonday[i].EventName == "ОБРАЗОВАНИЕ")
                                 {
+                                    
                                     List<Educational> educationals = context.Educationals.ToList();
                                     PrintMonday? print = new PrintMonday();
                                     bool elseFilm = false;

@@ -19,10 +19,12 @@
     Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"
     Title="Программа телепередач Эфир-1.0"
+    MaxHeight="520"
+    MaxWidth="820"
     Height="520"
     Width="810"
     Loaded="MainWindow_Loaded" WindowStartupLocation="CenterScreen"
-    ResizeMode="NoResize" Icon="/mainIco.ico" >
+    Icon="/mainIco.ico" WindowStyle="ThreeDBorderWindow" >
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
