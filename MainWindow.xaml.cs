@@ -1597,8 +1597,11 @@ namespace Efir
         }
 
         // добавление фильмов
+
         public void AddFilmAtDB(string pathToContent)
         {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
@@ -1697,6 +1700,8 @@ namespace Efir
                         CountOfFilmTextBlock.Text = Convert.ToString(context.Films.Count());
                 }
             }
+            stopwatch.Stop();
+            var stop = stopwatch.Elapsed;
         }
 
         // добавление лекций
@@ -1835,6 +1840,8 @@ namespace Efir
 
                     if (contentListMedia != null)
                     {
+
+
                         prevention.Name = item.Name;
                         prevention.Path = item.FullName;
                         prevention.Duration = DurationContent(pathToContent, item.ToString());
@@ -1862,6 +1869,8 @@ namespace Efir
                         //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
                     }
                 }
+
+
 
                 //TODO пересмотреть данный диалог
                 DirectoryInfo[] listInnerDirectories = firstDirectory.GetDirectories();
@@ -2137,12 +2146,27 @@ namespace Efir
         public TimeSpan DurationContent(string pathToContent, string contentName)
         {
             MediaInfo.MediaInfo mi = new MediaInfo.MediaInfo();
-            // string fullPathToContentItem = pathToContent + "\\" + contentName;
             mi.Open(contentName);
 
+            // альтернатива моему методу с разбиением строки
+            var timeMs = mi.Get((MediaInfo.StreamKind)MediaInfoLib.StreamKind.General, 0, "Duration");
+            var Length = TimeSpan.FromMilliseconds(long.Parse(timeMs));
 
-            var asdsdf = mi.Inform();
-            string mediaDataFromVideo = mi.Inform();
+            int h = Length.Hours;
+            int m = Length.Minutes;
+            int s = Length.Seconds;
+
+            TimeSpan duration = new TimeSpan(h, m, s);
+
+            //Вриант с разбиением строки
+            /*
+                        int h = 0;
+                        int m = 0;
+                        int s = 0;*/
+
+
+
+            /*string mediaDataFromVideo = mi.Inform();
 
             string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.StartsWith("Duration"));
             string durationFromString = "";
@@ -2157,9 +2181,6 @@ namespace Efir
 
             }
 
-            int h = 0;
-            int m = 0;
-            int s = 0;
 
 
             var durationSplit = durationFromString.Split(" ");
@@ -2179,8 +2200,8 @@ namespace Efir
                     s = Convert.ToInt16(durationSplit[j - 1]);
                 }
             }
-            TimeSpan duration = new TimeSpan(h, m, s);
-            // await System.Threading.Tasks.Task.Yield();
+
+            TimeSpan duration = new TimeSpan(h, m, s);*/
             return duration;
         }
 
