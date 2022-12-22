@@ -273,3 +273,4 @@ Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\EfirTable.g.cs
 Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\EfirTable.baml
 Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\Window1.g.cs
 Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\Window1.baml
+Z:\Programming\ProjectC#\Efir\obj\Debug\net6.0-windows\Efir_Content.g.cs

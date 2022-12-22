@@ -2140,6 +2140,8 @@ namespace Efir
             // string fullPathToContentItem = pathToContent + "\\" + contentName;
             mi.Open(contentName);
 
+
+            var asdsdf = mi.Inform();
             string mediaDataFromVideo = mi.Inform();
 
             string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.StartsWith("Duration"));
@@ -2302,7 +2304,7 @@ namespace Efir
                                 #region ОБРАЗОВАНИЕ
                                 if (model.EventListSourceMonday[i].EventName == "ОБРАЗОВАНИЕ")
                                 {
-                                    
+
                                     List<Educational> educationals = context.Educationals.ToList();
                                     PrintMonday? print = new PrintMonday();
                                     bool elseFilm = false;

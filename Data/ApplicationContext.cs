@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Efir.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,7 +50,15 @@ namespace Efir.Data
         //public DbSet<LectionCollection> LectionCollections { get; set; } = null!;
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=MediaDB.db");
+            try
+            {
+                optionsBuilder.UseSqlite("Data Source=MediaDB.db");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
         }
 
         public void Dispose()
