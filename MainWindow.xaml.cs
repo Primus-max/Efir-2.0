@@ -26,6 +26,8 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Diagnostics;
 using System.Threading;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Efir
 {
@@ -35,7 +37,12 @@ namespace Efir
     public partial class MainWindow : Window, IAsyncDisposable
     {
 
-        //TODO Сделать при загрузке контента первый раз дату месячной давности
+        //TODO ПРОФИКСИТЬ! Сделать конструкцию try catch для лекций и еще раз пройтись и проверить где надо сделать эту конструкцию
+        //TODO Профиксить запись в текстовый файл, если сериал, то просто добавлять серии, сократить лишнии записи
+        //TODO Разобраться почему 07  числа показывалось 31 число
+
+
+        //xTODO Сделать при загрузке контента первый раз дату месячной давности
         //TODO Обернуть все потенциальные участки кода в try catch
         //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть. 
         //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
@@ -1600,8 +1607,6 @@ namespace Efir
 
         public void AddFilmAtDB(string pathToContent)
         {
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
@@ -1700,8 +1705,6 @@ namespace Efir
                         CountOfFilmTextBlock.Text = Convert.ToString(context.Films.Count());
                 }
             }
-            stopwatch.Stop();
-            var stop = stopwatch.Elapsed;
         }
 
         // добавление лекций
@@ -2140,6 +2143,14 @@ namespace Efir
             return filteredFileList;
         }
 
+
+
+        private ILogger _logger = null;
+        public ILogger logger
+        {
+            get => _logger;
+            set => _logger = value ?? throw new ArgumentNullException(nameof(value));
+        }
         // получаю длительность файла
         //TODO отрефакторить: сократить время работы
         //TODO отрефакторить: сделать проверки на нулевые значения ловля ошибок
@@ -2148,22 +2159,34 @@ namespace Efir
             MediaInfo.MediaInfo mi = new MediaInfo.MediaInfo();
             mi.Open(contentName);
 
+            int h = 0;
+            int m = 0;
+            int s = 0;
+
+            #region Еще методы получения длительсности
+            // Получаю длительность с помощью MediaInfoWrapper
+            /*using (Stream stream = new FileStream(contentName, FileMode.Open, FileAccess.Read))
+            {
+
+                logger = NullLogger.Instance;
+                MediaInfo.MediaInfoWrapper mediaInfoWrapper = new MediaInfo.MediaInfoWrapper(stream, logger);
+                foreach (var item in mediaInfoWrapper.VideoStreams.ToList())
+                {
+                    h = item.Duration.Hours;
+                    m = item.Duration.Minutes;
+                    s = item.Duration.Seconds;
+                }
+            }*/
+
+
             // альтернатива моему методу с разбиением строки
-            var timeMs = mi.Get((MediaInfo.StreamKind)MediaInfoLib.StreamKind.General, 0, "Duration");
-            var Length = TimeSpan.FromMilliseconds(long.Parse(timeMs));
+            /* int h = duration.Hours;
+             int m = duration.Minutes;
+             int s = duration.Seconds;*/
 
-            int h = Length.Hours;
-            int m = Length.Minutes;
-            int s = Length.Seconds;
-
-            TimeSpan duration = new TimeSpan(h, m, s);
+            //TimeSpan duration = new TimeSpan(h, m, s);
 
             //Вриант с разбиением строки
-            /*
-                        int h = 0;
-                        int m = 0;
-                        int s = 0;*/
-
 
 
             /*string mediaDataFromVideo = mi.Inform();
@@ -2202,6 +2225,16 @@ namespace Efir
             }
 
             TimeSpan duration = new TimeSpan(h, m, s);*/
+            #endregion
+
+            var timeMs = mi.Get((MediaInfo.StreamKind)MediaInfoLib.StreamKind.General, 0, "Duration");
+            var Length = TimeSpan.FromMilliseconds(long.Parse(timeMs));
+
+            h = Length.Hours;
+            m = Length.Minutes;
+            s = Length.Seconds;
+
+            TimeSpan duration = new TimeSpan(h, m, s);
             return duration;
         }
 
@@ -5118,6 +5151,8 @@ namespace Efir
 
                                     for (int j = 0; j < 7; j++)
                                     {
+                                        var asdfasd = DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower();
+
                                         if (DateTime.Now.AddDays(j).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
 
                                         possibleDate = DateTime.Now.AddDays(j).ToShortDateString();
@@ -5138,8 +5173,16 @@ namespace Efir
                                         print.Option = lection?.Path;
                                     }
 
-                                    context?.PrintSaturdays.Add(print);
-                                    context?.SaveChanges();
+                                    try
+                                    {
+                                        context?.PrintSaturdays.Add(print);
+                                        context?.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+
                                 }
                                 #endregion
 
