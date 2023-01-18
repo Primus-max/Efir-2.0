@@ -36,12 +36,13 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO Переделать запись ПРОФИЛАКТИКИ. В Description добвлять названия а в Name Профилактика
         //TODO ПРОФИКСИТЬ! При записи в текстовый файл смотреть если имя совпадает с предыдущим, то оставлять одно, например:
         //TODO сериалы идут по несколько серий. Оставлять названия, а через запятую указывать серии.
         //TODO обучение указывать просто предмет изучения вместо каждого урока 
         //TODO И т.д.
 
-        //TODO Профиксить добавление профилактических роликов, они добавляются не в хаотичном порядке и постоянно повторяются.
+        //xTODO Профиксить добавление профилактических роликов, они добавляются не в хаотичном порядке и постоянно повторяются.
 
         //TODO Добавить "загулшки" клипы или еще что то маленкьое для заполнения времени
 
@@ -84,12 +85,12 @@ namespace Efir
         private string pathToFilms = "";
         private string pathToSeries = "";
         private string pathToLection = "";
-        private string pathToDocumentaries = "";
-        private string pathToEntertainment = "";
+        // private string pathToDocumentaries = "";
+        //private string pathToEntertainment = "";
         private string pathToPrevention = "";
         private string pathToEducationals = "";
 
-        string CountFilm = "";
+        //string CountFilm = "";
         #endregion
 
         string pathToEfirForSave = "";
@@ -101,8 +102,6 @@ namespace Efir
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // new GeneratedCode.GeneratedClass().CreatePackage(@"D:\Temp\Output.docx");
-
             // гарантируем, что база данных создана
             using (ApplicationContext context = new ApplicationContext())
             {
@@ -135,7 +134,7 @@ namespace Efir
             //DataContext = db.Serieses.Local.ToObservableCollection();
 
             #region Установка источников данных для отображения колличества контента в категории медиа
-            //TODO отрефаткориить загрузку начальных данных. Изменить место хранения, и способ отбражения, но пока пойдет
+
             using (ApplicationContext context = new ApplicationContext())
             {
                 CountOfFilmTextBlock.Text = Convert.ToString(context?.Films.Count());
@@ -147,7 +146,7 @@ namespace Efir
             using (ApplicationContext context = new ApplicationContext())
             {
                 //TODO Профиксить отображение путей, убрать лишнее
-                if (context.Lections.Count() != 0)
+                if (context.Educationals.Count() != 0)
                 {
                     FilePathToEducationalsTextBox.Text = context.Educationals.ToList()[0].Path;
                     CountOfEducationalsTextBlock.Text = context.Educationals.Count().ToString();
@@ -1522,7 +1521,7 @@ namespace Efir
 
         #region МЕТОДЫ
 
-        #region добавление и сохранение контента в базу
+        #region ЗАПИСЬ КОНТЕНТА В БАЗУ
 
         // TODO для документалок сделать показ всех документалок а не колличество папок в отличии от сериалов
 
@@ -1612,7 +1611,6 @@ namespace Efir
         }
 
         // добавление фильмов
-
         public void AddFilmAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
@@ -1851,8 +1849,7 @@ namespace Efir
 
                     if (contentListMedia != null)
                     {
-
-
+                        prevention.Description = firstDirectory.Name;
                         prevention.Name = item.Name;
                         prevention.Path = item.FullName;
                         prevention.Duration = DurationContent(pathToContent, item.ToString());
@@ -1871,7 +1868,6 @@ namespace Efir
                             {
                                 MessageBox.Show(e.Message);
                             }
-
                         }
                         prevention = new Prevention();
                         searchOpt = false;
@@ -2885,22 +2881,12 @@ namespace Efir
                         }
                         EfirListOnTuesday.ItemsSource = model.EventListSourceTuesday;
 
-                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
-
-
                         for (int i = 0; i < model.EventListSourceTuesday.Count; i++)
                         {
                             if (model.EventListSourceTuesday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
                             if (i < model.EventListSourceTuesday.Count - 1)
                             {
-                                // if (model.EventListSourceTuesday[i].EventName == "ПЕРЕРЫВ") continue;
-
-                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceTuesday[i];
                                 var nextItemTime = model.EventListSourceTuesday[i + 1];
 
@@ -3415,21 +3401,12 @@ namespace Efir
                         }
                         EfirListOnWednesday.ItemsSource = model.EventListSourceWednesday;
 
-                        //var MinTimeEfir = context?.OnTuesday.ToList().Min(t => t.TimeToEfir);
-                        //var MaxTimeEfir = context?.OnTuesday.ToList().Max(t => t.TimeToEfir);
-
                         for (int i = 0; i < model.EventListSourceWednesday.Count; i++)
                         {
                             if (model.EventListSourceWednesday.Count == 0) MessageBox.Show("Фильмы в базе не найдены, проверьте загружены ли фильмы в базу");
 
                             if (i < model.EventListSourceWednesday.Count - 1)
                             {
-                                //if (model.EventListSourceWednesday[i].EventName == "ПЕРЕРЫВ") continue;
-
-                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceWednesday[i];
                                 var nextItemTime = model.EventListSourceWednesday[i + 1];
 
@@ -3786,38 +3763,45 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceWednesday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
                                     PrintWednesday? print = new PrintWednesday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
+
 
                                     int hh = 0;
                                     int mm = 0;
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
+
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Option = preventions[j].Path;
-                                        print.Description = preventions[j].Description;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Option = preventionsShuffled[j].Path;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -3841,11 +3825,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -3947,12 +3927,6 @@ namespace Efir
 
                             if (i < model.EventListSourceThursday.Count - 1)
                             {
-                                //if (model.EventListSourceThursday[i].EventName == "ПЕРЕРЫВ") continue;
-
-                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceThursday[i];
                                 var nextItemTime = model.EventListSourceThursday[i + 1];
 
@@ -4481,12 +4455,6 @@ namespace Efir
 
                             if (i < model.EventListSourceFriday.Count - 1)
                             {
-                                //if (model.EventListSourceFriday[i].EventName == "ПЕРЕРЫВ") continue;
-
-                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceFriday[i];
                                 var nextItemTime = model.EventListSourceFriday[i + 1];
 
@@ -5010,12 +4978,6 @@ namespace Efir
 
                             if (i < model.EventListSourceSaturday.Count - 1)
                             {
-                                //if (model.EventListSourceSaturday[i].EventName == "ПЕРЕРЫВ") continue;
-
-                                // TODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // TODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // TODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // TODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceSaturday[i];
                                 var nextItemTime = model.EventListSourceSaturday[i + 1];
 
@@ -5549,10 +5511,6 @@ namespace Efir
 
                             if (i < model.EventListSourceSunday.Count - 1)
                             {
-                                // xTODO ПРОФИКСИТЬ: если нет последнего события, то не получаю время предыдущего.
-                                // xTODO Нужны начальные и конечные точки эфира(хотябы конечная)
-                                // xTODO Варианты: 1. Сделать где-то в верхней части прожграммы два пикера с выбором веремени начала и конца,
-                                // xTODO 2. сделать два событие и добавить их в список осбытий, они будут константами, но выбор времени будет за пользователем
                                 var curItemTime = model.EventListSourceSunday[i];
                                 var nextItemTime = model.EventListSourceSunday[i + 1];
 
@@ -6139,213 +6097,165 @@ namespace Efir
         }
 
         //Записываю в текстовый файл программу телепередач на неделю
+
+        #region ЗАПИСЬ ЭФИРА В ТЕКСТОВЫЙ ФАЙЛ
         private void WriteEfirAtFile()
         {
-            MainWindowViewModel model = new MainWindowViewModel();
+            //MainWindowViewModel model = new MainWindowViewModel();
 
             string nameFile = "Efir.txt";
             string savePath = pathToEfirForSave + "\\" + nameFile;
 
             using (ApplicationContext context = new ApplicationContext())
             {
-                using (StreamWriter fstream = new StreamWriter(savePath, false))
+
+                for (int i = 0; i < 7; i++)
                 {
-                    string builtedStr = "";
-                    string h = "";
-                    string m = "";
-                    string? desc = "";
-                    string name = "";
-                    string series = "";
-                    string seriesOrPart = "";
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Понедельник" + " " + possibleDate);
 
-                        fstream.WriteLine("Понедельник" + " " + possibleDate);
+                    List<PrintMonday> printList = context.PrintMondays.ToList();
 
-                        foreach (var item in context.PrintMondays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
-
-                    fstream.WriteLine("");
-                    fstream.WriteLine("-----------------------------------------------------");
-
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
-
-                        fstream.WriteLine("Вторник" + " " + possibleDate);
-
-                        foreach (var item in context.PrintTuesdays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item?.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
-
-                    fstream.WriteLine("-----------------------------------------------------");
-
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
-
-                        fstream.WriteLine("Среда" + " " + possibleDate);
-
-                        foreach (var item in context.PrintWednesdays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
-
-                    fstream.WriteLine("-----------------------------------------------------");
-
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
-                        fstream.WriteLine("Четверг" + " " + possibleDate);
-
-                        foreach (var item in context.PrintThursdays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
-
-                    fstream.WriteLine("-----------------------------------------------------");
-
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
-                        fstream.WriteLine("Пятница" + " " + possibleDate);
-
-                        foreach (var item in context.PrintFridays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
-
-                    fstream.WriteLine("-----------------------------------------------------");
-
-                    for (int i = 0; i < 7; i++)
-                    {
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
-                        fstream.WriteLine("Суббота" + " " + possibleDate);
-
-                        foreach (var item in context.PrintSaturdays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
-
-                    fstream.WriteLine("-----------------------------------------------------");
-
-                    for (int i = 0; i < 10; i++)
-                    {
-                        if (i < 4) continue;
-                        if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
-                        string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
-                        fstream.WriteLine("Воскресенье" + " " + possibleDate);
-
-                        foreach (var item in context.PrintSundays)
-                        {
-                            if (item != null)
-                            {
-                                h = item.TimeToEfir.Hours.ToString().Length == 1 ? "0" + item.TimeToEfir.Hours.ToString() : item.TimeToEfir.Hours.ToString();
-                                m = item.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + item.TimeToEfir.Minutes.ToString() : item.TimeToEfir.Minutes.ToString();
-                                desc = item.Description == null ? item.EventName : item.Description;
-                                name = item.EventName;
-                                series = item.Series == 0 ? "" : item.Series.ToString();
-                                seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
-                            }
-                            builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
-
-
-                            fstream.WriteLine(builtedStr);
-                        }
-                    }
+                    BuilderStringPrint<PrintMonday>(printList);
                 }
+
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Вторник" + " " + possibleDate);
+
+                    List<PrintTuesday> printList = context.PrintTuesdays.ToList();
+
+                    BuilderStringPrint<PrintTuesday>(printList);
+                }
+
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Среда" + " " + possibleDate);
+
+                    List<PrintWednesday> printList = context.PrintWednesdays.ToList();
+
+                    BuilderStringPrint<PrintWednesday>(printList);
+                }
+
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Четверг" + " " + possibleDate);
+
+                    List<PrintThursday> printList = context.PrintThursdays.ToList();
+
+                    BuilderStringPrint<PrintThursday>(printList);
+                }
+
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Пятница" + " " + possibleDate);
+
+                    List<PrintFriday> printList = context.PrintFridays.ToList();
+
+                    BuilderStringPrint<PrintFriday>(printList);
+                }
+
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Суббота" + " " + possibleDate);
+
+                    List<PrintSaturday> printList = context.PrintSaturdays.ToList();
+
+                    BuilderStringPrint<PrintSaturday>(printList);
+                }
+
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
+
+                for (int i = 0; i < 7; i++)
+                {
+                    if (i < 4) continue;
+                    if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
+                    string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
+
+                    using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Воскресенье" + " " + possibleDate);
+
+                    List<PrintSunday> printList = context.PrintSundays.ToList();
+
+                    BuilderStringPrint<PrintSunday>(printList);
+                }
+
             }
             ThreadingTasks();
         }
+
+        // Сборка и запись в файл событий 
+        public void BuilderStringPrint<T>(List<T> values)
+        {
+            string builtedStr = "";
+            string h = "";
+            string m = "";
+            string? desc = "";
+            string name = "";
+            string series = "";
+            string seriesOrPart = "";
+
+            string nameFile = "Efir.txt";
+            string savePath = pathToEfirForSave + "\\" + nameFile;
+
+            for (int i = 0; i < values.Count; i++)
+            {
+
+                if (values[i] != null && i < values.Count)
+                {
+
+                    IPrintDay? eventItem = (IPrintDay)values[i];
+
+                    h = eventItem?.TimeToEfir.Hours.ToString().Length == 1 ? "0" + eventItem.TimeToEfir.Hours.ToString() : eventItem.TimeToEfir.Hours.ToString();
+                    m = eventItem.TimeToEfir.Minutes.ToString().Length == 1 ? "0" + eventItem.TimeToEfir.Minutes.ToString() : eventItem.TimeToEfir.Minutes.ToString();
+                    builtedStr += h + ":" + m + " ";
+
+                    desc = eventItem.Description == null ? eventItem.EventName : eventItem.Description;
+                    builtedStr += desc;
+
+                    name = eventItem.EventName;
+                    builtedStr += desc == name ? "" : ":" + " " + name + " ";
+
+                    series = eventItem.Series == 0 ? "" : eventItem.Series.ToString();
+                    seriesOrPart = desc == "Фильм" ? series + " часть" : series + " серия";
+
+                    builtedStr += eventItem?.Series == 0 ? series : seriesOrPart;
+
+                    //builtedStr = h + ":" + m + " " + desc + ":" + " " + (desc == name ? "" : name) + " " + (item?.Series == 0 ? series : seriesOrPart);
+                }
+                using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine(builtedStr);
+                builtedStr = "";
+            }
+        }
+        #endregion
+
 
         //запись в текстовый документ если нет файла по указанному пути
         private void ErrorPath(string filename, string? sourcepath)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Efir.Model
 {
-    internal class PrintFriday
+    internal class PrintFriday : IPrintDay
     {
         public string Id { get; set; }
         public int Series { get; set; }
