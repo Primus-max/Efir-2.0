@@ -36,14 +36,22 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable
     {
+        //TODO ПРОФИКСИТЬ! При записи в текстовый файл смотреть если имя совпадает с предыдущим, то оставлять одно, например:
+        //TODO сериалы идут по несколько серий. Оставлять названия, а через запятую указывать серии.
+        //TODO обучение указывать просто предмет изучения вместо каждого урока 
+        //TODO И т.д.
+
+        //TODO Профиксить добавление профилактических роликов, они добавляются не в хаотичном порядке и постоянно повторяются.
+
+        //TODO Добавить "загулшки" клипы или еще что то маленкьое для заполнения времени
 
         //TODO ПРОФИКСИТЬ! Сделать конструкцию try catch для лекций и еще раз пройтись и проверить где надо сделать эту конструкцию
-        //TODO Профиксить запись в текстовый файл, если сериал, то просто добавлять серии, сократить лишнии записи
+
         //TODO Разобраться почему 07  числа показывалось 31 число
 
 
         //xTODO Сделать при загрузке контента первый раз дату месячной давности
-        //TODO Обернуть все потенциальные участки кода в try catch
+        //XTODO Обернуть все потенциальные участки кода в try catch
         //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть. 
         //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
 
@@ -1567,7 +1575,7 @@ namespace Efir
                                 educational.Duration = DurationContent(pathToContent, item.ToString());
                                 educational.NumOfSeries = filteredFileList.Count();
                                 educational.Series = countSeries;
-                                educational.LastRun = new DateTime(2021);
+                                educational.LastRun = new DateTime(2022);
 
                                 //добавдяю сериал в базу
                                 using (ApplicationContext context = new ApplicationContext())
@@ -1631,7 +1639,7 @@ namespace Efir
                         film.Path = item.FullName;
                         film.Duration = DurationContent(pathToContent, item.ToString());
                         film.Series += countFilm;
-                        film.LastRun = new DateTime().AddYears(2021);
+                        film.LastRun = new DateTime().AddYears(2022);
 
                         using (ApplicationContext context = new ApplicationContext())
                         {
@@ -1850,7 +1858,7 @@ namespace Efir
                         prevention.Duration = DurationContent(pathToContent, item.ToString());
                         prevention.NumOfSeries = contentListMedia.Count();
                         prevention.Series += counPrevention;
-                        prevention.LastRun = new DateTime().AddYears(2021);
+                        prevention.LastRun = new DateTime().AddYears(2022);
 
                         using (ApplicationContext context = new ApplicationContext())
                         {
@@ -1962,7 +1970,7 @@ namespace Efir
                         string[] splittedName = item.Name.Split(".");
                         int parsedName = int.Parse(splittedName[0]);
 
-                        //?TODO убрать рандомное подставление даты, это для тестирования!
+
                         Random random = new Random();
 
 
@@ -1973,7 +1981,7 @@ namespace Efir
                             series.Duration = DurationContent(pathToContent, item.ToString());
                             series.NumOfSeries = contentListMedia.Count();
                             series.IsSeries = parsedName;
-                            series.LastRun = new DateTime().AddYears(2021);
+                            series.LastRun = new DateTime().AddYears(2022);
                             series.NumOfRun = 0;
                             //Convert.ToDateTime(DateTime.Now.AddDays(-random.Next(1, 60)).ToString("dd.MM.yy")) - рандомайзер
                             using (ApplicationContext context = new ApplicationContext())
@@ -2049,7 +2057,7 @@ namespace Efir
                             tvShow.Duration = DurationContent(pathToContent, item.ToString());
                             tvShow.NumOfSeries = filteredFileList.Count();
                             tvShow.Series = countTvShow;
-                            tvShow.LastRun = new DateTime().AddYears(2021);
+                            tvShow.LastRun = new DateTime().AddYears(2022);
 
                             using (ApplicationContext context = new ApplicationContext())
                             {
@@ -2712,41 +2720,52 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceMonday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
+
                                     PrintMonday? print = new PrintMonday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
 
 
                                     int hh = 0;
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
+                                        DateTime lastRunnedDate = preventionsShuffled[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
+
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
-                                        print.Description = preventions[j].Description;
-                                        print.Option = preventions[j].Path;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        print.Option = preventionsShuffled[j].Path;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -2770,11 +2789,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -3246,41 +3261,51 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceTuesday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
                                     PrintTuesday? print = new PrintTuesday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
 
 
                                     int hh = 0;
                                     int mm = 0;
 
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
+                                        DateTime lastRunnedDate = preventionsShuffled[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
+
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Option = preventions[j].Path;
+                                        print.Option = preventionsShuffled[j].Path;
                                         //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
-                                        print.Description = preventions[j].Description;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -3303,11 +3328,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -4290,38 +4311,50 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceThursday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
                                     PrintThursday? print = new PrintThursday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
+
 
                                     int hh = 0;
                                     int mm = 0;
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
+
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
+                                        DateTime lastRunnedDate = preventionsShuffled[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
+
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Option = preventions[j].Path;
-                                        print.Description = preventions[j].Description;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Option = preventionsShuffled[j].Path;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -4345,11 +4378,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -4813,38 +4842,50 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceFriday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
                                     PrintFriday? print = new PrintFriday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
+
 
                                     int hh = 0;
                                     int mm = 0;
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
+
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
+                                        DateTime lastRunnedDate = preventionsShuffled[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
+
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Option = preventions[j].Path;
-                                        print.Description = preventions[j].Description;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Option = preventionsShuffled[j].Path;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -4868,11 +4909,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -5343,39 +5380,52 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceSaturday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
+
                                     PrintSaturday? print = new PrintSaturday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
+
 
                                     int hh = 0;
                                     int mm = 0;
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
+
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
+                                        DateTime lastRunnedDate = preventionsShuffled[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
+
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Option = preventions[j].Path;
+                                        print.Option = preventionsShuffled[j].Path;
 
-                                        print.Description = preventions[j].Description;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -5399,11 +5449,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -5872,39 +5918,51 @@ namespace Efir
                                 #region ПРОФИЛАКТИКА
                                 if (model.EventListSourceSunday[i].EventName == "ПРОФИЛАКТИКА")
                                 {
-                                    List<Prevention> preventions = context.Preventions.ToList();
                                     PrintSunday? print = new PrintSunday();
                                     bool elseFilm = false;
+
+                                    Prevention? sortedPreventionByMinDuration = context?.Preventions.ToList().MinBy(f => f.Duration);
+                                    int minEventTime = MinEventDuration((TimeSpan)(sortedPreventionByMinDuration?.Duration));
+
 
                                     int hh = 0;
                                     int mm = 0;
 
-                                    var listSortedByDate = context.Preventions.ToList().OrderBy(s => s.LastRun);//сортирую лист по дате
-                                    Prevention sortedLastItemByDate = listSortedByDate.Last(); // получаю последнюю просмотренную серию
-                                    int indexElement = preventions.IndexOf(sortedLastItemByDate);// узнаю индекс этой серии в листе такого же вида, в котором ищую эту серию
 
-                                IfLengthIsOver:
-                                    for (int j = indexElement; j < listSortedByDate.Count(); j++)
+                                    List<Prevention> preventionsShuffled = context.Preventions.ToList();
+                                    Shuffle<Prevention>(preventionsShuffled);
+
+
+                                    for (int j = 0; j < preventionsShuffled.Count; j++)
                                     {
+                                        int maybeDays = 10;
+
                                         #region Определение времени
-                                        hh = preventions[j].Duration.Hours * 60;
-                                        mm = preventions[j].Duration.Minutes;
+                                        hh = preventionsShuffled[j].Duration.Hours * 60;
+                                        mm = preventionsShuffled[j].Duration.Minutes;
 
                                         int curMinuteEvent = hh + mm;
                                         #endregion
 
+                                        //int? minFilmDuration = minFilmTime.Duration.Days;
+
                                         if (curMinuteEvent > totalMinute) continue;
 
+                                        DateTime lastRunnedDate = preventionsShuffled[j].LastRun;
+                                        int substrucktedDate = DateTime.Now.Subtract(lastRunnedDate).Days;
+
+                                        if (substrucktedDate < maybeDays) continue; // если показывался раньше 10 дней
+
                                         TimeSpan addedTime = TimeSpan.FromMinutes(curMinuteEvent);
-                                        string[] splitName = preventions[j].Name.Split(".");
+                                        string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
-                                        print.Option = preventions[j].Path;
+                                        print.Option = preventionsShuffled[j].Path;
 
-                                        print.Description = preventions[j].Description;
-                                        preventions[j].LastRun = DateTime.Now;
+                                        print.Description = preventionsShuffled[j].Description;
+                                        preventionsShuffled[j].LastRun = DateTime.Now;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
@@ -5927,11 +5985,7 @@ namespace Efir
                                         totalMinute = TheRestTime;
                                         elseFilm = true;
 
-                                        if (j == preventions.Count - 1)
-                                        {
-                                            indexElement = 0;
-                                            goto IfLengthIsOver;
-                                        }
+                                        if (TheRestTime < minEventTime) break;
                                     }
 
                                 }
@@ -6038,6 +6092,18 @@ namespace Efir
             threadWriteEfir.IsBackground = true;
             threadWriteEfir.Start();
 
+        }
+
+        //Вычисляю минимальную длительность видео 
+        public int MinEventDuration(TimeSpan minDuration)
+        {
+
+            int h = minDuration.Hours * 60;
+            int m = minDuration.Minutes;
+            // int s = minDuration.Seconds;
+            int? duration = h + m;
+
+            return (int)duration;
         }
 
         // выбрать путь сохранения эфира(текстовый файл, медиа)
