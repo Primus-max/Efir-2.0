@@ -1468,10 +1468,6 @@ namespace Efir
                         context.SaveChanges();
                     }
                     AddTvShowAtDB(pathToPrevention);
-                    //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
-                    //mainModel.FilePathToDocumentariesextBox = commonOpenFileDialog.FileName;
-                    //pathToDocumental = mainModel.FilePathToDocumentariesextBox;
-                    // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
                 {
@@ -2015,6 +2011,9 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             TvShow tvShow = new TvShow();
 
+            string nameFile = "WrongFile.txt";
+            string savePath = "Z:\\ТЕСТ" + "\\" + nameFile;
+
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
@@ -2031,12 +2030,16 @@ namespace Efir
                     string directroryName = listDirectories[i].FullName;
                     DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
+
+
                     IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+
                     IEnumerable<FileSystemInfo> filteredFileList =
                         from file in allFileList
                         where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
                         file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
                         select file;
+
 
 
                     StringNumberComparer comparer = new StringNumberComparer();
@@ -2047,29 +2050,37 @@ namespace Efir
                         countTvShow += 1;
                         if (filteredFileList != null)
                         {
-                            tvShow.Name = listDirectories[i].Name;
-                            tvShow.Description = item.Name;
-                            tvShow.Path = item.FullName;
                             tvShow.Duration = DurationContent(pathToContent, item.ToString());
-                            tvShow.NumOfSeries = filteredFileList.Count();
-                            tvShow.Series = countTvShow;
-                            tvShow.LastRun = new DateTime().AddYears(2022);
 
-                            using (ApplicationContext context = new ApplicationContext())
+                            if (tvShow.Duration != TimeSpan.Zero)
                             {
-                                try
-                                {
-                                    context.TvShows.Add(tvShow);
-                                    context.SaveChanges();
-                                }
-                                catch (Exception e)
-                                {
-                                    MessageBox.Show(e.Message);
-                                }
+                                tvShow.Name = listDirectories[i].Name;
+                                tvShow.Description = item.Name;
+                                tvShow.Path = item.FullName;
+                                tvShow.NumOfSeries = filteredFileList.Count();
+                                tvShow.Series = countTvShow;
+                                tvShow.LastRun = new DateTime().AddYears(2022);
 
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    try
+                                    {
+                                        context.TvShows.Add(tvShow);
+                                        context.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+                                }
                             }
-                            tvShow = new TvShow();
+                            else
+                            {
+                                using StreamWriter fstream = new StreamWriter(savePath, true);
+                                fstream.WriteLine($"Данный файл не был записан в базу, проверьте, вопспроизводится ли он: {item.FullName}");
+                            }
 
+                            tvShow = new TvShow();
                             viewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
@@ -2161,7 +2172,19 @@ namespace Efir
         public TimeSpan DurationContent(string pathToContent, string contentName)
         {
             MediaInfo.MediaInfo mi = new MediaInfo.MediaInfo();
-            mi.Open(contentName);
+            TimeSpan duration;
+
+            if (File.Exists(contentName))
+            {
+                try
+                {
+                    mi.Open(contentName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
 
             int h = 0;
             int m = 0;
@@ -2232,14 +2255,22 @@ namespace Efir
             #endregion
 
             var timeMs = mi.Get((MediaInfo.StreamKind)MediaInfoLib.StreamKind.General, 0, "Duration");
-            var Length = TimeSpan.FromMilliseconds(long.Parse(timeMs));
 
-            h = Length.Hours;
-            m = Length.Minutes;
-            s = Length.Seconds;
+            if (timeMs.Length != 0)
+            {
+                var Length = TimeSpan.FromMilliseconds(long.Parse(timeMs));
 
-            TimeSpan duration = new TimeSpan(h, m, s);
-            return duration;
+                h = Length.Hours;
+                m = Length.Minutes;
+                s = Length.Seconds;
+
+                duration = new TimeSpan(h, m, s);
+
+                return duration;
+
+            }
+
+            return TimeSpan.Zero;
         }
 
 
