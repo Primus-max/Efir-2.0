@@ -41,10 +41,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="View\" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="DevExpress.Data" Version="22.1.6" />
 		<PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
 		<PackageReference Include="gong-wpf-dragdrop" Version="3.2.0" />

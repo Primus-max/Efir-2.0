@@ -201,6 +201,23 @@ namespace Efir.ViewModels
 
         #endregion
 
+        #region ИНФОРМАЦИОННОЕ ОКНО О ЗАВЕРШЕНИИ ЗАПИСИ И ЕСЛИ ЕСТЬ, ТО УДАЛЕНИЕ БИТЫХ ФАЙЛОВ
+
+        private string _TextInfo = "Категория записана.\n" +
+            "Но следующие файлы повреждены:";
+        public string TextInfo
+        {
+            get => _TextInfo;
+        }
+
+        private ObservableCollection<String> _WrongFileList = new ObservableCollection<string>();
+        public ObservableCollection<String> WrongFileList
+        {
+            get => _WrongFileList;
+            set => Set(ref _WrongFileList, value);
+        }
+
+        #endregion
 
         public MainWindowViewModel()
         {

@@ -28,18 +28,20 @@ using System.Diagnostics;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Efir.View;
+using System.ComponentModel;
 
 namespace Efir
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IAsyncDisposable
+    public partial class MainWindow : Window, IAsyncDisposable, INotifyPropertyChanged
     {
         //TODO Переделать запись ПРОФИЛАКТИКИ. В Description добвлять названия а в Name Профилактика
         //TODO ПРОФИКСИТЬ! При записи в текстовый файл смотреть если имя совпадает с предыдущим, то оставлять одно, например:
         //TODO сериалы идут по несколько серий. Оставлять названия, а через запятую указывать серии.
-        //TODO обучение указывать просто предмет изучения вместо каждого урока 
+        //TODO обучение указывать просто предмет изучения вместо каждого урока
         //TODO И т.д.
 
         //xTODO Профиксить добавление профилактических роликов, они добавляются не в хаотичном порядке и постоянно повторяются.
@@ -53,7 +55,7 @@ namespace Efir
 
         //xTODO Сделать при загрузке контента первый раз дату месячной давности
         //XTODO Обернуть все потенциальные участки кода в try catch
-        //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть. 
+        //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть.
         //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
 
         //TODO Профиксить отображение путей в медиа, сейчас отображется полный путь до первого файла. Нужно указывать только директорию
@@ -1518,18 +1520,14 @@ namespace Efir
         #region МЕТОДЫ
 
         #region ЗАПИСЬ КОНТЕНТА В БАЗУ
-
-        // TODO для документалок сделать показ всех документалок а не колличество папок в отличии от сериалов
-
+        MainWindowViewModel windowViewModel = new MainWindowViewModel();
         // добавление образовательных
         public async void AddEducationalAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Educational educational = new Educational();
 
-            //List<Educational> Ed = new List<Documentaries>();
 
-            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
                 try
@@ -1545,13 +1543,14 @@ namespace Efir
                         string directroryName = listDirectories[i].FullName;
                         DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
-                        IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                        IEnumerable<FileSystemInfo> filteredFileList =
-                            from file in allFileList
-                            where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                            file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                            select file;
+                        IEnumerable<FileSystemInfo> filteredFileList = GetedFileFromDirectory(secondDirectory, false);
 
+                        /* IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
+                         IEnumerable<FileSystemInfo> filteredFileList =
+                             from file in allFileList
+                             where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                             file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                             select file;*/
 
                         StringNumberComparer comparer = new StringNumberComparer();
                         MainWindowViewModel viewModel = new MainWindowViewModel();
@@ -2010,11 +2009,12 @@ namespace Efir
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             TvShow tvShow = new TvShow();
+            //List<string> wrongFiles = new List<string>();
+            //MainWindowViewModel windowViewModel = new MainWindowViewModel();
 
             string nameFile = "WrongFile.txt";
             string savePath = "Z:\\ТЕСТ" + "\\" + nameFile;
 
-            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
                 int countTvShow = 0;
@@ -2030,17 +2030,7 @@ namespace Efir
                     string directroryName = listDirectories[i].FullName;
                     DirectoryInfo secondDirectory = new DirectoryInfo(directroryName);
 
-
-
-                    IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-
-                    IEnumerable<FileSystemInfo> filteredFileList =
-                        from file in allFileList
-                        where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                        file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                        select file;
-
-
+                    IEnumerable<FileSystemInfo> filteredFileList = GetedFileFromDirectory(secondDirectory, false);
 
                     StringNumberComparer comparer = new StringNumberComparer();
                     MainWindowViewModel viewModel = new MainWindowViewModel();
@@ -2076,6 +2066,8 @@ namespace Efir
                             }
                             else
                             {
+                                //wrongFiles.Add(item.Name);
+                                windowViewModel.WrongFileList.Add(item.FullName);
                                 using StreamWriter fstream = new StreamWriter(savePath, true);
                                 fstream.WriteLine($"Данный файл не был записан в базу, проверьте, вопспроизводится ли он: {item.FullName}");
                             }
@@ -2084,13 +2076,59 @@ namespace Efir
                             viewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
-
                     using (ApplicationContext context = new ApplicationContext())
-                        CountOfTvShowTextBlock.Text = Convert.ToString(context.Preventions.Count());
+                        CountOfTvShowTextBlock.Text = Convert.ToString(context.TvShows.Count());
                 }
             }
+            if (windowViewModel.WrongFileList.Count != 0)
+            {
+                ShowWrongFiles(windowViewModel.WrongFileList);
 
+            }
+            else
+            {
+                MessageBox.Show("   Весь контент успешно добавлен в базу");
+            }
         }
+
+        #region ПОКАЗ И УДАЛЕНИЕ ПОВРЕЖДЕННЫХ ФАЙЛОВ
+        public class WrongFile
+        {
+            ObservableCollection<String> listWrongFiles = new ObservableCollection<string>();
+            //static MainWindowViewModel viewModel = new MainWindowViewModel();
+
+            // Показываю диалог с поврежденными файлами
+            public void ShowWrongFiles(ObservableCollection<string> wrongList)
+            {
+                FinalInfoWindow finalInfo = new FinalInfoWindow();
+
+                foreach (var item in wrongList)
+                {
+                    string[] splittedName = item.Split("\\");
+                    string nameFile = splittedName[splittedName.Length - 1];
+                    listWrongFiles.Add(nameFile);
+                }
+                finalInfo.ListViewWrongFiles.ItemsSource = listWrongFiles;
+                finalInfo.Show();
+            }
+
+            public void DeletWrongFiles()
+            {
+
+                foreach (var path in viewModel.WrongFileList)
+                {
+                    if (File.Exists(path))
+                        File.Delete(path);
+                }
+
+            }
+        }
+
+
+
+        #endregion
+
+
 
         // реализация интерфейса для сортировки строк с нумерическим значением(ч частном случае: сортировка по именам для сериалов у которых имена - это цифры)
         //TODO  вынести данный класс в отдельный файл
@@ -2161,6 +2199,9 @@ namespace Efir
 
 
         private ILogger _logger = null;
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
         public ILogger logger
         {
             get => _logger;
@@ -2195,21 +2236,21 @@ namespace Efir
             /*using (Stream stream = new FileStream(contentName, FileMode.Open, FileAccess.Read))
             {
 
-                logger = NullLogger.Instance;
-                MediaInfo.MediaInfoWrapper mediaInfoWrapper = new MediaInfo.MediaInfoWrapper(stream, logger);
-                foreach (var item in mediaInfoWrapper.VideoStreams.ToList())
-                {
-                    h = item.Duration.Hours;
-                    m = item.Duration.Minutes;
-                    s = item.Duration.Seconds;
-                }
+            logger = NullLogger.Instance;
+            MediaInfo.MediaInfoWrapper mediaInfoWrapper = new MediaInfo.MediaInfoWrapper(stream, logger);
+            foreach (var item in mediaInfoWrapper.VideoStreams.ToList())
+            {
+            h = item.Duration.Hours;
+            m = item.Duration.Minutes;
+            s = item.Duration.Seconds;
+            }
             }*/
 
 
             // альтернатива моему методу с разбиением строки
             /* int h = duration.Hours;
-             int m = duration.Minutes;
-             int s = duration.Seconds;*/
+            int m = duration.Minutes;
+            int s = duration.Seconds;*/
 
             //TimeSpan duration = new TimeSpan(h, m, s);
 
@@ -2218,40 +2259,40 @@ namespace Efir
 
             /*string mediaDataFromVideo = mi.Inform();
 
-            string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.StartsWith("Duration"));
-            string durationFromString = "";
+string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.StartsWith("Duration"));
+                string durationFromString = "";
 
-            // TODO здесь можно отрефакторить убрав личшнее прохождение по пустому пространству
-            for (int i = 0; i < durationFromMediaList.Length; i++)
-            {
-                if (durationFromMediaList[i].ToString() == ":")
-                {
-                    durationFromString = durationFromMediaList.Remove(0, i + 1);
-                }
+                // TODO здесь можно отрефакторить убрав личшнее прохождение по пустому пространству
+                for (int i = 0; i < durationFromMediaList.Length; i++)
+                  {
+                  if (durationFromMediaList[i].ToString() == ":")
+                  {
+                  durationFromString = durationFromMediaList.Remove(0, i + 1);
+                  }
 
-            }
+                  }
 
 
 
-            var durationSplit = durationFromString.Split(" ");
+                  var durationSplit = durationFromString.Split(" ");
 
-            for (int j = 0; j < durationSplit.Length; j++)
-            {
-                if (durationSplit[j].ToLower().StartsWith("h".ToLower()))
-                {
-                    h = Convert.ToInt16(durationSplit[j - 1]);
-                }
-                if (durationSplit[j].ToLower().StartsWith("m".ToLower()))
-                {
-                    m = Convert.ToInt16(durationSplit[j - 1]);
-                }
-                if (durationSplit[j].ToLower().StartsWith("s".ToLower()))
-                {
-                    s = Convert.ToInt16(durationSplit[j - 1]);
-                }
-            }
+                for (int j = 0; j < durationSplit.Length; j++)
+                  {
+                  if (durationSplit[j].ToLower().StartsWith("h".ToLower()))
+                  {
+                  h = Convert.ToInt16(durationSplit[j - 1]);
+                  }
+                  if (durationSplit[j].ToLower().StartsWith("m".ToLower()))
+                  {
+                  m = Convert.ToInt16(durationSplit[j - 1]);
+                  }
+                  if (durationSplit[j].ToLower().StartsWith("s".ToLower()))
+                  {
+                  s = Convert.ToInt16(durationSplit[j - 1]);
+                  }
+                  }
 
-            TimeSpan duration = new TimeSpan(h, m, s);*/
+                  TimeSpan duration = new TimeSpan(h, m, s);*/
             #endregion
 
             var timeMs = mi.Get((MediaInfo.StreamKind)MediaInfoLib.StreamKind.General, 0, "Duration");
@@ -2316,24 +2357,24 @@ namespace Efir
 
             // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
             /*  using (ApplicationContext context = new ApplicationContext())
-              {
-                  foreach (var item in context.Films.ToList())
-                  {
-                      item.LastRun = new DateTime().AddYears(2015);
-                  }
-                  context.SaveChanges();
+            {
+            foreach (var item in context.Films.ToList())
+            {
+            item.LastRun = new DateTime().AddYears(2015);
+            }
+            context.SaveChanges();
 
-                  foreach (var item in context.Educationals.ToList())
-                  {
-                      item.LastRun = new DateTime().AddYears(2015);
-                  }
-                  context.SaveChanges();
-                  foreach (var item in context.TvShows.ToList())
-                  {
-                      item.LastRun = new DateTime().AddYears(2015);
-                  }
-                  context.SaveChanges();
-              }*/
+            foreach (var item in context.Educationals.ToList())
+            {
+            item.LastRun = new DateTime().AddYears(2015);
+            }
+            context.SaveChanges();
+            foreach (var item in context.TvShows.ToList())
+            {
+            item.LastRun = new DateTime().AddYears(2015);
+            }
+            context.SaveChanges();
+            }*/
             // -------------------------------- ВРЕМЕННО!!! ---------------------------------//
 
             foreach (var tab in tabControl.Items)
@@ -6067,12 +6108,12 @@ namespace Efir
             ClearPrintModels();
 
             MessageBox.Show("Началось создание эфира на неделю." + '\n' +
-                "Это может занять продолжительное время." + '\n' +
-                "Не тревожьте программу." + '\n' +
-                "Не клацайте по кнопкам." + '\n' +
-                "Наберитесь терпения." + '\n' +
-                "В конце процесса вы получите уведомление" + '\n' +
-                "              Нажмите OK для продолжения");
+            "Это может занять продолжительное время." + '\n' +
+            "Не тревожьте программу." + '\n' +
+            "Не клацайте по кнопкам." + '\n' +
+            "Наберитесь терпения." + '\n' +
+            "В конце процесса вы получите уведомление" + '\n' +
+            "              Нажмите OK для продолжения");
 
             GenerateEfir();
 
@@ -6083,7 +6124,7 @@ namespace Efir
 
         }
 
-        //Вычисляю минимальную длительность видео 
+        //Вычисляю минимальную длительность видео
         public int MinEventDuration(TimeSpan minDuration)
         {
 
@@ -6242,7 +6283,7 @@ namespace Efir
             ThreadingTasks();
         }
 
-        // Сборка и запись в файл событий 
+        // Сборка и запись в файл событий
         public void BuilderStringPrint<T>(List<T> values)
         {
             string builtedStr = "";
@@ -6348,19 +6389,19 @@ namespace Efir
                             MessageBox.Show(ex.Message);
                             #region Добавление атрибутов для файла
                             /* FileAttributes attributes = File.GetAttributes(sourcePath);
-                             if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
-                             {
-                                 FileInfo fileInfo = new FileInfo(sourcePath);
-                                 fileInfo.IsReadOnly = false; //Только для чтения неактивен
-                                 *//*fileInfo.IsReadOnly = true; //Только для чтения активен
-                                 attributes &= ~FileAttributes.ReadOnly;
-                                 File.SetAttributes(sourcePath, attributes);*//*
-                                 File.Copy(sourcePath, combainPath, true);
-                             }
-                             else
-                             {
-                                 throw;
-                             }*/
+                            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+                            {
+                            FileInfo fileInfo = new FileInfo(sourcePath);
+                            fileInfo.IsReadOnly = false; //Только для чтения неактивен
+                            *//*fileInfo.IsReadOnly = true; //Только для чтения активен
+                            attributes &= ~FileAttributes.ReadOnly;
+                            File.SetAttributes(sourcePath, attributes);*//*
+                            File.Copy(sourcePath, combainPath, true);
+                            }
+                            else
+                            {
+                            throw;
+                            }*/
                             #endregion
                         }
                     }
@@ -6603,10 +6644,10 @@ namespace Efir
                 MainWindowViewModel model = new MainWindowViewModel();
 
                 if (context.Films.Count() == 0 || context.Serieses.Count() == 0 || context.Educationals.Count() == 0 ||
-                     context.Preventions.Count() == 0 || context.Lections.Count() == 0 || context.TvShows.Count() == 0)
+                context.Preventions.Count() == 0 || context.Lections.Count() == 0 || context.TvShows.Count() == 0)
                 {
                     MessageBox.Show("Проверьте, указаны ли пути к контенту" + '\n' +
-                        "Возможно вы не добавили в одну из категорий видео");
+                    "Возможно вы не добавили в одну из категорий видео");
                 }
 
                 #region Отсальные дни заполнить по поенедельнику, если пустые
