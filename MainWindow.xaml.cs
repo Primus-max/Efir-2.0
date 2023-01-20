@@ -1885,7 +1885,7 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Prevention prevention = new Prevention();
             IEnumerable<FileInfo> contentListMedia;
-            //List<Educational> Ed = new List<Documentaries>();
+            MainWindowViewModel windowViewModel = new MainWindowViewModel();
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
@@ -1896,7 +1896,6 @@ namespace Efir
                 contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(firstDirectory, searchOpt);
 
                 StringNumberComparer comparer = new StringNumberComparer();
-                MainWindowViewModel viewModel = new MainWindowViewModel();
 
                 foreach (FileInfo item in contentListMedia)
                 {
@@ -1904,34 +1903,41 @@ namespace Efir
 
                     if (contentListMedia != null)
                     {
-                        prevention.Description = firstDirectory.Name;
-                        prevention.Name = item.Name;
-                        prevention.Path = item.FullName;
                         prevention.Duration = DurationContent(pathToContent, item.ToString());
-                        prevention.NumOfSeries = contentListMedia.Count();
-                        prevention.Series += counPrevention;
-                        prevention.LastRun = new DateTime().AddYears(2022);
 
-                        using (ApplicationContext context = new ApplicationContext())
+
+                        if (prevention.Duration != TimeSpan.Zero)
                         {
-                            try
+                            prevention.Description = firstDirectory.Name;
+                            prevention.Name = item.Name;
+                            prevention.Path = item.FullName;
+                            prevention.NumOfSeries = contentListMedia.Count();
+                            prevention.Series += counPrevention;
+                            prevention.LastRun = new DateTime().AddYears(2022);
+
+                            using (ApplicationContext context = new ApplicationContext())
                             {
-                                context.Preventions.Add(prevention);
-                                context.SaveChanges();
+                                try
+                                {
+                                    context.Preventions.Add(prevention);
+                                    context.SaveChanges();
+                                }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
                             }
-                            catch (Exception e)
-                            {
-                                MessageBox.Show(e.Message);
-                            }
+                        }
+                        else
+                        {
+                            windowViewModel.WrongFileList.Add(item.FullName);
                         }
                         prevention = new Prevention();
                         searchOpt = false;
 
-                        viewModel.ValueProgressDownlaodingSeries += 1;
-                        //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                        windowViewModel.ValueProgressDownlaodingSeries += 1;
                     }
                 }
-
 
 
                 //TODO пересмотреть данный диалог
@@ -1954,40 +1960,53 @@ namespace Efir
 
                         if (contentListMedia != null)
                         {
-
-                            prevention.Name = item.Name;
-                            prevention.Description = listInnerDirectories[i].Name;
-                            prevention.Path = item.FullName;
                             prevention.Duration = DurationContent(pathToContent, item.ToString());
-                            prevention.NumOfSeries = contentListMedia.Count();
-                            prevention.Series += counPrevention;
 
-                            using (ApplicationContext context = new ApplicationContext())
+                            if (prevention.Duration != TimeSpan.Zero)
                             {
-                                try
-                                {
-                                    context.Preventions.Add(prevention);
-                                    context.SaveChanges();
-                                }
-                                catch (Exception e)
-                                {
-                                    MessageBox.Show(e.Message);
-                                }
+                                prevention.Name = item.Name;
+                                prevention.Description = listInnerDirectories[i].Name;
+                                prevention.Path = item.FullName;
+                                prevention.NumOfSeries = contentListMedia.Count();
+                                prevention.Series += counPrevention;
 
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    try
+                                    {
+                                        context.Preventions.Add(prevention);
+                                        context.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                windowViewModel.WrongFileList.Add(item.FullName);
                             }
 
                             prevention = new Prevention();
 
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-
-                            //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
+                            windowViewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
                     using (ApplicationContext context = new ApplicationContext())
                         CountOfPreventionlTextBlock.Text = Convert.ToString(context.Preventions.Count());
                 }
             }
+            if (windowViewModel.WrongFileList.Count != 0)
+            {
+                ShowWrongFiles(windowViewModel.WrongFileList);
 
+            }
+            else
+            {
+                MessageBox.Show("   Весь контент успешно добавлен в базу");
+            }
         }
 
         // добавление сериалов
