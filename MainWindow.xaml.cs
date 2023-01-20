@@ -1755,11 +1755,10 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Lection lection = new Lection();
             List<Lection> Lections = new List<Lection>();
-            MainWindowViewModel viewModel = new MainWindowViewModel();
+            MainWindowViewModel windowViewModel = new MainWindowViewModel();
             IEnumerable<FileInfo> contentListMedia;
 
 
-            //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
             {
                 int countLection = 0;
@@ -1775,31 +1774,38 @@ namespace Efir
 
                     if (contentListMedia != null)
                     {
-                        lection.Name = item.Name;
-                        lection.Path = item.FullName;
                         lection.Duration = DurationContent(pathToContent, item.ToString());
-                        lection.NumOfSeries = contentListMedia.Count();
-                        lection.Series += countLection;
 
-                        using (ApplicationContext context = new ApplicationContext())
+                        if (lection.Duration != TimeSpan.Zero)
                         {
-                            try
-                            {
-                                context.Lections.Add(lection);
-                                context.SaveChanges();
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.Message);
-                            }
+                            lection.Name = item.Name;
+                            lection.Path = item.FullName;
+                            lection.NumOfSeries = contentListMedia.Count();
+                            lection.Series += countLection;
 
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                try
+                                {
+                                    context.Lections.Add(lection);
+                                    context.SaveChanges();
+                                }
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            windowViewModel.WrongFileList.Add(item.FullName);
                         }
 
                         lection = new Lection();
                         searchOpt = false;
 
-                        viewModel.ValueProgressDownlaodingSeries += 1;
-                        //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                        windowViewModel.ValueProgressDownlaodingSeries += 1;
                     }
                 }
 
@@ -1823,33 +1829,38 @@ namespace Efir
 
                         if (contentListMedia != null)
                         {
-
-                            lection.Name = item.Name;
-                            lection.Description = listInnerDirectories[i].Name;
-                            lection.Path = item.FullName;
                             lection.Duration = DurationContent(pathToContent, item.ToString());
-                            lection.NumOfSeries = contentListMedia.Count();
-                            lection.Series += countLection;
 
-                            using (ApplicationContext context = new ApplicationContext())
+
+                            if (lection.Duration != TimeSpan.Zero)
                             {
-                                try
-                                {
-                                    context.Lections.Add(lection);
-                                    context.SaveChanges();
-                                }
-                                catch (Exception e)
-                                {
-                                    MessageBox.Show(e.Message);
-                                }
+                                lection.Name = item.Name;
+                                lection.Description = listInnerDirectories[i].Name;
+                                lection.Path = item.FullName;
+                                lection.NumOfSeries = contentListMedia.Count();
+                                lection.Series += countLection;
 
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    try
+                                    {
+                                        context.Lections.Add(lection);
+                                        context.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
+                                }
                             }
-
+                            else
+                            {
+                                windowViewModel.WrongFileList.Add(item.FullName);
+                            }
                             lection = new Lection();
 
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-
-                            //ProgressDownLoadingContentLection.Value += viewModel.ValueProgressDownlaodingSeries;
+                            windowViewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
                     using (ApplicationContext context = new ApplicationContext())
@@ -1857,9 +1868,17 @@ namespace Efir
                 }
 
             }
+            if (windowViewModel.WrongFileList.Count != 0)
+            {
+                ShowWrongFiles(windowViewModel.WrongFileList);
+
+            }
+            else
+            {
+                MessageBox.Show("   Весь контент успешно добавлен в базу");
+            }
         }
 
-        // TODO для профилактических отображать колличество контента а не папок
         // добавление профилактических
         public void AddPreventionAtDB(string pathToContent)
         {
