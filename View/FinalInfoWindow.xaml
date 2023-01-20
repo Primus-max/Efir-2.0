@@ -16,8 +16,7 @@
 
         xmlns:vm="clr-namespace:Efir.ViewModels"
         Title="Информация о категории"
-        Height="Auto"
-        MaxHeight="700"
+        Height="600"
         Width="Auto"
         MaxWidth="350">
     <Window.DataContext>
@@ -25,22 +24,30 @@
     </Window.DataContext>
 
     <Grid>
+
         <Border Padding="5">
             <StackPanel>
                 <TextBlock
                     Margin="0 10 0 20 "
                     Text="{Binding TextInfo}"/>
-                <TextBlock x:Name="SaccessText"/>
-                <ListView x:Name="ListWrongFiles" />
-                <StackPanel 
-                    Margin="0 20 0 0"
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Center" 
+                <TextBlock x:Name="SaccessTextDeletedText"
+                           Margin="0 10 0 0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           />
+                <ListView x:Name="ListWrongFiles"
+                          Height="400"/>
+                <StackPanel
+                    x:Name="ButtonStack"
+                    Margin="0 20 0 20"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Stretch" >
-                    <Button Margin="0 0 10 0" Click="DeleteWrongFiles_CLick">
+                    <Button Margin="0 0 10 0"
+                            Click="DeleteWrongFiles_Click">
                         Удалить
                     </Button>
-                    <Button Margin="10 0 0 0">
+                    <Button
+                        Margin="10 0 0 0"
+                        Click="CloseFinalInfoWin_Click">
                         Позже
                     </Button>
                 </StackPanel>

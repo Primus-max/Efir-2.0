@@ -32,11 +32,28 @@ namespace Efir.View
             ListViewWrongFiles = ListWrongFiles;
         }
 
-        private void DeleteWrongFiles_CLick(object sender, RoutedEventArgs e)
+        private void DeleteWrongFiles_Click(object sender, RoutedEventArgs e)
         {
-            WrongFile.DeletWrongFiles();
-            SaccessText.Text = "Все файлы успешно удалены";
+            foreach (var path in ListViewWrongFiles.ItemsSource)
+            {
+                if (File.Exists((string?)path))
+                    File.Delete((string)path);
+
+            }
+            int SaccessTextDeletedTextMargin = 50;
+
+            ListViewWrongFiles.ItemsSource = "";
+            SaccessTextDeletedText.FontSize = 22;
+            
+            SaccessTextDeletedText.Foreground = Brushes.GreenYellow;
+            SaccessTextDeletedText.Text = "Все файлы успешно удалены";
+            ButtonStack.Visibility = Visibility.Hidden;
         }
 
+        private void CloseFinalInfoWin_Click(object sender, RoutedEventArgs e)
+        {
+            FinalInfoWindow finalInfo = new FinalInfoWindow();
+            finalInfo.Close();
+        }
     }
 }

@@ -1527,7 +1527,6 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Educational educational = new Educational();
 
-
             if (firstDirectory.Exists)
             {
                 try
@@ -1563,34 +1562,39 @@ namespace Efir
                                 string[] splitName = item.Name.Split(".");
                                 string formattedName = splitName[0];
 
-                                educational.Name = formattedName;
-                                educational.Description = listDirectories[i].Name;
-                                educational.Path = item.FullName;
                                 educational.Duration = DurationContent(pathToContent, item.ToString());
-                                educational.NumOfSeries = filteredFileList.Count();
-                                educational.Series = countSeries;
-                                educational.LastRun = new DateTime(2022);
 
-                                //добавдяю сериал в базу
-                                using (ApplicationContext context = new ApplicationContext())
+                                if (educational.Duration != TimeSpan.Zero)
                                 {
-                                    try
-                                    {
-                                        context.Educationals.Add(educational);
-                                        context.SaveChanges();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
-                                    }
 
+                                    educational.Name = formattedName;
+                                    educational.Description = listDirectories[i].Name;
+                                    educational.Path = item.FullName;
+                                    educational.NumOfSeries = filteredFileList.Count();
+                                    educational.Series = countSeries;
+                                    educational.LastRun = new DateTime(2022);
+
+                                    using (ApplicationContext context = new ApplicationContext())
+                                    {
+                                        try
+                                        {
+                                            context.Educationals.Add(educational);
+                                            context.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    windowViewModel.WrongFileList.Add(item.FullName);
                                 }
 
                                 educational = new Educational();
-
                                 viewModel.ValueProgressDownlaodingSeries += 1;
-
-                                // ProgressDownLoadingContent.Value += viewModel.ValueProgressDownlaodingSeries;
                             }
                         }
                         CountOfEducationalsTextBlock.Text = Convert.ToString(listDirectories.Length);
@@ -1601,6 +1605,16 @@ namespace Efir
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+
+            if (windowViewModel.WrongFileList.Count != 0)
+            {
+                ShowWrongFiles(windowViewModel.WrongFileList);
+
+            }
+            else
+            {
+                MessageBox.Show("   Весь контент успешно добавлен в базу");
             }
             await System.Threading.Tasks.Task.Yield();
         }
@@ -2009,11 +2023,6 @@ namespace Efir
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             TvShow tvShow = new TvShow();
-            //List<string> wrongFiles = new List<string>();
-            //MainWindowViewModel windowViewModel = new MainWindowViewModel();
-
-            string nameFile = "WrongFile.txt";
-            string savePath = "Z:\\ТЕСТ" + "\\" + nameFile;
 
             if (firstDirectory.Exists)
             {
@@ -2066,12 +2075,8 @@ namespace Efir
                             }
                             else
                             {
-                                //wrongFiles.Add(item.Name);
                                 windowViewModel.WrongFileList.Add(item.FullName);
-                                using StreamWriter fstream = new StreamWriter(savePath, true);
-                                fstream.WriteLine($"Данный файл не был записан в базу, проверьте, вопспроизводится ли он: {item.FullName}");
                             }
-
                             tvShow = new TvShow();
                             viewModel.ValueProgressDownlaodingSeries += 1;
                         }
@@ -2091,41 +2096,15 @@ namespace Efir
             }
         }
 
+
+
         #region ПОКАЗ И УДАЛЕНИЕ ПОВРЕЖДЕННЫХ ФАЙЛОВ
-        public class WrongFile
+        public void ShowWrongFiles(ObservableCollection<string> wrongList)
         {
-            ObservableCollection<String> listWrongFiles = new ObservableCollection<string>();
-            //static MainWindowViewModel viewModel = new MainWindowViewModel();
-
-            // Показываю диалог с поврежденными файлами
-            public void ShowWrongFiles(ObservableCollection<string> wrongList)
-            {
-                FinalInfoWindow finalInfo = new FinalInfoWindow();
-
-                foreach (var item in wrongList)
-                {
-                    string[] splittedName = item.Split("\\");
-                    string nameFile = splittedName[splittedName.Length - 1];
-                    listWrongFiles.Add(nameFile);
-                }
-                finalInfo.ListViewWrongFiles.ItemsSource = listWrongFiles;
-                finalInfo.Show();
-            }
-
-            public void DeletWrongFiles()
-            {
-
-                foreach (var path in viewModel.WrongFileList)
-                {
-                    if (File.Exists(path))
-                        File.Delete(path);
-                }
-
-            }
+            FinalInfoWindow finalInfo = new FinalInfoWindow();
+            finalInfo.ListViewWrongFiles.ItemsSource = wrongList;
+            finalInfo.Show();
         }
-
-
-
         #endregion
 
 

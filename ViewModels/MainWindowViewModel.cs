@@ -1,12 +1,16 @@
-﻿using Efir.Model;
+﻿using Efir.Commands;
+using Efir.Model;
+using Efir.View;
 using Efir.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows;
+using System.Windows.Input;
 
 namespace Efir.ViewModels
 {
@@ -219,9 +223,28 @@ namespace Efir.ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
+        #region КОМАНДЫ
+        public ICommand DeleteWrongFilesCommand { get; }
+        private void OnDeleteWrongFilesCommandExecuted(object p)
         {
 
+            foreach (var path in WrongFileList)
+            {
+                /*if (File.Exists(path))
+                    File.Delete(path);*/
+
+            }
+        }
+        private bool CanDeleteWrongFilesCommandExecute(object p) => true;
+
+
+        #endregion
+
+        public MainWindowViewModel()
+        {
+            #region Команды
+            DeleteWrongFilesCommand = new LambdaCommand(OnDeleteWrongFilesCommandExecuted, CanDeleteWrongFilesCommandExecute);
+            #endregion
 
 
         }
