@@ -1520,12 +1520,13 @@ namespace Efir
         #region МЕТОДЫ
 
         #region ЗАПИСЬ КОНТЕНТА В БАЗУ
-        MainWindowViewModel windowViewModel = new MainWindowViewModel();
+
         // добавление образовательных
         public async void AddEducationalAtDB(string pathToContent)
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Educational educational = new Educational();
+            MainWindowViewModel windowViewModel = new MainWindowViewModel();
 
             if (firstDirectory.Exists)
             {
@@ -1625,7 +1626,7 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Film film = new Film();
             List<Film> Films = new List<Film>();
-            MainWindowViewModel viewModel = new MainWindowViewModel();
+            MainWindowViewModel windowViewModel = new MainWindowViewModel();
             IEnumerable<FileInfo> contentListMedia;
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
@@ -1642,30 +1643,39 @@ namespace Efir
                 {
                     if (contentListMedia != null)
                     {
-                        film.Name = item.Name;
-                        film.Path = item.FullName;
                         film.Duration = DurationContent(pathToContent, item.ToString());
-                        film.Series += countFilm;
-                        film.LastRun = new DateTime().AddYears(2022);
 
-                        using (ApplicationContext context = new ApplicationContext())
+
+                        if (film.Duration != TimeSpan.Zero)
                         {
-                            try
-                            {
-                                context.Films.Add(film);
-                                context.SaveChanges();
-                            }
-                            catch (Exception e)
-                            {
-                                MessageBox.Show(e.Message);
-                            }
+                            film.Name = item.Name;
+                            film.Path = item.FullName;
+                            film.Series += countFilm;
+                            film.LastRun = new DateTime().AddYears(2022);
 
+                            using (ApplicationContext context = new ApplicationContext())
+                            {
+                                try
+                                {
+                                    context.Films.Add(film);
+                                    context.SaveChanges();
+                                }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            windowViewModel.WrongFileList.Add(item.FullName);
                         }
 
                         film = new Film();
                         searchOpt = false;
 
-                        viewModel.ValueProgressDownlaodingSeries += 1;
+                        windowViewModel.ValueProgressDownlaodingSeries += 1;
                     }
                 }
 
@@ -1688,37 +1698,54 @@ namespace Efir
 
                         if (contentListMedia != null)
                         {
-                            film.Name = listInnerDirectories[i].Name;
-                            film.Path = item.FullName;
                             film.Duration = DurationContent(pathToContent, item.ToString());
-                            film.NumOfSeries = contentListMedia.Count();
-                            film.Series += countFilm;
-                            film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-2).ToString("dd.MM.yy"));
 
-                            using (ApplicationContext context = new ApplicationContext())
+
+
+                            if (film.Duration != TimeSpan.Zero)
                             {
-                                try
-                                {
-                                    context.Films.Add(film);
-                                    context.SaveChanges();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.Message);
-                                }
+                                film.Name = listInnerDirectories[i].Name;
+                                film.Path = item.FullName;
 
+                                film.NumOfSeries = contentListMedia.Count();
+                                film.Series += countFilm;
+                                film.LastRun = Convert.ToDateTime(DateTime.Now.AddDays(-2).ToString("dd.MM.yy"));
+
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    try
+                                    {
+                                        context.Films.Add(film);
+                                        context.SaveChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        MessageBox.Show(ex.Message);
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                windowViewModel.WrongFileList.Add(item.FullName);
                             }
 
                             film = new Film();
-
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-
-                            //ProgressDownLoadingContentFilm.Value += viewModel.ValueProgressDownlaodingSeries;
+                            windowViewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
                     using (ApplicationContext context = new ApplicationContext())
                         CountOfFilmTextBlock.Text = Convert.ToString(context.Films.Count());
                 }
+            }
+            if (windowViewModel.WrongFileList.Count != 0)
+            {
+                ShowWrongFiles(windowViewModel.WrongFileList);
+
+            }
+            else
+            {
+                MessageBox.Show("   Весь контент успешно добавлен в базу");
             }
         }
 
@@ -2023,6 +2050,7 @@ namespace Efir
         {
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             TvShow tvShow = new TvShow();
+            MainWindowViewModel windowViewModel = new MainWindowViewModel();
 
             if (firstDirectory.Exists)
             {
