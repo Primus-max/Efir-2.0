@@ -2015,6 +2015,7 @@ namespace Efir
             DirectoryInfo firstDirectory = new DirectoryInfo(pathToContent);
             Series series = new Series();
             IEnumerable<FileInfo> contentListMedia;
+            MainWindowViewModel windowViewModel = new MainWindowViewModel();
 
             //TODO сделать проверку, если в папке не видео файл или еще что - сделать что-то
             if (firstDirectory.Exists)
@@ -2034,7 +2035,7 @@ namespace Efir
                     contentListMedia = (IEnumerable<FileInfo>)GetedFileFromDirectory(secondDirectory, searchOpt);
 
                     StringNumberComparer comparer = new StringNumberComparer();
-                    MainWindowViewModel viewModel = new MainWindowViewModel();
+
                     foreach (FileInfo item in contentListMedia.OrderBy(f => f.Name, comparer))
                     {
                         string[] splittedName = item.Name.Split(".");
@@ -2046,33 +2047,38 @@ namespace Efir
 
                         if (contentListMedia != null)
                         {
-                            series.Name = listDirectories[i].Name;
-                            series.Path = item.FullName;
                             series.Duration = DurationContent(pathToContent, item.ToString());
-                            series.NumOfSeries = contentListMedia.Count();
-                            series.IsSeries = parsedName;
-                            series.LastRun = new DateTime().AddYears(2022);
-                            series.NumOfRun = 0;
-                            //Convert.ToDateTime(DateTime.Now.AddDays(-random.Next(1, 60)).ToString("dd.MM.yy")) - рандомайзер
-                            using (ApplicationContext context = new ApplicationContext())
-                            {
-                                try
-                                {
-                                    context.Serieses.Add(series);
-                                    context.SaveChanges();
-                                }
-                                catch (Exception e)
-                                {
-                                    MessageBox.Show(e.Message);
-                                }
 
+                            if (series.Duration != TimeSpan.Zero)
+                            {
+                                series.Name = listDirectories[i].Name;
+                                series.Path = item.FullName;
+                                series.NumOfSeries = contentListMedia.Count();
+                                series.IsSeries = parsedName;
+                                series.LastRun = new DateTime().AddYears(2022);
+                                series.NumOfRun = 0;
+                                //Convert.ToDateTime(DateTime.Now.AddDays(-random.Next(1, 60)).ToString("dd.MM.yy")) - рандомайзер
+                                using (ApplicationContext context = new ApplicationContext())
+                                {
+                                    try
+                                    {
+                                        context.Serieses.Add(series);
+                                        context.SaveChanges();
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                windowViewModel.WrongFileList.Add(item.FullName);
                             }
 
                             series = new Series();
-
-                            viewModel.ValueProgressDownlaodingSeries += 1;
-
-                            //ProgressDownLoadingContentSeries.Value += viewModel.ValueProgressDownlaodingSeries;
+                            windowViewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
 
@@ -2080,7 +2086,15 @@ namespace Efir
                 }
 
             }
+            if (windowViewModel.WrongFileList.Count != 0)
+            {
+                ShowWrongFiles(windowViewModel.WrongFileList);
 
+            }
+            else
+            {
+                MessageBox.Show("   Весь контент успешно добавлен в базу");
+            }
         }
 
         // добавление телепередач
@@ -2108,7 +2122,6 @@ namespace Efir
                     IEnumerable<FileSystemInfo> filteredFileList = GetedFileFromDirectory(secondDirectory, false);
 
                     StringNumberComparer comparer = new StringNumberComparer();
-                    MainWindowViewModel viewModel = new MainWindowViewModel();
 
                     foreach (FileInfo item in filteredFileList.OrderBy(f => f.Name, comparer))
                     {
@@ -2144,7 +2157,7 @@ namespace Efir
                                 windowViewModel.WrongFileList.Add(item.FullName);
                             }
                             tvShow = new TvShow();
-                            viewModel.ValueProgressDownlaodingSeries += 1;
+                            windowViewModel.ValueProgressDownlaodingSeries += 1;
                         }
                     }
                     using (ApplicationContext context = new ApplicationContext())

@@ -42,9 +42,9 @@ namespace Efir.View
             }
             int SaccessTextDeletedTextMargin = 50;
 
+            InformationWrongFilesText.Text = "";
             ListViewWrongFiles.ItemsSource = "";
             SaccessTextDeletedText.FontSize = 22;
-            
             SaccessTextDeletedText.Foreground = Brushes.GreenYellow;
             SaccessTextDeletedText.Text = "Все файлы успешно удалены";
             ButtonStack.Visibility = Visibility.Hidden;

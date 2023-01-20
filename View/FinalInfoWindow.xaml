@@ -28,6 +28,7 @@
         <Border Padding="5">
             <StackPanel>
                 <TextBlock
+                    x:Name="InformationWrongFilesText"
                     Margin="0 10 0 20 "
                     Text="{Binding TextInfo}"/>
                 <TextBlock x:Name="SaccessTextDeletedText"
