@@ -55,14 +55,14 @@ namespace Efir
 
         //xTODO Сделать при загрузке контента первый раз дату месячной давности
         //XTODO Обернуть все потенциальные участки кода в try catch
-        //TODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть.
-        //TODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
+        //xTODO Профиксить добавление контента на стадии сбора данных, есть поврежденные файлы, и программа крашится если не может их открыть.
+        //xTODO надо сделать проверку, и пропускать битые файлы, а в конце показывать их пользователю, чтобы разобрался с проблемой или удалил. показывать можно в текстовом файле
 
         //TODO Профиксить отображение путей в медиа, сейчас отображется полный путь до первого файла. Нужно указывать только директорию
         //TODO Сделать рефреш эфирной сетки по времени по кнопке - схранить эфир или по другому событию
         //xTODO Сделать массовое удаление событий в эфире, типо отчистить или что то еще
         //TODO Сделать проверку на наличие контента в базе, перез созданием эфира, и сделать записб в текстовый файл если по некоторым путям контент отсутствует
-        //TODO Сделать удаление контента из базы если нажата кнопка выбора контента(отчистка моделей), чтобы не догружалось, а с нуля грузилось, хотя может есть сммысл оставить, чтобы просто догружалось
+        //xTODO Сделать удаление контента из базы если нажата кнопка выбора контента(отчистка моделей), чтобы не догружалось, а с нуля грузилось, хотя может есть сммысл оставить, чтобы просто догружалось
         //TODO Профиксить отчистку всех моделей в базе, на занчение null  в одном из полей(бывает в одно из полей записывается NULL и при старте программы выкидывает ошибку, для пользователя это краш программы. удалять приходится в ручную из базы)
         //xTODO Сделать заполнение событий по понедельнику, если другие не трогались(зафиксировать эвент, что менялись, значит кастом)
         //xTODO Доделать поиск и добавление контента по дням неделям, но после того как сделаю пункт выше.
@@ -2804,19 +2804,20 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         string[] splitName = series[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         print.Series = series[j].NumOfSeries > 0 ? series[j].IsSeries : 0;
                                         print.Description = "Сериал";
                                         print.Option = series[j].Path;
                                         series[j].LastRun = DateTime.Now;
+                                        print.Id = RandomId;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
 
-                                        Guid guid = Guid.NewGuid();
-                                        string RandomId = guid.ToString();
-
-                                        print.Id = RandomId;
 
                                         try
                                         {
@@ -2886,19 +2887,19 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         string[] splitName = preventionsShuffled[j].Name.Split(".");
                                         string formattedName = splitName[0];
 
+
+                                        Guid guid = Guid.NewGuid();
+                                        string RandomId = guid.ToString();
+
                                         print.TimeToEfir = !elseFilm ? curItemTime.TimeToEfir : print.TimeToEfir + addedTime;
                                         print.EventName = formattedName;
                                         //print.Series = preventions[j].NumOfSeries > 0 ? preventions[j].IsSeries : 0;
                                         print.Description = preventionsShuffled[j].Description;
                                         print.Option = preventionsShuffled[j].Path;
                                         preventionsShuffled[j].LastRun = DateTime.Now;
+                                        print.Id = RandomId;
 
                                         if (print.TimeToEfir > nextItemTime.TimeToEfir) break;
-
-                                        Guid guid = Guid.NewGuid();
-                                        string RandomId = guid.ToString();
-
-                                        print.Id = RandomId;
 
                                         try
                                         {
