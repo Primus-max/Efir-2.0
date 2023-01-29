@@ -38,6 +38,7 @@ namespace Efir
     /// </summary>
     public partial class MainWindow : Window, IAsyncDisposable, INotifyPropertyChanged
     {
+        //TODO Делать отдельные потоки при добавлении контента
         //TODO Переделать запись ПРОФИЛАКТИКИ. В Description добвлять названия а в Name Профилактика
         //TODO ПРОФИКСИТЬ! При записи в текстовый файл смотреть если имя совпадает с предыдущим, то оставлять одно, например:
         //TODO сериалы идут по несколько серий. Оставлять названия, а через запятую указывать серии.
@@ -1331,13 +1332,16 @@ namespace Efir
                 {
                     FilePathToFilmTextBox.Text = commonOpenFileDialog.FileName;
                     pathToFilms = FilePathToFilmTextBox.Text;
-                    using (ApplicationContext context = new ApplicationContext())
+                    if (AddFilmCheckbox.IsChecked == false)
                     {
-                        foreach (var item in context.Films.ToList())
+                        using (ApplicationContext context = new ApplicationContext())
                         {
-                            context.Films.Remove(item);
+                            foreach (var item in context.Films.ToList())
+                            {
+                                context.Films.Remove(item);
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                     AddFilmAtDB(pathToFilms);
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
@@ -1363,13 +1367,17 @@ namespace Efir
                 {
                     FilePathToSeriesTextBox.Text = commonOpenFileDialog.FileName;
                     pathToSeries = FilePathToSeriesTextBox.Text;
-                    using (ApplicationContext context = new ApplicationContext())
+
+                    if (AddSeriesCheckbox.IsChecked == false)
                     {
-                        foreach (var item in context.Serieses.ToList())
+                        using (ApplicationContext context = new ApplicationContext())
                         {
-                            context.Serieses.Remove(item);
+                            foreach (var item in context.Serieses.ToList())
+                            {
+                                context.Serieses.Remove(item);
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                     AddSreiesAtDB(pathToSeries);
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
@@ -1394,15 +1402,24 @@ namespace Efir
                 {
                     FilePathToLectionTextBox.Text = commonOpenFileDialog.FileName;
                     pathToLection = FilePathToLectionTextBox.Text;
-                    using (ApplicationContext context = new ApplicationContext())
+
+                    if (AddLectionCheckbox.IsChecked == false)
                     {
-                        foreach (var item in context.Lections.ToList())
+                        using (ApplicationContext context = new ApplicationContext())
                         {
-                            context.Lections.Remove(item);
+                            foreach (var item in context.Lections.ToList())
+                            {
+                                context.Lections.Remove(item);
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                     AddLectiontAtDB(pathToLection);
+                    /*  Thread thread = new Thread(() => AddLectiontAtDB(pathToLection));
+                      thread.IsBackground = true;
+                      thread.Start();
+  */
+
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
                 catch (Exception ex)
@@ -1426,13 +1443,17 @@ namespace Efir
                 {
                     FilePathToPreventionTextBox.Text = commonOpenFileDialog.FileName;
                     pathToPrevention = FilePathToPreventionTextBox.Text;
-                    using (ApplicationContext context = new ApplicationContext())
+
+                    if (AddPreventionCheckbox.IsChecked == false)
                     {
-                        foreach (var item in context.Preventions.ToList())
+                        using (ApplicationContext context = new ApplicationContext())
                         {
-                            context.Preventions.Remove(item);
+                            foreach (var item in context.Preventions.ToList())
+                            {
+                                context.Preventions.Remove(item);
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                     AddPreventionAtDB(pathToPrevention);
                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
@@ -1461,13 +1482,17 @@ namespace Efir
                 {
                     FilePathToTvShowTextBox.Text = commonOpenFileDialog.FileName;
                     pathToPrevention = FilePathToTvShowTextBox.Text;
-                    using (ApplicationContext context = new ApplicationContext())
+
+                    if (AddTvShowsCheckbox.IsChecked == false)
                     {
-                        foreach (var item in context.TvShows.ToList())
+                        using (ApplicationContext context = new ApplicationContext())
                         {
-                            context.TvShows.Remove(item);
+                            foreach (var item in context.TvShows.ToList())
+                            {
+                                context.TvShows.Remove(item);
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                     AddTvShowAtDB(pathToPrevention);
                 }
@@ -1492,13 +1517,17 @@ namespace Efir
                 {
                     FilePathToEducationalsTextBox.Text = commonOpenFileDialog.FileName;
                     pathToEducationals = FilePathToEducationalsTextBox.Text;
-                    using (ApplicationContext context = new ApplicationContext())
+
+                    if (AddAducationalCheckbox.IsChecked == false)
                     {
-                        foreach (var item in context.Educationals.ToList())
+                        using (ApplicationContext context = new ApplicationContext())
                         {
-                            context.Educationals.Remove(item);
+                            foreach (var item in context.Educationals.ToList())
+                            {
+                                context.Educationals.Remove(item);
+                            }
+                            context.SaveChanges();
                         }
-                        context.SaveChanges();
                     }
                     AddEducationalAtDB(pathToEducationals);
                     //TODO профиксить почему не обновляется информация в текстовом поле если использую переменную из MAinViewModel
@@ -2675,18 +2704,18 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
                                         print.Option = lection?.Path;
-                                    }
 
-                                    try
-                                    {
-                                        context?.PrintMondays.Add(print);
-                                        context?.SaveChanges();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
-                                    }
+                                        try
+                                        {
+                                            context?.PrintMondays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
 
+                                    }
                                 }
                                 #endregion
 
@@ -3209,17 +3238,19 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
                                         print.Option = lection?.Path;
+
+                                        try
+                                        {
+                                            context?.PrintTuesdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
                                     }
 
-                                    try
-                                    {
-                                        context?.PrintTuesdays.Add(print);
-                                        context?.SaveChanges();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
-                                    }
+
 
                                 }
                                 #endregion
@@ -3728,17 +3759,19 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
                                         print.Option = lection?.Path;
+
+                                        try
+                                        {
+                                            context?.PrintWednesdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
                                     }
 
-                                    try
-                                    {
-                                        context?.PrintWednesdays.Add(print);
-                                        context?.SaveChanges();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
-                                    }
+
 
                                 }
                                 #endregion
@@ -4248,18 +4281,17 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
                                         print.Option = lection?.Path;
-                                    }
 
-                                    try
-                                    {
-                                        context?.PrintThursdays.Add(print);
-                                        context?.SaveChanges();
+                                        try
+                                        {
+                                            context?.PrintThursdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
                                     }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
-                                    }
-
                                 }
                                 #endregion
 
@@ -4775,16 +4807,17 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
                                         print.Option = lection?.Path;
-                                    }
 
-                                    try
-                                    {
-                                        context?.PrintFridays.Add(print);
-                                        context?.SaveChanges();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
+                                        try
+                                        {
+                                            context?.PrintFridays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            MessageBox.Show(e.Message);
+                                        }
+
                                     }
 
                                 }
@@ -5301,16 +5334,17 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                                         var lection = context?.Lections.ToList().Find(l => l.Name.ToLower().Contains(strName.TrimStart().ToLower()));
 
                                         print.Option = lection?.Path;
-                                    }
 
-                                    try
-                                    {
-                                        context?.PrintSaturdays.Add(print);
-                                        context?.SaveChanges();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        MessageBox.Show(ex.Message);
+                                        try
+                                        {
+                                            context?.PrintSaturdays.Add(print);
+                                            context?.SaveChanges();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            MessageBox.Show(ex.Message);
+                                        }
+
                                     }
 
                                 }
@@ -6239,10 +6273,16 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
             using (ApplicationContext context = new ApplicationContext())
             {
-
+                // Ищу подходящий день недели, кроме ближайшего на этой неделе (потомучто делаю эфир в пятницу, и может подобрать ближайшую пятниц)
                 for (int i = 0; i < 7; i++)
                 {
+
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
+
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
                     using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Понедельник" + " " + possibleDate);
@@ -6257,6 +6297,10 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                 for (int i = 0; i < 7; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
                     using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Вторник" + " " + possibleDate);
@@ -6271,6 +6315,10 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                 for (int i = 0; i < 7; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
                     using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Среда" + " " + possibleDate);
@@ -6285,6 +6333,10 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                 for (int i = 0; i < 7; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
 
@@ -6300,6 +6352,10 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
                 for (int i = 0; i < 7; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
                     using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Пятница" + " " + possibleDate);
@@ -6311,9 +6367,13 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
                     using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Суббота" + " " + possibleDate);
@@ -6325,10 +6385,14 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = 0; i < 7; i++)
+                for (int i = 0; i < 9; i++)
                 {
                     if (i < 4) continue;
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
                     using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("Воскресенье" + " " + possibleDate);

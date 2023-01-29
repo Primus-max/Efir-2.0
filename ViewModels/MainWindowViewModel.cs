@@ -168,8 +168,8 @@ namespace Efir.ViewModels
 
         #region БЛОК МЕДИА
 
-        #region прогресс бар
-        private int _ValueProgressDownlaodingSeries = 10;
+        #region прогресс бар / счетчики добавления контента в базу
+        private int _ValueProgressDownlaodingSeries;
         /// <summary>
         /// Индикатор загрузки для сериалов
         /// </summary>
@@ -178,6 +178,16 @@ namespace Efir.ViewModels
             get => _ValueProgressDownlaodingSeries;
             set => Set(ref _ValueProgressDownlaodingSeries, value);
         }
+
+        /*private int _ValueProgressDownlaodingSeries = 10;
+        /// <summary>
+        /// Индикатор загрузки для сериалов
+        /// </summary>
+        public int ValueProgressDownlaodingSeries
+        {
+            get => _ValueProgressDownlaodingSeries;
+            set => Set(ref _ValueProgressDownlaodingSeries, value);
+        }*/
         #endregion
 
         private ObservableCollection<string> _testList = new ObservableCollection<string>();

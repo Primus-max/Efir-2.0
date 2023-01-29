@@ -823,11 +823,17 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Margin="15 0 0 0">
-                                        <TextBlock Text="всего: "/>
+                                        <CheckBox x:Name="AddLectionCheckbox"
+                                                  Content="Дописать "
+                                                  IsChecked="True" 
+                                                  ToolTip="Если галочка включена то контент допишется в базу, 
+                                                  иначе база отчистится и новый контент запишется" />
+
+                                        <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfLectionTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
-                                                   Text="0"/>
+                                                   Text="0" VerticalAlignment="Bottom"/>
                                     </StackPanel>
                                     <!--Прогресс загрузки-->
                                     <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -873,7 +879,13 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Margin="15 0 0 0">
-                                        <TextBlock Text="всего: "/>
+
+                                        <CheckBox x:Name="AddFilmCheckbox"
+                                                  Content="Дописать "
+                                                  IsChecked="True" 
+                                                  ToolTip="Если галочка включена то контент допишется в базу, 
+                                                  иначе база отчистится и новый контент запишется" />
+                                        <TextBlock Text="| всего: "/>
                                         <TextBlock x:Name="CountOfFilmTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0" Text="0"/>
@@ -921,7 +933,12 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Margin="15 0 0 0">
-                                        <TextBlock Text="всего: "/>
+                                        <CheckBox x:Name="AddSeriesCheckbox"
+                                                  Content="Дописать "
+                                                  IsChecked="True" 
+                                                  ToolTip="Если галочка включена то контент допишется в базу, 
+                                                  иначе база отчистится и новый контент запишется" />
+                                        <TextBlock Text="| всего: "/>
                                         <TextBlock x:Name="CountOfSeriesTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
@@ -970,7 +987,12 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Margin="15 0 0 0">
-                                        <TextBlock Text="всего: "/>
+                                        <CheckBox x:Name="AddPreventionCheckbox"
+                                                  Content="Дописать "
+                                                  IsChecked="True" 
+                                                  ToolTip="Если галочка включена то контент допишется в базу, 
+                                                  иначе база отчистится и новый контент запишется" />
+                                        <TextBlock Text="| всего: "/>
                                         <TextBlock x:Name="CountOfPreventionlTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0" Text="0"/>
@@ -1019,8 +1041,12 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Margin="15 0 0 0">
-
-                                        <TextBlock Text="всего: "/>
+                                        <CheckBox x:Name="AddTvShowsCheckbox"
+                                                  Content="Дописать "
+                                                  IsChecked="True" 
+                                                  ToolTip="Если галочка включена то контент допишется в базу, 
+                                                  иначе база отчистится и новый контент запишется" />
+                                        <TextBlock Text="| всего: "/>
                                         <TextBlock x:Name="CountOfTvShowTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
@@ -1068,8 +1094,12 @@
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
                                                 Margin="15 0 0 0">
-
-                                        <TextBlock Text="всего: "/>
+                                        <CheckBox x:Name="AddAducationalCheckbox"
+                                                  Content="Дописать "
+                                                  IsChecked="True" 
+                                                  ToolTip="Если галочка включена то контент допишется в базу, 
+                                                  иначе база отчистится и новый контент запишется" />
+                                        <TextBlock Text="| всего: "/>
                                         <TextBlock x:Name="CountOfEducationalsTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
