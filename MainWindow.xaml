@@ -781,8 +781,12 @@
                     </TabItem.Header>
                     <StackPanel
                         Margin="16">
+                        <StackPanel.Resources>
+                            <ToolTip x:Key="TooltipCheckbox">
+                                Если галочка включена то контент допишется в базу, иначе база отчистится и новый контент запишется
+                            </ToolTip>
+                        </StackPanel.Resources>
                         <TextBlock
-
                             Margin="0,0,0,8"
                             Text="Укажите места расположений папок с медиаконтентом" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <StackPanel Orientation="Vertical">
@@ -825,10 +829,8 @@
                                                 Margin="15 0 0 0">
                                         <CheckBox x:Name="AddLectionCheckbox"
                                                   Content="Дописать "
-                                                  IsChecked="True" 
-                                                  ToolTip="Если галочка включена то контент допишется в базу, 
-                                                  иначе база отчистится и новый контент запишется" />
-
+                                                  IsChecked="True"
+                                                  ToolTip="{StaticResource TooltipCheckbox}" />
                                         <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfLectionTextBlock"
                                                    Width="30"
@@ -882,13 +884,12 @@
 
                                         <CheckBox x:Name="AddFilmCheckbox"
                                                   Content="Дописать "
-                                                  IsChecked="True" 
-                                                  ToolTip="Если галочка включена то контент допишется в базу, 
-                                                  иначе база отчистится и новый контент запишется" />
-                                        <TextBlock Text="| всего: "/>
+                                                  IsChecked="True"
+                                                  ToolTip="{StaticResource TooltipCheckbox}"  />
+                                        <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfFilmTextBlock"
                                                    Width="30"
-                                                   Margin="5 0 0 0" Text="0"/>
+                                                   Margin="5 0 0 0" Text="0" VerticalAlignment="Bottom"/>
                                         <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                                             <!--<ProgressBar
@@ -935,14 +936,13 @@
                                                 Margin="15 0 0 0">
                                         <CheckBox x:Name="AddSeriesCheckbox"
                                                   Content="Дописать "
-                                                  IsChecked="True" 
-                                                  ToolTip="Если галочка включена то контент допишется в базу, 
-                                                  иначе база отчистится и новый контент запишется" />
-                                        <TextBlock Text="| всего: "/>
+                                                  IsChecked="True"
+                                                  ToolTip="{StaticResource TooltipCheckbox}"  />
+                                        <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfSeriesTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
-                                                   Text="0"/>
+                                                   Text="0" VerticalAlignment="Bottom"/>
                                         <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                                             <!--<ProgressBar
@@ -989,13 +989,12 @@
                                                 Margin="15 0 0 0">
                                         <CheckBox x:Name="AddPreventionCheckbox"
                                                   Content="Дописать "
-                                                  IsChecked="True" 
-                                                  ToolTip="Если галочка включена то контент допишется в базу, 
-                                                  иначе база отчистится и новый контент запишется" />
-                                        <TextBlock Text="| всего: "/>
+                                                  IsChecked="True"
+                                                  ToolTip="{StaticResource TooltipCheckbox}"  />
+                                        <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfPreventionlTextBlock"
                                                    Width="30"
-                                                   Margin="5 0 0 0" Text="0"/>
+                                                   Margin="5 0 0 0" Text="0" VerticalAlignment="Bottom"/>
 
                                         <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
@@ -1043,14 +1042,13 @@
                                                 Margin="15 0 0 0">
                                         <CheckBox x:Name="AddTvShowsCheckbox"
                                                   Content="Дописать "
-                                                  IsChecked="True" 
-                                                  ToolTip="Если галочка включена то контент допишется в базу, 
-                                                  иначе база отчистится и новый контент запишется" />
-                                        <TextBlock Text="| всего: "/>
+                                                  IsChecked="True"
+                                                  ToolTip="{StaticResource TooltipCheckbox}"  />
+                                        <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfTvShowTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
-                                                   Text="0"/>
+                                                   Text="0" VerticalAlignment="Bottom"/>
                                         <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                                             <!--<ProgressBar
@@ -1096,14 +1094,13 @@
                                                 Margin="15 0 0 0">
                                         <CheckBox x:Name="AddAducationalCheckbox"
                                                   Content="Дописать "
-                                                  IsChecked="True" 
-                                                  ToolTip="Если галочка включена то контент допишется в базу, 
-                                                  иначе база отчистится и новый контент запишется" />
-                                        <TextBlock Text="| всего: "/>
+                                                  IsChecked="True"
+                                                  ToolTip="{StaticResource TooltipCheckbox}"  />
+                                        <TextBlock Text="| всего: " VerticalAlignment="Bottom"/>
                                         <TextBlock x:Name="CountOfEducationalsTextBlock"
                                                    Width="30"
                                                    Margin="5 0 0 0"
-                                                   Text="0"/>
+                                                   Text="0" VerticalAlignment="Bottom"/>
                                         <StackPanel Margin="35 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center">
 
                                             <!--<ProgressBar

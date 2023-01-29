@@ -1416,9 +1416,9 @@ namespace Efir
                     }
                     AddLectiontAtDB(pathToLection);
                     /*  Thread thread = new Thread(() => AddLectiontAtDB(pathToLection));
-                      thread.IsBackground = true;
-                      thread.Start();
-  */
+                                                                                      thread.IsBackground = true;
+                                                                                      thread.Start();
+                                                                                      */
 
                     // ToDo профиксить подсказку, при добавлении строки изменять подсказу в текстовом поле
                 }
@@ -1575,11 +1575,11 @@ namespace Efir
                         IEnumerable<FileSystemInfo> filteredFileList = GetedFileFromDirectory(secondDirectory, false);
 
                         /* IEnumerable<FileInfo> allFileList = secondDirectory.GetFiles("*.*", SearchOption.AllDirectories);
-                         IEnumerable<FileSystemInfo> filteredFileList =
-                             from file in allFileList
-                             where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
-                             file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
-                             select file;*/
+                            IEnumerable<FileSystemInfo> filteredFileList =
+                                from file in allFileList
+                                where file.Extension == ".avi" || file.Extension == ".mp4" || file.Extension == ".mp4" ||
+                                file.Extension == ".mkv" || file.Extension == ".m4v" || file.Extension == ".mov"
+                                select file;*/
 
                         StringNumberComparer comparer = new StringNumberComparer();
                         MainWindowViewModel viewModel = new MainWindowViewModel();
