@@ -6206,7 +6206,7 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
             "Не клацайте по кнопкам." + '\n' +
             "Наберитесь терпения." + '\n' +
             "В конце процесса вы получите уведомление" + '\n' +
-            "              Нажмите OK для продолжения");
+            "                     Нажмите OK для продолжения");
 
             GenerateEfir();
 
