@@ -6273,55 +6273,54 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
             using (ApplicationContext context = new ApplicationContext())
             {
-                // Определяю с какого дня начинать подбирать дни недели
+                /*// Определяю с какого дня начинать подбирать дни недели
                 int countDay = 0;
                 int totalDay = 0;
-                string today = DateTime.Now.DayOfWeek.ToString();
-
+                //string today = DateTime.Now.DayOfWeek.ToString();
+                string today = DateTime.Now.AddDays(4).DayOfWeek.ToString();
 
                 switch (today)
                 {
                     case "Monday":
-                        countDay = 6;
-                        totalDay = 14;
-                        break;
-                    case "Tuesday":
-                        countDay = 5;
+                        countDay = 7;
                         totalDay = 13;
                         break;
-                    case "Wednesday":
-                        countDay = 4;
+                    case "Tuesday":
+                        countDay = 6;
                         totalDay = 12;
                         break;
-                    case "Thursday":
-                        countDay = 3;
+                    case "Wednesday":
+                        countDay = 5;
                         totalDay = 11;
+                        break;
+                    case "Thursday":
+                        countDay = 4;
+                        totalDay = 10;
                         break;
                     case "Friday":
                         countDay = 2;
-                        totalDay = 10;
+                        totalDay = 9;
                         break;
                     case "Saturday":
                         countDay = 1;
-                        totalDay = 9;
+                        totalDay = 8;
                         break;
                     case "Sunday":
                         countDay = 0;
-                        totalDay = 8;
+                        totalDay = 7;
                         break;
-                }
+                }*/
 
 
 
                 // Ищу подходящий день недели, кроме ближайшего на этой неделе (потомучто делаю эфир в пятницу, и может подобрать ближайшую пятниц)
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 0; i < 6; i++)
                 {
-
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Monday".ToLower()) continue;
 
-                    /* var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                     var asdfdsfg = DateTime.Now.ToShortDateString();*/
-                    if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
+                    //if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
 
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
@@ -6334,12 +6333,12 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 1; i < 7; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Tuesday".ToLower()) continue;
-                    /*
-                                        var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                                        var asdfdsfg = DateTime.Now.ToShortDateString();*/
+
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
                     if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
@@ -6352,12 +6351,12 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 2; i < 8; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Wednesday".ToLower()) continue;
 
-                    /* var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                     var asdfdsfg = DateTime.Now.ToShortDateString();*/
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
                     if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
@@ -6370,12 +6369,12 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 3; i < 8; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Thursday".ToLower()) continue;
 
-                    /* var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                     var asdfdsfg = DateTime.Now.ToShortDateString();*/
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
                     if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
@@ -6389,12 +6388,12 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 4; i < 8; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Friday".ToLower()) continue;
 
-                    /* var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                     var asdfdsfg = DateTime.Now.ToShortDateString();*/
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
                     if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
@@ -6407,12 +6406,12 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 5; i < 9; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Saturday".ToLower()) continue;
 
-                    /* var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                     var asdfdsfg = DateTime.Now.ToShortDateString();*/
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
                     if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
@@ -6425,12 +6424,12 @@ string durationFromMediaList = mediaDataFromVideo.Split("\r\n").First(s => s.Sta
 
                 using (StreamWriter fstream = new StreamWriter(savePath, true)) fstream.WriteLine("-----------------------------------------------------");
 
-                for (int i = countDay; i < totalDay; i++)
+                for (int i = 6; i < 10; i++)
                 {
                     if (DateTime.Now.AddDays(i).DayOfWeek.ToString().ToLower() != "Sunday".ToLower()) continue;
 
-                    /*var asdf = DateTime.Now.AddDays(i).ToShortDateString();
-                    var asdfdsfg = DateTime.Now.ToShortDateString();*/
+                    var asdf = DateTime.Now.AddDays(i).ToShortDateString();
+                    var asdfdsfg = DateTime.Now.ToShortDateString();
                     if (DateTime.Now.AddDays(i).ToShortDateString() == DateTime.Now.ToShortDateString()) continue;
                     string possibleDate = DateTime.Now.AddDays(i).ToShortDateString();
 
