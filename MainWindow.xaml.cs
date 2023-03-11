@@ -1686,8 +1686,12 @@ namespace Efir
                             {
                                 try
                                 {
-                                    context.Films.Add(film);
-                                    context.SaveChanges();
+                                    foreach (var i in context.Films.ToList())
+                                    {
+                                        context.Films.Add(film);
+                                        context.SaveChanges();
+                                    }
+
                                 }
                                 catch (Exception e)
                                 {
