@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[22.1.6, )"
             },
+            "DocumentFormat.OpenXml": {
+              "target": "Package",
+              "version": "[2.18.0, )"
+            },
             "MaterialDesignColors": {
               "target": "Package",
               "version": "[2.0.9, )"
@@ -62,9 +66,17 @@
               "target": "Package",
               "version": "[0.2.5, )"
             },
+            "MediaInfo.Core.Native": {
+              "target": "Package",
+              "version": "[21.9.1, )"
+            },
             "MediaInfo.Wrapper.Core": {
               "target": "Package",
               "version": "[21.9.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             },
             "Microsoft.WindowsAPICodePack-Shell": {
               "target": "Package",
@@ -74,17 +86,9 @@
               "target": "Package",
               "version": "[1.0.116, )"
             },
-            "System.Data.SQLite.Core": {
+            "WindowsBase_Core.STW": {
               "target": "Package",
-              "version": "[1.0.116, )"
-            },
-            "System.Data.SQLite.EF6": {
-              "target": "Package",
-              "version": "[1.0.116, )"
-            },
-            "System.Data.SQLite.Linq": {
-              "target": "Package",
-              "version": "[1.0.116, )"
+              "version": "[4.0.30319.1, )"
             },
             "ZenLib": {
               "target": "Package",
@@ -93,6 +97,14 @@
             "Zlib.Portable.Signed": {
               "target": "Package",
               "version": "[1.11.0, )"
+            },
+            "gong-wpf-dragdrop": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "xFFmpeg.NET": {
+              "target": "Package",
+              "version": "[7.1.3, )"
             }
           },
           "imports": [

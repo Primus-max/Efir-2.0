@@ -1,0 +1,58 @@
+﻿<Window x:Class="Efir.View.FinalInfoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Efir.View"
+        mc:Ignorable="d"
+
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+
+        xmlns:vm="clr-namespace:Efir.ViewModels"
+        Title="Информация о категории"
+        Height="600"
+        Width="Auto"
+        MaxWidth="350">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+
+        <Border Padding="5">
+            <StackPanel>
+                <TextBlock
+                    x:Name="InformationWrongFilesText"
+                    Margin="0 10 0 20 "
+                    Text="{Binding TextInfo}"/>
+                <TextBlock x:Name="SaccessTextDeletedText"
+                           Margin="0 10 0 0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           />
+                <ListView x:Name="ListWrongFiles"
+                          Height="400"/>
+                <StackPanel
+                    x:Name="ButtonStack"
+                    Margin="0 20 0 20"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch" >
+                    <Button Margin="0 0 10 0"
+                            Click="DeleteWrongFiles_Click">
+                        Удалить
+                    </Button>
+                    <Button
+                        Margin="10 0 0 0"
+                        Click="CloseFinalInfoWin_Click">
+                        Позже
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

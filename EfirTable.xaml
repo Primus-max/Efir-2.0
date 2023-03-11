@@ -1,0 +1,57 @@
+﻿<Window x:Class="Efir.EfirTable"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Efir"
+        mc:Ignorable="d"
+        Title="EfirTable"
+        Height="700"
+        Width="700"
+        WindowStartupLocation="CenterScreen"
+        >
+    <Grid >
+        <!--<Grid>
+        <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="90*"/>
+        <ColumnDefinition Width="90*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+        <RowDefinition Height="60*"/>
+        <RowDefinition Height="60*"/>
+        </Grid.RowDefinitions>
+        <StackPanel CanVerticallyScroll="True" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <Border Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+        <TextBlock Text="Понедельник 12.12.22"/>
+        </Border>
+        <Grid>
+        <DataGrid x:Name="GridTest"  />
+        </Grid>
+        </StackPanel>
+
+
+        </Grid>-->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch">
+            <StackPanel  >
+                <StackPanel  >
+                    <Border Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                        <TextBlock Text="Понедельник 12.12.22"/>
+                    </Border>
+                    <Grid>
+                        <DataGrid x:Name="GridTest" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"  />
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel  >
+                    <Border Padding="10" VerticalAlignment="Stretch" HorizontalAlignment="Center">
+                        <TextBlock Text="Понедельник 12.12.22"/>
+                    </Border>
+
+                    <Grid>
+                        <DataGrid x:Name="TuesdeyMesh" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled"  />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
