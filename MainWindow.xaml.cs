@@ -204,7 +204,7 @@ namespace Efir
             }
             #endregion
 
-            #region Установка источников данных для евентов по дням недели
+            #region Установка источников данных для эвентов по дням недели
             //TODO Доделать сортировку отображаемых данных для всех дней
             //TODO Убрать вызов объекта из общего в каждый юзинг
             MainWindowViewModel model = new MainWindowViewModel();
@@ -1686,12 +1686,8 @@ namespace Efir
                             {
                                 try
                                 {
-                                    foreach (var i in context.Films.ToList())
-                                    {
-                                        context.Films.Add(film);
-                                        context.SaveChanges();
-                                    }
-
+                                    context.Films.Add(film);
+                                    context.SaveChanges();
                                 }
                                 catch (Exception e)
                                 {
