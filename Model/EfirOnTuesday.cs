@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Efir.Model
 {
     public class EfirOnTuesday
     {
+        [Key]
+        [Column("Id")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)] // Автоинкрементное свойство
         public int Id { get; set; }
         public TimeSpan TimeToEfir { get; set; }
         public string EventName { get; set; }
