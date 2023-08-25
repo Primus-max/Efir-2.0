@@ -81,6 +81,7 @@ namespace Efir
         //DayOfWeek dayOfWeek = new DayOfWeek();
 
         #region ПЕРЕМЕННЫЕ: блок эфир
+        private string storedPassword = "4040";
         #endregion
 
 
@@ -102,6 +103,7 @@ namespace Efir
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+            CheckPasswordOnStartup();
         }
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -308,6 +310,32 @@ namespace Efir
                 EfirtListOnSunday.ItemsSource = model.EventListSourceSunday;
             }
             #endregion
+        }
+
+        private void CheckPasswordOnStartup()
+        {
+            string enteredPassword = PromptForPassword();
+
+            if (CheckPassword(enteredPassword))
+            {
+                MessageBox.Show("Доступ разрешен. Добро пожаловать в приложение!", "Успешная авторизация", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Здесь можно добавить код, выполняющийся при успешной авторизации.
+            }
+            else
+            {
+                MessageBox.Show("Неверный пароль. Доступ запрещен.", "Ошибка авторизации", MessageBoxButton.OK, MessageBoxImage.Error);
+                Environment.Exit(0); // Выход из программы при неверном пароле
+            }
+        }
+
+        private string PromptForPassword()
+        {
+            return Microsoft.VisualBasic.Interaction.InputBox("Введите пароль:", "Авторизация", "");
+        }
+
+        private bool CheckPassword(string enteredPassword)
+        {
+            return enteredPassword == storedPassword;
         }
 
         #region ПАРСИНГ ДОКУМЕНТА С ГРАФИКОМ ЛЕКЦИЙ
